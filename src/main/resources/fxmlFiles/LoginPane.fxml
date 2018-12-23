@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginPaneController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="278.0" layoutY="167.0" prefHeight="316.0" prefWidth="295.0" spacing="30.0">
+         <children>
+            <Label text="LOGOWANIE">
+               <font>
+                  <Font size="50.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="77.0" prefWidth="312.0">
+               <children>
+                  <VBox alignment="TOP_RIGHT" prefHeight="77.0" prefWidth="46.0" spacing="25.0">
+                     <children>
+                        <Label text="Login" />
+                        <Label text="Hasło" />
+                     </children>
+                     <padding>
+                        <Insets right="10.0" top="5.0" />
+                     </padding>
+                  </VBox>
+                  <VBox prefHeight="197.0" prefWidth="229.0" spacing="18.0">
+                     <children>
+                        <TextField prefWidth="50.0" />
+                        <TextField />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Button mnemonicParsing="false" text="Zaloguj">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
