@@ -36,7 +36,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="bLogin" mnemonicParsing="false" onAction="#bLoginClick" text="Log in">
+            <Button fx:id="bLogin" defaultButton="true" mnemonicParsing="false" onAction="#bLoginClick" text="Log in">
                <font>
                   <Font size="27.0" />
                </font>

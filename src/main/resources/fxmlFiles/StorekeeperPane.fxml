@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StorekeeperPaneController">
+    <children>
+        <Button layoutX="784.0" layoutY="14.0" mnemonicParsing="false" onAction="#bLogoutClick" text="Logout" />
+        <Label layoutX="312.0" layoutY="290.0" text="STOREKEEPER">
+            <font>
+                <Font size="48.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

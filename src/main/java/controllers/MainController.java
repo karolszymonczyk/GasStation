@@ -16,7 +16,7 @@ public class MainController {
     setLoginPane();
   }
 
-  private void setLoginPane() {
+  public void setLoginPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/LoginPane.fxml"));
     Pane logPane = null;
     try {
@@ -29,7 +29,7 @@ public class MainController {
     setPane(logPane);
   }
 
-  private void setPane(Pane pane) {
+  public void setPane(Pane pane) {
     mainPane.getChildren().clear();
     mainPane.getChildren().add(pane);
   }
