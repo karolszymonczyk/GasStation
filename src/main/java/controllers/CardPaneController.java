@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import workers.Seller;
 
 public class CardPaneController {
 
@@ -17,6 +18,7 @@ public class CardPaneController {
   public Button bCreate;
   private MainController controller;
   private LoginPaneController loginController;
+  private Seller seller;
 
   @FXML
   public void initialize() {
@@ -40,14 +42,16 @@ public class CardPaneController {
 
     String name = tfName.getText();
     String surname = tfSurname.getText();
-    String NIP = taNIP.getText();
+    String sNIP = taNIP.getText();
 
-    if(!checkFormat(NIP)) {
+    if(!checkFormat(sNIP)) {
      lError.setVisible(true);
      return;
     }
 
-    //TODO po przejsciu dodać kartę do bazy danych
+    int iNIP = Integer.parseInt(sNIP);
+
+    seller.addNewCustomer(name,surname,iNIP);
 
     lSucces.setVisible(true);
     setDisbledPane();
@@ -68,5 +72,9 @@ public class CardPaneController {
       return false;
     }
     return true;
+  }
+
+  void setSeller(Seller seller) {
+    this.seller = seller;
   }
 }

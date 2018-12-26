@@ -20,6 +20,9 @@ public class LoginPaneController {
   public Label lError;
   private MainController controller;
 
+  private Seller seller;
+  private StoreKeeper storeKeeper;
+
   private String login, password;
 
   @FXML
@@ -46,22 +49,20 @@ public class LoginPaneController {
     LoginCheck loginCheck = new LoginCheck(login,password);
 
     if(loginCheck.correctUserAndPass()) {
-      switch (loginCheck.job) {
-        case "manager":
-          setManagerPane();
-          break;
-        case "seller":
-          setSellerPane();
-          Seller seller = new Seller(loginCheck.getConnection());
-          break;
-        case "storekeeper":
-          //TODO test.storekeeper pass: sk
-          setStorekeeperPane();
-          StoreKeeper storeKeeper = new StoreKeeper(loginCheck.getConnection());
-          break;
-        default:
-          System.out.println("DATABASE ERROR");
-          break;
+      if ("manager".equals(loginCheck.job)) {
+        setManagerPane();
+
+      } else if ("seller".equals(loginCheck.job)) {
+        seller = new Seller(loginCheck.getConnection());
+        //System.out.println("Seller = " + seller);
+        setSellerPane();
+
+      } else if ("storekeeper".equals(loginCheck.job)) {//TODO test.storekeeper pass: sk
+        storeKeeper = new StoreKeeper(loginCheck.getConnection());
+        setStorekeeperPane();
+      } else {
+        System.out.println("DATABASE ERROR");
+
       }
     }
   }
@@ -88,8 +89,12 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     SellerPaneController sellerController = loader.getController();
+    sellerController.setSeller(seller);
     sellerController.setController(controller);
     sellerController.setLoginController(this);
+    sellerController.addToProductList(seller.getProducts());
+//    seller.createNewBill();
+
     controller.setPane(sellerPane);
   }
 

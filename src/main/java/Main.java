@@ -12,6 +12,12 @@ import java.sql.SQLException;
 
 //TODO jak kasjer dodaje produkty do rachunku to w javie dodajemy je do tablicy a potem tablice parsujemy na stringa (product id oddzielone przecinkami) i to wysyøamy do mysql;
 
+//TODO DODAC W TRIGERZE W DELIVERY ZE JAK NOWEGO PRODUKTU NIE MA W TABELI TO TWORZY NOWY PRODUKT
+
+//TODO DOPISAC TRIGGER DO BALANCE CONTROLL NA KARCIE
+
+//TODO TRANSAKCJA ZACZYNA SIĘ W MOMENCIE GDY zaczynamy dodawać produkty, w tym momencie nie ma opcji stwórz kartę, sprawdż dostępność, transakcje można anulować przez klikniecie przycisku(jakiegoś nowego)
+
 public class Main extends Application {
 
   public static void main(String[] args) {
