@@ -51,12 +51,12 @@
          </children>
       </HBox>
       <Button fx:id="bCreate" layoutX="400.0" layoutY="374.0" mnemonicParsing="false" onAction="#bCreateClick" prefHeight="25.0" prefWidth="85.0" text="Create card" />
-      <Label fx:id="lError" layoutX="321.0" layoutY="486.0" text="Uncorrect input!" textFill="#f50505" visible="false">
+      <Label fx:id="lError" layoutX="321.0" layoutY="486.0" text="Wrong input!" textFill="#f50505" visible="false">
          <font>
             <Font size="29.0" />
          </font>
       </Label>
-      <Label fx:id="lSucces" layoutX="227.0" layoutY="486.0" text="Card has been succesfully created" textFill="#75f507" visible="false">
+      <Label fx:id="lSucces" layoutX="227.0" layoutY="486.0" text="Card has been successfully created" textFill="#75f507" visible="false">
          <font>
             <Font size="29.0" />
          </font>
