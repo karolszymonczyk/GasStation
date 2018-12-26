@@ -92,6 +92,7 @@ public class LoginPaneController {
     }
     StorekeeperPaneController storekeeperController = loader.getController();
     storekeeperController.setController(controller);
+    storekeeperController.setLoginController(this);
     controller.setPane(storekeeperPane);
   }
 }

@@ -148,6 +148,9 @@ public class SellerPaneController {
   public void bAvailabilityClick(ActionEvent event) {
     //setAvailabilityPane();
     Product selectedItem = (Product) tvProducts.getSelectionModel().getSelectedItem();
+    if(selectedItem == null) {
+      return;
+    }
     //TODO tak bierzemy kod i sprawdzamy ile jest towru w bazie i ustawiamy label tak jak niżej
     String code = selectedItem.getCode();
     //TODO przypisać ilość do amount
@@ -173,18 +176,18 @@ public class SellerPaneController {
     controller.setPane(cardPane);
   }
 
-  public void setAvailabilityPane() {
-    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
-    AnchorPane availabilityPane = null;
-    try {
-      availabilityPane = loader.load();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    AvailabilityPaneController availabilityController = loader.getController();
-    availabilityController.setController(controller);
-    availabilityController.setLoginController(loginController);
-    availabilityController.setTvProducts(tvProducts);
-    controller.setPane(availabilityPane);
-  }
+//  public void setAvailabilityPane() {
+//    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
+//    AnchorPane availabilityPane = null;
+//    try {
+//      availabilityPane = loader.load();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//    AvailabilityPaneController availabilityController = loader.getController();
+//    availabilityController.setController(controller);
+//    availabilityController.setLoginController(loginController);
+//    availabilityController.setTvProducts(tvProducts);
+//    controller.setPane(availabilityPane);
+//  }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -14,5 +15,38 @@
                 <Font size="48.0" />
             </font>
         </Label>
+      <HBox layoutX="292.0" layoutY="193.0" prefHeight="135.0" prefWidth="266.0">
+         <children>
+            <VBox alignment="TOP_RIGHT" prefHeight="190.0" prefWidth="82.0" spacing="40.0">
+               <children>
+                  <Label text="Deliverer" />
+                  <Label text="Product code" />
+                  <Label text="Amount" />
+               </children>
+               <padding>
+                  <Insets right="7.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" prefHeight="190.0" prefWidth="186.0" spacing="30.0">
+               <children>
+                  <TextField fx:id="tfDeliverer" promptText="deliverer" />
+                  <TextField fx:id="tfCode" promptText="code" />
+                  <TextField fx:id="tfAmount" promptText="amount" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Button fx:id="bAdd" layoutX="379.0" layoutY="389.0" mnemonicParsing="false" onAction="#bAddClick" prefHeight="25.0" prefWidth="93.0" text="Add" />
+      <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="742.0" layoutY="168.0" mnemonicParsing="false" onAction="#bNewProductClick" prefHeight="50.0" prefWidth="81.0" text="Add new product" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="lError" layoutX="340.0" layoutY="479.0" text="Wrong input!" textFill="#eb0303" visible="false">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
+      <Label fx:id="lSuccess" layoutX="197.0" layoutY="479.0" text="Product has been succesfully added" textFill="#1aeb05" visible="false">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>
