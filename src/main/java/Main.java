@@ -4,7 +4,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 //TODO rada na przyszłość XD jak nie działa to zmienić wersje w modules na 9 XD
+
+//TODO jak kasjer dodaje produkty do rachunku to w javie dodajemy je do tablicy a potem tablice parsujemy na stringa (product id oddzielone przecinkami) i to wysyøamy do mysql;
 
 public class Main extends Application {
 
@@ -13,6 +19,8 @@ public class Main extends Application {
   }
 
   public void start(Stage primaryStage) throws Exception {
+
+
 
     Parent mainPane = FXMLLoader.load(this.getClass().getResource("/fxmlFiles/MainPane.fxml"));
 

@@ -1,5 +1,8 @@
 package controllers;
 
+import dbConnection.LoginCheck;
+import workers.Seller;
+import workers.StoreKeeper;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,8 +15,6 @@ import java.io.IOException;
 public class LoginPaneController {
 
   private MainController controller;
-
-  private String login, password;
 
   @FXML
   private TextField tLogin, tPassword;
@@ -32,18 +33,28 @@ public class LoginPaneController {
   }
 
   public void bLoginClick() {
-    login = tLogin.getText();
-    password = tPassword.getText();
+    String login = tLogin.getText();
+    String password = tPassword.getText();
+    LoginCheck loginCheck = new LoginCheck(login,password);
 
-    if(login.equals("manager")) {
-      System.out.println("MANAGER");
-      setManagerPane();
-    } else if(login.equals("seller")) {
-      System.out.println("SELLER");
-      setSellerPane();
-    } else if(login.equals("storekeeper")) {
-      System.out.println("STOREKEEPER");
-      setStorekeeperPane();
+    if(loginCheck.correctUserAndPass()) {
+      switch (loginCheck.job) {
+        case "manager":
+          setManagerPane();
+          break;
+        case "seller":
+          setSellerPane();
+          Seller seller = new Seller(loginCheck.getConnection());
+          break;
+        case "storekeeper":
+          //TODO test.storekeeper pass: sk
+          setStorekeeperPane();
+          StoreKeeper storeKeeper = new StoreKeeper(loginCheck.getConnection());
+          break;
+        default:
+          System.out.println("DATABASE ERROR");
+          break;
+      }
     }
   }
 
