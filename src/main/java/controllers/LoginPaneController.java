@@ -4,13 +4,17 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
+//TODO zaminić password na PasswordLabel
+
 public class LoginPaneController {
 
+  public Label lError;
   private MainController controller;
 
   private String login, password;
@@ -32,6 +36,8 @@ public class LoginPaneController {
   }
 
   public void bLoginClick() {
+    lError.setVisible(false);
+
     login = tLogin.getText();
     password = tPassword.getText();
 
@@ -44,10 +50,12 @@ public class LoginPaneController {
     } else if(login.equals("storekeeper")) {
       System.out.println("STOREKEEPER");
       setStorekeeperPane();
+    } else {
+      lError.setVisible(true);
     }
   }
 
-  private void setManagerPane() {
+  public void setManagerPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ManagerPane.fxml"));
     AnchorPane managerPane = null;
     try {
@@ -60,7 +68,7 @@ public class LoginPaneController {
     controller.setPane(managerPane);
   }
 
-  private void setSellerPane() {
+  public void setSellerPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/SellerPane.fxml"));
     AnchorPane sellerPane = null;
     try {
@@ -70,10 +78,11 @@ public class LoginPaneController {
     }
     SellerPaneController sellerController = loader.getController();
     sellerController.setController(controller);
+    sellerController.setLoginController(this);
     controller.setPane(sellerPane);
   }
 
-  private void setStorekeeperPane() {
+  public void setStorekeeperPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/StorekeeperPane.fxml"));
     AnchorPane storekeeperPane = null;
     try {
