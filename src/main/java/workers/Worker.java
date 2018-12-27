@@ -35,4 +35,17 @@ public abstract class Worker {
         e.printStackTrace();
       }
   }
+  public boolean searchForProductFromCode(int code) {
+    try {
+      cSt = connection.prepareCall("{? = CALL searchProductFromCode(?)}");
+      cSt.setInt(2, code);
+      cSt.registerOutParameter(1, Types.BOOLEAN);
+      cSt.execute();
+      return cSt.getBoolean(1);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
 }

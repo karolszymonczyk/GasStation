@@ -20,6 +20,7 @@ public class StorekeeperPaneController {
   public Label lSuccess;
 
   Storekeeper storekeeper;
+  boolean transactionStarted = false;
 
   private MainController controller;
   private LoginPaneController loginController;
@@ -42,6 +43,7 @@ public class StorekeeperPaneController {
   }
 
   public void bAddClick(ActionEvent event) {
+
     lError.setVisible(false);
     lSuccess.setVisible(false);
 
@@ -49,7 +51,7 @@ public class StorekeeperPaneController {
     String code = tfCode.getText();
     String amount = tfAmount.getText();
 
-    if(!checkFormat(amount)) {
+    if(!checkFormat(code) || !checkFormat(amount) || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
       lError.setVisible(true);
       return;
     }

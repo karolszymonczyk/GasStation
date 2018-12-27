@@ -28,18 +28,18 @@ public class Seller extends Worker{
     }
   }
 
-  public boolean searchForProductFromCode(int code) {
-    try {
-      cSt = connection.prepareCall("{? = CALL searchProductFromCode(?)}");
-      cSt.setInt(2, code);
-      cSt.registerOutParameter(1, Types.BOOLEAN);
-      cSt.execute();
-      return cSt.getBoolean(1);
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
+//  public boolean searchForProductFromCode(int code) {
+//    try {
+//      cSt = connection.prepareCall("{? = CALL searchProductFromCode(?)}");
+//      cSt.setInt(2, code);
+//      cSt.registerOutParameter(1, Types.BOOLEAN);
+//      cSt.execute();
+//      return cSt.getBoolean(1);
+//    } catch (SQLException e) {
+//      e.printStackTrace();
+//      return false;
+//    }
+//  }
 
   public void sellProduct(int code, int amount) {
     try {

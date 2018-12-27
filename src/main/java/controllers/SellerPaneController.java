@@ -78,23 +78,28 @@ public class SellerPaneController {
 
   public void bAddClick(ActionEvent event) { //TODO tutaj po kliknięciu trzeba sprawdzić czy dany kod jest w bazie i jak jest to odczytać jaki produkt ma dany kod
     lWarning.setText("");
-    //pobieramy kod z taProduct i szukamy go w bazie
     String sCode = taProduct.getText();
     String quantity = taQuantity.getText();
+    int intQuantity;
+    int iCode;
+
+//    if()
+
 
     if(sCode.equals("") || quantity.equals("")) {
       lWarning.setText("Wrong input!");
       return;
     }
 
-    int intQuantity;
     try {
       intQuantity = Integer.parseInt(quantity);
+      iCode = Integer.parseInt(sCode);
     } catch (NumberFormatException e) {
       lWarning.setText("Wrong input!");
       return;
     }
-    int iCode = Integer.parseInt(sCode);
+
+
 
     if(!seller.searchForProductFromCode(iCode)){
       lWarning.setText("No such product!");
@@ -127,6 +132,9 @@ public class SellerPaneController {
   }
 
   public void bSellClick(ActionEvent event) {
+
+
+
 
     //TODO pobrac wszystko z tvBill i dodac do tabeli sale
     //tvBill.getItems();
