@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import workers.Storekeeper;
 
 import java.io.IOException;
 
@@ -17,6 +18,8 @@ public class StorekeeperPaneController {
   public TextField tfAmount;
   public Label lError;
   public Label lSuccess;
+
+  Storekeeper storekeeper;
 
   private MainController controller;
   private LoginPaneController loginController;
@@ -51,6 +54,9 @@ public class StorekeeperPaneController {
       return;
     }
 
+    storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount),deliverer);
+
+
     lSuccess.setVisible(true);
   }
 
@@ -67,6 +73,7 @@ public class StorekeeperPaneController {
       e.printStackTrace();
     }
     NewProductPaneController newProductController = loader.getController();
+    newProductController.setStorekeeper(storekeeper);
     newProductController.setController(controller);
     newProductController.setLoginController(loginController);
     controller.setPane(newProductPane);
@@ -80,5 +87,9 @@ public class StorekeeperPaneController {
       return false;
     }
     return true;
+  }
+
+  public void setStoreKeeper(Storekeeper storeKeeper) {
+    this.storekeeper=storeKeeper;
   }
 }

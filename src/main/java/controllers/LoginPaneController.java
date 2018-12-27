@@ -2,7 +2,7 @@ package controllers;
 
 import dbConnection.LoginCheck;
 import workers.Seller;
-import workers.StoreKeeper;
+import workers.Storekeeper;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +21,7 @@ public class LoginPaneController {
   private MainController controller;
 
   private Seller seller;
-  private StoreKeeper storeKeeper;
+  private Storekeeper storeKeeper;
 
   private String login, password;
 
@@ -58,7 +58,7 @@ public class LoginPaneController {
         setSellerPane();
 
       } else if ("storekeeper".equals(loginCheck.job)) {//TODO test.storekeeper pass: sk
-        storeKeeper = new StoreKeeper(loginCheck.getConnection());
+        storeKeeper = new Storekeeper(loginCheck.getConnection());
         setStorekeeperPane();
       } else {
         System.out.println("DATABASE ERROR");
@@ -107,6 +107,7 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     StorekeeperPaneController storekeeperController = loader.getController();
+    storekeeperController.setStoreKeeper(storeKeeper);
     storekeeperController.setController(controller);
     controller.setPane(storekeeperPane);
   }

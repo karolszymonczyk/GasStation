@@ -26,4 +26,13 @@ public abstract class Worker {
       e.printStackTrace();
     }
   }
+
+  public void rollBack(){
+      try {
+        connection.rollback();
+      } catch (SQLException e) {
+        System.out.println("Rollback failed.");
+        e.printStackTrace();
+      }
+  }
 }
