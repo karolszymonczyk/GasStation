@@ -6,13 +6,10 @@ import elements.Product;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Seller {
+public class Seller extends Worker{
 
-  private Connection connection;
-  private CallableStatement cSt;
+  //private Connection connection;
   private ArrayList<Product> products;
-  private Statement st;
-  private ResultSet rs;
 
   public Seller(Connection connection) {
     this.connection = connection;

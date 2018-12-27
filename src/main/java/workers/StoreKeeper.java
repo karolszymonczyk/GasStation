@@ -2,10 +2,8 @@ package workers;
 
 import java.sql.*;
 
-public class StoreKeeper {
+public class StoreKeeper extends Worker{
 
-  private Connection connection;
-  private CallableStatement cSt;
 
   public StoreKeeper(Connection connection){
     this.connection = connection;
