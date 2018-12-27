@@ -18,15 +18,16 @@
             </font>
         </Label>
         <Button layoutX="784.0" layoutY="21.0" mnemonicParsing="false" onAction="#bBackClick" text="Back" />
-        <HBox layoutX="326.0" layoutY="195.0" prefHeight="145.0" prefWidth="200.0">
+        <HBox layoutX="326.0" layoutY="159.0" prefHeight="145.0" prefWidth="200.0">
             <children>
-                <VBox alignment="TOP_RIGHT" prefHeight="145.0" prefWidth="53.0" spacing="40.0">
+                <VBox alignment="TOP_RIGHT" prefHeight="302.0" prefWidth="58.0" spacing="40.0">
                     <children>
                         <Label prefHeight="17.0" prefWidth="36.0" text="Name" />
                   <Label text="Code" />
                         <Label text="Price" />
                         <Label text="Tax" />
                   <Label text="Amount" />
+                  <Label prefHeight="17.0" prefWidth="52.0" text="Deliverer" />
                     </children>
                     <padding>
                         <Insets right="7.0" />
@@ -39,11 +40,12 @@
                         <TextField fx:id="tfPrice" promptText="price" />
                         <TextField fx:id="tfTax" promptText="tax" />
                   <TextField fx:id="taAmount" promptText="amount" />
+                  <TextField fx:id="taDeliverer" promptText="deliverer" />
                     </children>
                 </VBox>
             </children>
         </HBox>
-        <Button fx:id="bCreate" layoutX="386.0" layoutY="461.0" mnemonicParsing="false" onAction="#bCreateClick" prefHeight="25.0" prefWidth="114.0" text="Add new product" />
+        <Button fx:id="bCreate" layoutX="386.0" layoutY="491.0" mnemonicParsing="false" onAction="#bCreateClick" prefHeight="25.0" prefWidth="114.0" text="Add new product" />
         <Label fx:id="lError" layoutX="326.0" layoutY="529.0" text="Wrong input!" textFill="#f50505" visible="false">
             <font>
                 <Font size="29.0" />
