@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import workers.Seller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 //TODO dodać delete żeby można było usunąć z rachunku
@@ -38,6 +39,8 @@ public class SellerPaneController {
   private MainController controller;
 
   private LoginPaneController loginController;
+
+
 
   private Seller seller;
 
@@ -76,15 +79,23 @@ public class SellerPaneController {
     controller.setLoginPane();
   }
 
-  public void bAddClick(ActionEvent event) { //TODO tutaj po kliknięciu trzeba sprawdzić czy dany kod jest w bazie i jak jest to odczytać jaki produkt ma dany kod
+  public void bAddClick(ActionEvent event) {
+
+
     lWarning.setText("");
     String sCode = taProduct.getText();
     String quantity = taQuantity.getText();
     int intQuantity;
     int iCode;
 
-//    if()
-
+    if(!seller.isTransactionStarted()){
+      seller.setTransactionStarted(true);
+      try {
+        seller.getConnection().setAutoCommit(false);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
 
     if(sCode.equals("") || quantity.equals("")) {
       lWarning.setText("Wrong input!");
@@ -99,17 +110,15 @@ public class SellerPaneController {
       return;
     }
 
-
-
     if(!seller.searchForProductFromCode(iCode)){
       lWarning.setText("No such product!");
       return;
-    }else if(seller.checkAmount(iCode) > intQuantity){
+    }else if(seller.checkAmount(iCode) > intQuantity && seller.isTransactionStarted()){
       BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity, seller.getPrice(iCode));
       seller.createSale(iCode,intQuantity);
       tvBill.getItems().add(billElement);
       setTotal();
-    } else {
+    }  else {
       lWarning.setText("Not enough products!");
       return;
     }
@@ -133,8 +142,15 @@ public class SellerPaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    seller.setTransactionStarted(false);
+    try {
+      seller.getConnection().commit();
+      seller.getConnection().setAutoCommit(true);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
-
+    //TODO (DONE)  PO KLIKNIECIU SALE WSZYSTKIE KOMMITY SIĘ WYKONUĄJĄ(TE KTORE  NIE WYKONAŁY SIĘ W METODZIE CREATE SALE (INSERTOWANIE DO TABELI SALE W DB))
 
     //TODO pobrac wszystko z tvBill i dodac do tabeli sale
     //tvBill.getItems();
@@ -198,4 +214,6 @@ public class SellerPaneController {
   public void setSeller(Seller seller) {
     this.seller = seller;
   }
+
+
 }

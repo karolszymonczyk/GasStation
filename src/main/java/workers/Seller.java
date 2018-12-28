@@ -1,6 +1,5 @@
 package workers;
 
-import elements.BillElement;
 import elements.Product;
 
 import java.sql.*;
@@ -8,35 +7,22 @@ import java.util.ArrayList;
 
 public class Seller extends Worker{
 
-  //private Connection connection;
   private ArrayList<Product> products;
+  private boolean transactionStarted = false;
 
   public Seller(Connection connection) {
     this.connection = connection;
     downloadProducts();
   }
 
-  public boolean searchForProductFromName(String name) {
-    try {
-      cSt = connection.prepareCall("{? = CALL searchProductFromName(?)}");
-      cSt.registerOutParameter(1, Types.BOOLEAN);
-      cSt.setString(2, name);
-      cSt.execute();
-      return cSt.getBoolean(1);
-    } catch (SQLException e) {
-      return false;
-    }
-  }
-
-//  public boolean searchForProductFromCode(int code) {
+//  public boolean searchForProductFromName(String name) {
 //    try {
-//      cSt = connection.prepareCall("{? = CALL searchProductFromCode(?)}");
-//      cSt.setInt(2, code);
+//      cSt = connection.prepareCall("{? = CALL searchProductFromName(?)}");
 //      cSt.registerOutParameter(1, Types.BOOLEAN);
+//      cSt.setString(2, name);
 //      cSt.execute();
 //      return cSt.getBoolean(1);
 //    } catch (SQLException e) {
-//      e.printStackTrace();
 //      return false;
 //    }
 //  }
@@ -100,6 +86,7 @@ public class Seller extends Worker{
       cSt.setString(1,name);
       cSt.setString(2,surname);
       cSt.setInt(3,NIP);
+
       cSt.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -147,5 +134,13 @@ public class Seller extends Worker{
     }
 
     return price;
+  }
+
+  public boolean isTransactionStarted() {
+    return transactionStarted;
+  }
+
+  public void setTransactionStarted(boolean status){
+    transactionStarted = status;
   }
 }

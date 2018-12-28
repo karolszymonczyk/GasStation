@@ -20,6 +20,7 @@ public abstract class Worker {
 
   public void endTransaction(){
     try {
+      connection.commit();
       connection.setAutoCommit(true);
     } catch (SQLException e) {
       System.out.println("Ending transaction failed.");
@@ -48,4 +49,7 @@ public abstract class Worker {
     }
   }
 
+  public Connection getConnection() {
+    return connection;
+  }
 }
