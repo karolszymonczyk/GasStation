@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+
+<!--<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CardPaneController">-->
+<!--<children>-->
+<!--<Label layoutX="343.0" layoutY="46.0" text="CARD">-->
+<!--<font>-->
+<!--<Font size="64.0" />-->
+<!--</font>-->
+<!--</Label>-->
+<!--<Button layoutX="784.0" layoutY="21.0" mnemonicParsing="false" text="Back" />-->
+<!--</children>-->
+<!--</AnchorPane>-->
+
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CardPaneController">
+   <children>
+      <Label layoutX="343.0" layoutY="46.0" text="CARD">
+         <font>
+            <Font size="64.0" />
+         </font>
+      </Label>
+      <Button layoutX="784.0" layoutY="21.0" mnemonicParsing="false" onAction="#bBackClick" text="Back" />
+      <HBox layoutX="326.0" layoutY="195.0" prefHeight="145.0" prefWidth="200.0">
+         <children>
+            <VBox alignment="TOP_RIGHT" prefHeight="308.0" prefWidth="67.0" spacing="40.0">
+               <children>
+                  <Label text="Name" />
+                  <Label text="Surname" />
+                  <Label text="NIP" />
+               </children>
+               <padding>
+                  <Insets right="7.0" />
+               </padding>
+            </VBox>
+            <VBox prefHeight="308.0" prefWidth="133.0" spacing="30.0">
+               <children>
+                  <TextField fx:id="tfName" promptText="name" />
+                  <TextField fx:id="tfSurname" promptText="surname" />
+                  <TextField fx:id="taNIP" promptText="nip" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Button fx:id="bCreate" layoutX="400.0" layoutY="374.0" mnemonicParsing="false" onAction="#bCreateClick" prefHeight="25.0" prefWidth="85.0" text="Create card" />
+      <Label fx:id="lError" layoutX="321.0" layoutY="486.0" text="Wrong input!" textFill="#f50505" visible="false">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
+      <Label fx:id="lSucces" layoutX="227.0" layoutY="486.0" text="Card has been successfully created" textFill="#75f507" visible="false">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

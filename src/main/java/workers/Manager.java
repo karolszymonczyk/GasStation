@@ -1,4 +1,4 @@
 package workers;
 
-public class Manager {
+public class Manager extends Worker {
 }

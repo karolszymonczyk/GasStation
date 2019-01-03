@@ -2,19 +2,28 @@ package controllers;
 
 import dbConnection.LoginCheck;
 import workers.Seller;
-import workers.StoreKeeper;
+import workers.Storekeeper;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
+//TODO zaminić password na PasswordLabel
+
 public class LoginPaneController {
 
+  public Label lError;
   private MainController controller;
+
+  private Seller seller;
+  private Storekeeper storeKeeper;
+
+  private String login, password;
 
   @FXML
   private TextField tLogin, tPassword;
@@ -33,32 +42,32 @@ public class LoginPaneController {
   }
 
   public void bLoginClick() {
-    String login = tLogin.getText();
-    String password = tPassword.getText();
+    lError.setVisible(false);
+
+    login = tLogin.getText();
+    password = tPassword.getText();
     LoginCheck loginCheck = new LoginCheck(login,password);
 
     if(loginCheck.correctUserAndPass()) {
-      switch (loginCheck.job) {
-        case "manager":
-          setManagerPane();
-          break;
-        case "seller":
-          setSellerPane();
-          Seller seller = new Seller(loginCheck.getConnection());
-          break;
-        case "storekeeper":
-          //TODO test.storekeeper pass: sk
-          setStorekeeperPane();
-          StoreKeeper storeKeeper = new StoreKeeper(loginCheck.getConnection());
-          break;
-        default:
-          System.out.println("DATABASE ERROR");
-          break;
+      if ("manager".equals(loginCheck.job)) {
+        setManagerPane();
+
+      } else if ("seller".equals(loginCheck.job)) {
+        seller = new Seller(loginCheck.getConnection());
+        setSellerPane();
+        //seller.createBill();
+
+      } else if ("storekeeper".equals(loginCheck.job)) {//TODO test.storekeeper pass: sk
+        storeKeeper = new Storekeeper(loginCheck.getConnection());
+        setStorekeeperPane();
+      } else {
+        System.out.println("DATABASE ERROR");
+
       }
     }
   }
 
-  private void setManagerPane() {
+  public void setManagerPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ManagerPane.fxml"));
     AnchorPane managerPane = null;
     try {
@@ -71,7 +80,7 @@ public class LoginPaneController {
     controller.setPane(managerPane);
   }
 
-  private void setSellerPane() {
+  public void setSellerPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/SellerPane.fxml"));
     AnchorPane sellerPane = null;
     try {
@@ -80,11 +89,15 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     SellerPaneController sellerController = loader.getController();
+    sellerController.setSeller(seller);
     sellerController.setController(controller);
+    sellerController.setLoginController(this);
+    sellerController.addToProductList(seller.getProducts());
+
     controller.setPane(sellerPane);
   }
 
-  private void setStorekeeperPane() {
+  public void setStorekeeperPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/StorekeeperPane.fxml"));
     AnchorPane storekeeperPane = null;
     try {
@@ -93,7 +106,9 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     StorekeeperPaneController storekeeperController = loader.getController();
+    storekeeperController.setStoreKeeper(storeKeeper);
     storekeeperController.setController(controller);
+    storekeeperController.setLoginController(this);
     controller.setPane(storekeeperPane);
   }
 }
