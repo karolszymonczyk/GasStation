@@ -18,6 +18,7 @@ public class NewProductPaneController {
   public Label lSucces;
   public TextField tfPrice;
   public TextField tfTax;
+  public TextField taDeliverer;
 
   private Storekeeper storekeeper;
 
@@ -49,6 +50,7 @@ public class NewProductPaneController {
     String price = tfPrice.getText();
     String tax = tfTax.getText();
     String amount = taAmount.getText();
+    String deliverer = taDeliverer.getText();
 
     if(!checkFormat(price) || !checkFormat(amount)) {
       lError.setVisible(true);
@@ -67,6 +69,7 @@ public class NewProductPaneController {
     tfPrice.setDisable(true);
     tfTax.setDisable(true);
     taAmount.setDisable(true);
+    taDeliverer.setDisable(true);
     bCreate.setDisable(true);
   }
 
