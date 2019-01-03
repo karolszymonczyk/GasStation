@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import utils.DialogUtils;
+import workers.Storekeeper;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -30,6 +31,9 @@ public class StorekeeperPaneController {
   public Button bAddNewProduct;
   public Button bDelete;
   public Button bFinishDelivery;
+  Storekeeper storekeeper;
+  boolean transactionStarted = false;
+
 
   private MainController controller;
   private LoginPaneController loginController;
@@ -67,6 +71,7 @@ public class StorekeeperPaneController {
   }
 
   public void bAddClick(ActionEvent event) {
+
     lError.setVisible(false);
     lSuccess.setVisible(false);
 
@@ -81,14 +86,16 @@ public class StorekeeperPaneController {
 
     int amountInt;
     amountInt = checkFormat(amount);
-
-    if(amountInt == -1){
+      
+    if(!checkFormat(code) || !checkFormat(amount) || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
+      
       lError.setVisible(true);
       return;
     }
 
     ProductForDeliver product = new ProductForDeliver("Z bazy", code, amountInt);
     tvProducts.getItems().add(product);
+    storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount),deliverer);
 
     lSuccess.setVisible(true);
   }
@@ -106,6 +113,7 @@ public class StorekeeperPaneController {
       e.printStackTrace();
     }
     NewProductPaneController newProductController = loader.getController();
+    newProductController.setStorekeeper(storekeeper);
     newProductController.setController(controller);
     newProductController.setLoginController(loginController);
     controller.setPane(newProductPane);
@@ -157,5 +165,9 @@ public class StorekeeperPaneController {
     bAddNewProduct.setDisable(true);
     bFinishDelivery.setDisable(true);
     bDelete.setDisable(true);
+  }
+
+  public void setStoreKeeper(Storekeeper storeKeeper) {
+    this.storekeeper=storeKeeper;
   }
 }

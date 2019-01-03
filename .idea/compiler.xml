@@ -20,6 +20,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="GasStation" />
+        <module name="GasStation3" />
         <module name="Projekt" />
       </profile>
     </annotationProcessing>

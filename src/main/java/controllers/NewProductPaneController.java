@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import workers.Storekeeper;
 
 public class NewProductPaneController {
 
@@ -18,6 +19,8 @@ public class NewProductPaneController {
   public TextField tfPrice;
   public TextField tfTax;
   public TextField taDeliverer;
+
+  private Storekeeper storekeeper;
 
   private MainController controller;
   private LoginPaneController loginController;
@@ -54,6 +57,8 @@ public class NewProductPaneController {
       return;
     }
 
+    storekeeper.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),"ZMIENICwWYWOLANIUmetody");
+
     lSucces.setVisible(true);
     setDisbledPane();
   }
@@ -76,5 +81,9 @@ public class NewProductPaneController {
       return false;
     }
     return true;
+  }
+
+  public void setStorekeeper(Storekeeper storekeeper) {
+    this.storekeeper = storekeeper;
   }
 }
