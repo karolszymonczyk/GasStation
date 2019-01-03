@@ -1,6 +1,7 @@
 package controllers;
 
 import dbConnection.LoginCheck;
+import workers.Manager;
 import workers.Seller;
 import workers.Storekeeper;
 import javafx.application.Application;
@@ -22,6 +23,7 @@ public class LoginPaneController {
 
   private Seller seller;
   private Storekeeper storeKeeper;
+  private Manager manager;
 
   private String login, password;
 
@@ -50,6 +52,7 @@ public class LoginPaneController {
 
     if(loginCheck.correctUserAndPass()) {
       if ("manager".equals(loginCheck.job)) {
+        manager = new Manager(loginCheck.getConnection());
         setManagerPane();
 
       } else if ("seller".equals(loginCheck.job)) {
@@ -76,8 +79,10 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     ManagerPaneController managerController = loader.getController();
+    managerController.setManager(manager);
     managerController.setController(controller);
     managerController.setLoginController(this);
+    managerController.addToSaleList();
     controller.setPane(managerPane);
   }
 

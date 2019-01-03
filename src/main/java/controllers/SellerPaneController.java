@@ -159,7 +159,6 @@ public class SellerPaneController {
     seller.setTransactionStarted(false);
     try {
       seller.closeBill(1);
-      //seller.createBill();
       seller.getConnection().commit();
       seller.getConnection().setAutoCommit(true);
 
