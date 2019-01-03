@@ -9,8 +9,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import utils.DialogUtils;
 
 import java.io.IOException;
+import java.util.Optional;
 
 //TODO dodać delete żeby można było usunąć z rachunku
 //TODO dodać przycisk finalizujący transakcje który dodaje do tabeli sale
@@ -34,6 +36,7 @@ public class SellerPaneController {
   public Label lTotal;
   public Label lWarning;
   public TableView tvBill;
+  public TextField tfCustomer;
 
   private MainController controller;
 
@@ -80,7 +83,9 @@ public class SellerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    controller.setLoginPane();
+    if(logoutConfirmation()) {
+      controller.setLoginPane();
+    }
   }
 
   public void bAddClick(ActionEvent event) { //TODO tutaj po kliknięciu trzeba sprawdzić czy dany kod jest w bazie i jak jest to odczytać jaki produkt ma dany kod
@@ -132,6 +137,12 @@ public class SellerPaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    if(tfCustomer.getText().equals("")) {
+      System.out.println("NULL");
+    } else {
+      System.out.println(tfCustomer.getText());
+    }
+
     //TODO pobrac wszystko z tvBill i dodac do tabeli sale
     //tvBill.getItems();
 
@@ -140,6 +151,7 @@ public class SellerPaneController {
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
+    tfCustomer.setText("");
   }
 
   public void bDeleteClick(ActionEvent event) {
@@ -178,18 +190,11 @@ public class SellerPaneController {
     controller.setPane(cardPane);
   }
 
-//  public void setAvailabilityPane() {
-//    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
-//    AnchorPane availabilityPane = null;
-//    try {
-//      availabilityPane = loader.load();
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//    AvailabilityPaneController availabilityController = loader.getController();
-//    availabilityController.setController(controller);
-//    availabilityController.setLoginController(loginController);
-//    availabilityController.setTvProducts(tvProducts);
-//    controller.setPane(availabilityPane);
-//  }
+  public boolean logoutConfirmation() {
+    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
+    if (result.get() == ButtonType.OK) {
+      return true;
+    }
+    return false;
+  }
 }

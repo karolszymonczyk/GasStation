@@ -1,14 +1,17 @@
 package controllers;
 
+import elements.ProductForDeliver;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import utils.DialogUtils;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class StorekeeperPaneController {
 
@@ -18,13 +21,36 @@ public class StorekeeperPaneController {
   public Label lError;
   public Label lSuccess;
 
+  public TableView tvProducts;
+  public TableColumn tvcName;
+  public TableColumn tvcCode;
+  public TableColumn tvcAmount;
+
+  public Button bAdd;
+  public Button bAddNewProduct;
+  public Button bDelete;
+  public Button bFinishDelivery;
+
   private MainController controller;
   private LoginPaneController loginController;
 
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
+    tvcName.setCellValueFactory(new PropertyValueFactory<>("name"));
+    tvcCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+    tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+//    addToProductList();
   }
+
+//  private void addToProductList() {
+//    addProduct("Pomidor", "997", 1000);
+//  }
+//
+//  private void addProduct(String name, String code, int amount) {
+//    ProductForDeliver product = new ProductForDeliver(name, code, amount);
+//    tvProducts.getItems().add(product);
+//  }
 
   public void setController(MainController controller) {
     this.controller = controller;
@@ -35,7 +61,9 @@ public class StorekeeperPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    controller.setLoginPane();
+    if(logoutConfirmation()) {
+      controller.setLoginPane();
+    }
   }
 
   public void bAddClick(ActionEvent event) {
@@ -46,10 +74,21 @@ public class StorekeeperPaneController {
     String code = tfCode.getText();
     String amount = tfAmount.getText();
 
-    if(!checkFormat(amount)) {
+//    if(!checkFormat(amount)) {
+//      lError.setVisible(true);
+//      return;
+//    }
+
+    int amountInt;
+    amountInt = checkFormat(amount);
+
+    if(amountInt == -1){
       lError.setVisible(true);
       return;
     }
+
+    ProductForDeliver product = new ProductForDeliver("Z bazy", code, amountInt);
+    tvProducts.getItems().add(product);
 
     lSuccess.setVisible(true);
   }
@@ -72,13 +111,51 @@ public class StorekeeperPaneController {
     controller.setPane(newProductPane);
   }
 
-  private boolean checkFormat(String check) {
+  private int checkFormat(String check) {
     int i;
     try {
       i = Integer.parseInt(check);
     } catch (NumberFormatException e) {
-      return false;
+      return -1;
     }
-    return true;
+    return i;
+  }
+
+  public boolean logoutConfirmation() {
+    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
+    if (result.get() == ButtonType.OK) {
+      return true;
+    }
+    return false;
+  }
+
+  public void bDeleteClick(ActionEvent event) {
+    lError.setVisible(false);
+    lSuccess.setVisible(false);
+    Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
+    tvProducts.getItems().remove(selectedItem);
+  }
+
+  public void bFinishClick(ActionEvent event) {
+    lError.setVisible(false);
+    lSuccess.setVisible(false);
+
+    tvProducts.getItems().clear();
+
+    setDisabledPane();
+  }
+
+  private void setDisabledPane() {
+
+    tfDeliverer.setDisable(true);
+    tfAmount.setDisable(true);
+    tfCode.setDisable(true);
+    tfAmount.setText("");
+    tfDeliverer.setText("");
+    tfCode.setText("");
+    bAdd.setDisable(true);
+    bAddNewProduct.setDisable(true);
+    bFinishDelivery.setDisable(true);
+    bDelete.setDisable(true);
   }
 }

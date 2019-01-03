@@ -16,12 +16,12 @@
                 <Font size="48.0" />
             </font>
         </Label>
-        <TableView fx:id="tvSales" layoutX="51.0" layoutY="125.0" prefHeight="478.0" prefWidth="645.0">
+        <TableView fx:id="tvDelivers" layoutX="51.0" layoutY="125.0" prefHeight="478.0" prefWidth="645.0">
             <columns>
                 <TableColumn fx:id="tvcId" prefWidth="39.0" text="id" />
-                <TableColumn fx:id="tvcData" prefWidth="153.0" text="date" />
-                <TableColumn fx:id="tvcSeller" prefWidth="187.0" text="storekeeper" />
-                <TableColumn fx:id="tvcValue" prefWidth="135.0" text="products name" />
+                <TableColumn fx:id="tvcDate" prefWidth="153.0" text="date" />
+                <TableColumn fx:id="tvcStorekeeper" prefWidth="187.0" text="storekeeper" />
+                <TableColumn fx:id="tvcValue" prefWidth="135.0" text="product name" />
             <TableColumn prefWidth="129.0" text="amount" />
             </columns>
         </TableView>

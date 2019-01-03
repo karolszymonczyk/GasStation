@@ -16,16 +16,16 @@
                 <Font size="48.0" />
             </font>
         </Label>
-        <TableView fx:id="tvSales" layoutX="51.0" layoutY="125.0" prefHeight="478.0" prefWidth="645.0">
+        <TableView fx:id="tvProducts" layoutX="51.0" layoutY="125.0" prefHeight="478.0" prefWidth="645.0">
             <columns>
-                <TableColumn fx:id="tvcId" prefWidth="154.0" text="code" />
-                <TableColumn fx:id="tvcData" prefWidth="247.0" text="name" />
-                <TableColumn fx:id="tvcSeller" prefWidth="89.0" text="price pc." />
-                <TableColumn fx:id="tvcValue" prefWidth="78.0" text="tax" />
-            <TableColumn prefWidth="74.0" text="amount" />
+                <TableColumn fx:id="tvcCode" prefWidth="154.0" text="code" />
+                <TableColumn fx:id="tvcName" prefWidth="247.0" text="name" />
+                <TableColumn fx:id="tvcPrice" prefWidth="89.0" text="price pc." />
+                <TableColumn fx:id="tvcTax" prefWidth="78.0" text="tax" />
+            <TableColumn fx:id="tvcAmount" prefWidth="74.0" text="amount" />
             </columns>
         </TableView>
-        <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" text="add product" />
-        <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" text="delete product" />
+        <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" onAction="#bAddClick" text="add product" />
+        <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" onAction="#bDeleteClick" text="delete product" />
     </children>
 </AnchorPane>

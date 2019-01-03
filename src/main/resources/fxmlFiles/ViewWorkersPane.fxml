@@ -16,19 +16,20 @@
                 <Font size="48.0" />
             </font>
         </Label>
-        <TableView fx:id="tvSales" layoutX="21.0" layoutY="125.0" prefHeight="478.0" prefWidth="732.0">
+        <TableView fx:id="tvWorkers" layoutX="21.0" layoutY="125.0" prefHeight="478.0" prefWidth="732.0">
             <columns>
                 <TableColumn fx:id="tvcId" prefWidth="34.0" text="id" />
-                <TableColumn fx:id="tvcData" prefWidth="83.0" text="name" />
-                <TableColumn fx:id="tvcSeller" prefWidth="115.0" text="surname" />
-                <TableColumn fx:id="tvcValue" prefWidth="144.0" text="login" />
-            <TableColumn prefWidth="108.0" text="password" />
-            <TableColumn prefWidth="108.0" text="start of contract" />
-            <TableColumn prefWidth="67.0" text="job" />
-            <TableColumn prefWidth="71.0" text="status" />
+                <TableColumn fx:id="tvcName" prefWidth="61.0" text="name" />
+                <TableColumn fx:id="tvcSurname" prefWidth="95.0" text="surname" />
+                <TableColumn fx:id="tvcLogin" prefWidth="121.0" text="login" />
+            <TableColumn fx:id="tvcPassword" prefWidth="95.0" text="password" />
+            <TableColumn fx:id="tvcStartContract" prefWidth="97.0" text="start of contract" />
+            <TableColumn fx:id="tvcEndContract" prefWidth="95.0" text="end of contract" />
+            <TableColumn fx:id="tvcJob" prefWidth="61.0" text="job" />
+            <TableColumn fx:id="tvcStatus" prefWidth="72.0" text="status" />
             </columns>
         </TableView>
-        <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" text="hire worker" />
-        <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" text="fire worker" />
+        <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" onAction="#bAddClick" text="add worker" />
+        <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" onAction="#bDeleteClick" text="delete worker" />
     </children>
 </AnchorPane>

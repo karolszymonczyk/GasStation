@@ -30,7 +30,7 @@
                   </VBox>
                   <VBox prefHeight="197.0" prefWidth="229.0" spacing="18.0">
                      <children>
-                        <TextField fx:id="tLogin" prefWidth="50.0" promptText="login" />
+                        <TextField fx:id="tLogin" prefWidth="50.0" promptText="username" />
                         <PasswordField fx:id="tPassword" promptText="password" />
                      </children>
                   </VBox>
