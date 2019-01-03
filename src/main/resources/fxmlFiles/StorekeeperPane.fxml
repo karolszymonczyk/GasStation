@@ -12,12 +12,12 @@
 <AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.StorekeeperPaneController">
     <children>
         <Button layoutX="784.0" layoutY="14.0" mnemonicParsing="false" onAction="#bLogoutClick" text="Logout" />
-        <Label layoutX="277.0" layoutY="58.0" text="STOREKEEPER">
+        <Label layoutX="350.0" layoutY="51.0" text="STOREKEEPER">
             <font>
                 <Font size="48.0" />
             </font>
         </Label>
-      <HBox layoutX="292.0" layoutY="193.0" prefHeight="135.0" prefWidth="266.0">
+      <HBox layoutX="366.0" layoutY="193.0" prefHeight="135.0" prefWidth="266.0">
          <children>
             <VBox alignment="TOP_RIGHT" prefHeight="190.0" prefWidth="82.0" spacing="40.0">
                <children>
@@ -38,17 +38,26 @@
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="bAdd" layoutX="379.0" layoutY="389.0" mnemonicParsing="false" onAction="#bAddClick" prefHeight="25.0" prefWidth="93.0" text="Add" />
-      <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="742.0" layoutY="168.0" mnemonicParsing="false" onAction="#bNewProductClick" prefHeight="50.0" prefWidth="81.0" text="Add new product" textAlignment="CENTER" wrapText="true" />
-      <Label fx:id="lError" layoutX="340.0" layoutY="479.0" text="Wrong input!" textFill="#eb0303" visible="false">
+      <Button fx:id="bAdd" layoutX="465.0" layoutY="387.0" mnemonicParsing="false" onAction="#bAddClick" prefHeight="25.0" prefWidth="93.0" text="Add" />
+      <Button fx:id="bAddNewProduct" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="742.0" layoutY="168.0" mnemonicParsing="false" onAction="#bNewProductClick" prefHeight="50.0" prefWidth="81.0" text="Add new product" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="lError" layoutX="413.0" layoutY="121.0" text="Wrong input!" textFill="#eb0303" visible="false">
          <font>
             <Font size="29.0" />
          </font>
       </Label>
-      <Label fx:id="lSuccess" layoutX="197.0" layoutY="479.0" text="Product has been succesfully added" textFill="#1aeb05" visible="false">
+      <Label fx:id="lSuccess" layoutX="312.0" layoutY="121.0" text="Product has been succesfully added" textFill="#1aeb05" visible="false">
          <font>
             <Font size="29.0" />
          </font>
       </Label>
+      <TableView fx:id="tvProducts" layoutX="47.0" layoutY="51.0" prefHeight="580.0" prefWidth="256.0">
+         <columns>
+            <TableColumn fx:id="tvcName" prefWidth="102.0" text="name" />
+            <TableColumn fx:id="tvcCode" prefWidth="84.0" text="code" />
+            <TableColumn fx:id="tvcAmount" prefWidth="69.0" text="amount" />
+         </columns>
+      </TableView>
+      <Button fx:id="bDelete" layoutX="710.0" layoutY="521.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="81.0" text="Delete" />
+      <Button fx:id="bFinishDelivery" layoutX="690.0" layoutY="583.0" mnemonicParsing="false" onAction="#bFinishClick" prefHeight="25.0" prefWidth="133.0" text="Finish delivery" />
     </children>
 </AnchorPane>

@@ -9,6 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+
+import utils.DialogUtils;
+
+import java.io.IOException;
+import java.util.Optional;
 import workers.Seller;
 
 import java.io.IOException;
@@ -37,6 +42,7 @@ public class SellerPaneController {
   public Label lTotal;
   public Label lWarning;
   public TableView tvBill;
+  public TextField tfCustomer;
 
   private MainController controller;
 
@@ -78,7 +84,9 @@ public class SellerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    try {
+
+    if(logoutConfirmation()) {
+      try {
       seller.getConnection().rollback();
       seller.getConnection().setAutoCommit(true);
     } catch (SQLException e) {
@@ -86,6 +94,8 @@ public class SellerPaneController {
     }
     seller.deleteBill();
     controller.setLoginPane();
+      controller.setLoginPane();
+    }
   }
 
   public void bAddClick(ActionEvent event) {
@@ -156,6 +166,12 @@ public class SellerPaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    if(tfCustomer.getText().equals("")) {
+      System.out.println("NULL");
+    } else {
+      System.out.println(tfCustomer.getText());
+    }
+
     seller.setTransactionStarted(false);
     try {
       seller.closeBill(1);
@@ -176,6 +192,7 @@ public class SellerPaneController {
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
+    tfCustomer.setText("");
   }
 
   public void bDeleteClick(ActionEvent event) {
@@ -212,6 +229,14 @@ public class SellerPaneController {
     controller.setPane(cardPane);
   }
 
+  public boolean logoutConfirmation() {
+    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
+    if (result.get() == ButtonType.OK) {
+      return true;
+    }
+    return false;
+  }
+  
   public void setAvailabilityPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
     AnchorPane availabilityPane = null;

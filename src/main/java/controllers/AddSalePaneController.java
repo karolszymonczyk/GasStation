@@ -30,6 +30,7 @@ public class AddSalePaneController {
   public Label lTotal;
   public Label lWarning;
   public TableView tvBill;
+  public TextField tfCustomer;
 
   private MainController controller;
 
@@ -124,6 +125,12 @@ public class AddSalePaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    if(tfCustomer.getText().equals("")) {
+      System.out.println("NULL");
+    } else {
+      System.out.println(tfCustomer.getText());
+    }
+
     //TODO pobrac wszystko z tvBill i dodac do tabeli sale
     //tvBill.getItems();
 
@@ -132,6 +139,7 @@ public class AddSalePaneController {
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
+    tfCustomer.setText("");
   }
 
   public void bDeleteClick(ActionEvent event) {

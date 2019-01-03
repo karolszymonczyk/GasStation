@@ -6,14 +6,18 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import utils.DialogUtils;
 import workers.Manager;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 //TODO tutaj i w sellerze nwm czy wgl potrzebne sa te wszystkie tvc i nie wystarcza tylko tabele tv
 
@@ -79,7 +83,9 @@ public class ManagerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    controller.setLoginPane();
+    if(logoutConfirmation()) {
+      controller.setLoginPane();
+    }
   }
 
   public void bShowClick(ActionEvent event) {
@@ -110,10 +116,15 @@ public class ManagerPaneController {
     ViewWorkersPaneController viewWorkersController = loader.getController();
     viewWorkersController.setController(controller);
     viewWorkersController.setLoginController(loginController);
+    viewWorkersController.setManagerController(this);
     controller.setPane(viewWorkersPane);
   }
 
   public void bDeliversClick(ActionEvent event) {
+    setViewDeliveryPane();
+  }
+
+  public void setViewDeliveryPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewDeliversPane.fxml"));
     AnchorPane viewDeliversPane = null;
     try {
@@ -128,6 +139,10 @@ public class ManagerPaneController {
   }
 
   public void bProductsClick(ActionEvent event) {
+    setViewProductsPane();
+  }
+
+  public void setViewProductsPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewProductsPane.fxml"));
     AnchorPane viewProductsPane = null;
     try {
@@ -138,6 +153,7 @@ public class ManagerPaneController {
     ViewProductsPaneController viewProductsController = loader.getController();
     viewProductsController.setController(controller);
     viewProductsController.setLoginController(loginController);
+    viewProductsController.setManagerController(this);
     controller.setPane(viewProductsPane);
   }
 
@@ -170,6 +186,12 @@ public class ManagerPaneController {
     controller.setPane(addSalePane);
   }
 
+  public boolean logoutConfirmation() {
+    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
+    if (result.get() == ButtonType.OK) {
+      return true;
+    }
+    return false;
   public void setManager(Manager manager) {
     this.manager = manager;
   }
