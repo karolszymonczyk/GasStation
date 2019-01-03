@@ -154,10 +154,10 @@ public class Seller extends Worker{
     transactionStarted = status;
   }
 
-  public void closeBill() {
+  public void closeBill(int NIP) {
     try {
       cSt = connection.prepareCall("{CALL closeBill(?)}");
-      cSt.setString(1,null);
+      cSt.setInt(1,NIP);
       cSt.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -169,6 +169,16 @@ public class Seller extends Worker{
       cSt = connection.prepareCall("{CALL deleteBill()}");
       cSt.executeQuery();
       System.out.println("Usunalem rachunek");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void addToBill(float value){
+    try {
+      cSt = connection.prepareCall("{CALL billValueUpdate(?)}");
+      cSt.setFloat(1,value);
+      cSt.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
     }

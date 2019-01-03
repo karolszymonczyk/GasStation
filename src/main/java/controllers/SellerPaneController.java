@@ -126,8 +126,10 @@ public class SellerPaneController {
       lWarning.setText("No such product!");
       return;
     }else if(seller.checkAmount(iCode) >= intQuantity && seller.isTransactionStarted()){
-      BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity, seller.getPrice(iCode));
+      float price = seller.getPrice(iCode);
+      BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price);
       seller.createSale(iCode,intQuantity);
+      seller.addToBill(price*intQuantity);
       tvBill.getItems().add(billElement);
       setTotal();
     }  else {
@@ -156,7 +158,7 @@ public class SellerPaneController {
 
     seller.setTransactionStarted(false);
     try {
-      seller.closeBill();
+      seller.closeBill(1);
       //seller.createBill();
       seller.getConnection().commit();
       seller.getConnection().setAutoCommit(true);
