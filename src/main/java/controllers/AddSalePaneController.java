@@ -6,20 +6,16 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-//TODO dodać delete żeby można było usunąć z rachunku
-//TODO dodać przycisk finalizujący transakcje który dodaje do tabeli sale
-
-//TODO gdzies jeszcze trzeba sprawdzać po kliknieciu add czy jest dostępne taka ilosc produktu
-
-//TODO zrobic dodawanie karty i uwzględnienie zniżki
-
-public class SellerPaneController {
+public class AddSalePaneController {
 
   @FXML
   public TableView tvProducts;
@@ -52,7 +48,7 @@ public class SellerPaneController {
   }
 
   public void addToProductList() { //TODO tutaj trzeba podpiąc produkty z bazy
-    addProduct("Karty", "192342144");
+    addProduct("Narty", "192342144");
     addProduct("Papieroski", "212342144");
     addProduct("Kajzerki", "312342144");
     addProduct("Piwo", "412342144");
@@ -77,10 +73,6 @@ public class SellerPaneController {
 
   public void setLoginController(LoginPaneController LoginController) {
     this.loginController = LoginController;
-  }
-
-  public void bLogoutClick(ActionEvent event) {
-    controller.setLoginPane();
   }
 
   public void bAddClick(ActionEvent event) { //TODO tutaj po kliknięciu trzeba sprawdzić czy dany kod jest w bazie i jak jest to odczytać jaki produkt ma dany kod
@@ -147,49 +139,7 @@ public class SellerPaneController {
     tvBill.getItems().remove(selectedItem);
   }
 
-  public void bAvailabilityClick(ActionEvent event) {
-    //setAvailabilityPane();
-    Product selectedItem = (Product) tvProducts.getSelectionModel().getSelectedItem();
-    if(selectedItem == null) {
-      return;
-    }
-    //TODO tak bierzemy kod i sprawdzamy ile jest towru w bazie i ustawiamy label tak jak niżej
-    String code = selectedItem.getCode();
-    //TODO przypisać ilość do amount
-    String amount = "21";
-    lWarning.setText("Available amount is : " + amount);
+  public void bBackClick(ActionEvent event) {
+    loginController.setManagerPane();
   }
-
-  public void bCardClick(ActionEvent event) {
-    setCardPane();
-  }
-
-  public void setCardPane() {
-    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/CardPane.fxml"));
-    AnchorPane cardPane = null;
-    try {
-      cardPane = loader.load();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    CardPaneController cardController = loader.getController();
-    cardController.setController(controller);
-    cardController.setLoginController(loginController);
-    controller.setPane(cardPane);
-  }
-
-//  public void setAvailabilityPane() {
-//    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
-//    AnchorPane availabilityPane = null;
-//    try {
-//      availabilityPane = loader.load();
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//    AvailabilityPaneController availabilityController = loader.getController();
-//    availabilityController.setController(controller);
-//    availabilityController.setLoginController(loginController);
-//    availabilityController.setTvProducts(tvProducts);
-//    controller.setPane(availabilityPane);
-//  }
 }

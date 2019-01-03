@@ -65,6 +65,7 @@ public class LoginPaneController {
     }
     ManagerPaneController managerController = loader.getController();
     managerController.setController(controller);
+    managerController.setLoginController(this);
     controller.setPane(managerPane);
   }
 

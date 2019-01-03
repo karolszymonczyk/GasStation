@@ -1,17 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
 <?import java.lang.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManagerPaneController">
    <children>
       <Button layoutX="784.0" layoutY="14.0" mnemonicParsing="false" onAction="#bLogoutClick" text="Logout" />
-      <Label layoutX="312.0" layoutY="290.0" text="MANAGER">
+      <Label layoutX="312.0" layoutY="39.0" text="MANAGER">
          <font>
             <Font size="48.0" />
          </font>
       </Label>
+      <TableView fx:id="tvSales" layoutX="51.0" layoutY="125.0" prefHeight="478.0" prefWidth="391.0">
+        <columns>
+          <TableColumn fx:id="tvcId" prefWidth="47.0" text="id" />
+          <TableColumn fx:id="tvcData" prefWidth="130.0" text="date" />
+            <TableColumn fx:id="tvcSeller" prefWidth="139.0" text="seller" />
+            <TableColumn fx:id="tvcValue" prefWidth="73.0" text="value" />
+        </columns>
+      </TableView>
+      <TableView fx:id="tvBill" layoutX="470.0" layoutY="125.0" prefHeight="478.0" prefWidth="227.0">
+        <columns>
+          <TableColumn fx:id="tvcProduct" prefWidth="107.0" text="product" />
+          <TableColumn fx:id="tvcAmount" prefWidth="55.0" text="amount" />
+            <TableColumn fx:id="tvcPrice" prefWidth="63.0" text="price" />
+        </columns>
+      </TableView>
+      <VBox layoutX="734.0" layoutY="109.0" prefHeight="207.0" prefWidth="100.0" spacing="30.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#bWorkersClick" text="view workers" />
+            <Button mnemonicParsing="false" onAction="#bDeliversClick" text="view delivers" />
+            <Button mnemonicParsing="false" onAction="#bProductsClick" text="view products" />
+         </children>
+      </VBox>
+      <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" onAction="#bAddSaleClick" text="add sale" />
+      <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" onAction="#bDeleteSaleClick" text="delete sale" />
+      <Button layoutX="761.0" layoutY="440.0" mnemonicParsing="false" onAction="#bShowClick" text="show sale" />
+      <Button layoutX="25.0" layoutY="74.0" mnemonicParsing="false" onAction="#bRefreshClick" text="refresh" />
    </children>
 </AnchorPane>
