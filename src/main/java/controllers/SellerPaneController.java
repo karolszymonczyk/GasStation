@@ -76,6 +76,13 @@ public class SellerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
+    try {
+      seller.getConnection().rollback();
+      seller.getConnection().setAutoCommit(true);
+    } catch (SQLException e) {
+      System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
+    }
+    seller.deleteBill();
     controller.setLoginPane();
   }
 
@@ -88,10 +95,13 @@ public class SellerPaneController {
     int intQuantity;
     int iCode;
 
+
     if(!seller.isTransactionStarted()){
       seller.setTransactionStarted(true);
+
       try {
         seller.getConnection().setAutoCommit(false);
+        seller.createBill();
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -144,10 +154,10 @@ public class SellerPaneController {
 
     seller.setTransactionStarted(false);
     try {
-      seller.getConnection().commit();
       seller.closeBill();
+      //seller.createBill();
+      seller.getConnection().commit();
       seller.getConnection().setAutoCommit(true);
-      seller.createBill();
 
     } catch (SQLException e) {
       e.printStackTrace();

@@ -18,9 +18,7 @@ public class Seller extends Worker{
   public void createBill(){
     try {
       cSt = connection.prepareCall("{CALL createBill()}");
-      System.out.println("XDDDDDDDD");
       cSt.executeQuery();
-      System.out.println("XD");
     } catch (SQLException e) {
       e.printStackTrace();
       System.out.println("ERROR");
@@ -164,6 +162,15 @@ public class Seller extends Worker{
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
 
+  public void deleteBill(){
+    try {
+      cSt = connection.prepareCall("{CALL deleteBill()}");
+      cSt.executeQuery();
+      System.out.println("Usunalem rachunek");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 }

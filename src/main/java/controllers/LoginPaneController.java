@@ -54,9 +54,8 @@ public class LoginPaneController {
 
       } else if ("seller".equals(loginCheck.job)) {
         seller = new Seller(loginCheck.getConnection());
-        //System.out.println("Seller = " + seller);
         setSellerPane();
-        seller.createBill();
+        //seller.createBill();
 
       } else if ("storekeeper".equals(loginCheck.job)) {//TODO test.storekeeper pass: sk
         storeKeeper = new Storekeeper(loginCheck.getConnection());
@@ -109,6 +108,7 @@ public class LoginPaneController {
     StorekeeperPaneController storekeeperController = loader.getController();
     storekeeperController.setStoreKeeper(storeKeeper);
     storekeeperController.setController(controller);
+    storekeeperController.setLoginController(this);
     controller.setPane(storekeeperPane);
   }
 }
