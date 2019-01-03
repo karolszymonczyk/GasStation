@@ -15,6 +15,18 @@ public class Seller extends Worker{
     downloadProducts();
   }
 
+  public void createBill(){
+    try {
+      cSt = connection.prepareCall("{CALL createBill()}");
+      System.out.println("XDDDDDDDD");
+      cSt.executeQuery();
+      System.out.println("XD");
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("ERROR");
+    }
+  }
+
 //  public boolean searchForProductFromName(String name) {
 //    try {
 //      cSt = connection.prepareCall("{? = CALL searchProductFromName(?)}");
@@ -142,5 +154,16 @@ public class Seller extends Worker{
 
   public void setTransactionStarted(boolean status){
     transactionStarted = status;
+  }
+
+  public void closeBill() {
+    try {
+      cSt = connection.prepareCall("{CALL closeBill(?)}");
+      cSt.setString(1,null);
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
   }
 }
