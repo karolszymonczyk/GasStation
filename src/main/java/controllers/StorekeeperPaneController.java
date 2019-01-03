@@ -112,7 +112,6 @@ public class StorekeeperPaneController {
   }
 
   private int checkFormat(String check) {
-
     int i;
     try {
       i = Integer.parseInt(check);
@@ -123,7 +122,6 @@ public class StorekeeperPaneController {
   }
 
   public boolean logoutConfirmation() {
-
     Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
     if (result.get() == ButtonType.OK) {
       return true;
@@ -139,7 +137,6 @@ public class StorekeeperPaneController {
   }
 
   public void bFinishClick(ActionEvent event) {
-
     lError.setVisible(false);
     lSuccess.setVisible(false);
 

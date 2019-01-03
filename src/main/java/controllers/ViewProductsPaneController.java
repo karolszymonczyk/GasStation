@@ -71,6 +71,7 @@ public class ViewProductsPaneController {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
     AddProductPaneController addWorkerController = loader.getController();
     addWorkerController.setController(controller);
     addWorkerController.setManagerController(managerController);

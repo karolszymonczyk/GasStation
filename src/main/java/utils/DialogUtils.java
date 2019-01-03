@@ -8,6 +8,7 @@ import java.util.Optional;
 public class DialogUtils {
 
   public static Optional<ButtonType> confirmationDialog(String title, String message){
+
     Alert informationAlert = new Alert(Alert.AlertType.CONFIRMATION);
     informationAlert.setTitle(title);
     informationAlert.setHeaderText(message);

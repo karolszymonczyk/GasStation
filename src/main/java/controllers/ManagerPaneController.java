@@ -39,7 +39,7 @@ public class ManagerPaneController {
 
   private MainController controller;
   private LoginPaneController loginController;
-
+//
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);

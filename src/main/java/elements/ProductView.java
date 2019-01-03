@@ -9,6 +9,7 @@ public class ProductView {
   int amount;
 
   public ProductView(String code, String name, double price, double tax, int amount) {
+
     this.code = code;
     this.name = name;
     this.price = price;

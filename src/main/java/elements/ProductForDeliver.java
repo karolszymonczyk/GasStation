@@ -7,6 +7,7 @@ public class ProductForDeliver {
   int amount;
 
   public ProductForDeliver(String name, String code, int amount) {
+
     this.name = name;
     this.code = code;
     this.amount = amount;

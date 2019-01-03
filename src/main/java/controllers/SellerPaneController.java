@@ -158,7 +158,7 @@ public class SellerPaneController {
     Object selectedItem = tvBill.getSelectionModel().getSelectedItem();
     tvBill.getItems().remove(selectedItem);
   }
-
+//
   public void bAvailabilityClick(ActionEvent event) {
     //setAvailabilityPane();
     Product selectedItem = (Product) tvProducts.getSelectionModel().getSelectedItem();

@@ -53,7 +53,7 @@ public class NewProductPaneController {
       lError.setVisible(true);
       return;
     }
-
+//
     lSucces.setVisible(true);
     setDisbledPane();
   }

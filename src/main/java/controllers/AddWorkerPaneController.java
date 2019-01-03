@@ -57,6 +57,7 @@ public class AddWorkerPaneController {
   }
 
   private void setDisbledPane() {
+
     tfName.setDisable(true);
     tfSurname.setDisable(true);
     cbJob.setDisable(true);

@@ -11,6 +11,7 @@ public class ManagerSale {
   ArrayList<ManagerBill> elements;
 
   public ManagerSale(int id, String date, String seller, double value, ArrayList<ManagerBill> elements) {
+
     this.id = id;
     this.date = date;
     this.seller = seller;

@@ -21,7 +21,6 @@ public class Main extends Application {
 
     primaryStage.setX(500);
     primaryStage.setY(200);
-
     primaryStage.show();
   }
 }

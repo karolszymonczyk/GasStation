@@ -111,6 +111,7 @@ public class AddSalePaneController {
   }
 
   public void setTotal() {
+
     double total = 0;
     BillElement billElement = new BillElement();
 

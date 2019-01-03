@@ -16,7 +16,6 @@ public class LoginPaneController {
 
   public Label lError;
   private MainController controller;
-
   private String login, password;
 
   @FXML

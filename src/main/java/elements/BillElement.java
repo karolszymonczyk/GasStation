@@ -3,6 +3,7 @@ package elements;
 public class BillElement {
 
   String product;
+
   double price;
   int quantity;
   double sum;
