@@ -132,7 +132,6 @@ public class StorekeeperPaneController {
   }
 
   public void bDeleteClick(ActionEvent event) {
-
     lError.setVisible(false);
     lSuccess.setVisible(false);
     Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
