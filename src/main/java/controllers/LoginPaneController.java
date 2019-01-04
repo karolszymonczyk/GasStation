@@ -1,5 +1,9 @@
 package controllers;
 
+import dbConnection.LoginCheck;
+import workers.Manager;
+import workers.Seller;
+import workers.Storekeeper;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +20,12 @@ public class LoginPaneController {
 
   public Label lError;
   private MainController controller;
+
+
+  private Seller seller;
+  private Storekeeper storeKeeper;
+  private Manager manager;
+
   private String login, password;
 
   @FXML
@@ -39,18 +49,25 @@ public class LoginPaneController {
 
     login = tLogin.getText();
     password = tPassword.getText();
+    LoginCheck loginCheck = new LoginCheck(login,password);
 
-    if(login.equals("manager")) {
-      System.out.println("MANAGER");
-      setManagerPane();
-    } else if(login.equals("seller")) {
-      System.out.println("SELLER");
-      setSellerPane();
-    } else if(login.equals("storekeeper")) {
-      System.out.println("STOREKEEPER");
-      setStorekeeperPane();
-    } else {
-      lError.setVisible(true);
+    if(loginCheck.correctUserAndPass()) {
+      if ("manager".equals(loginCheck.job)) {
+        manager = new Manager(loginCheck.getConnection());
+        setManagerPane();
+
+      } else if ("seller".equals(loginCheck.job)) {
+        seller = new Seller(loginCheck.getConnection());
+        setSellerPane();
+        //seller.createBill();
+
+      } else if ("storekeeper".equals(loginCheck.job)) {//TODO test.storekeeper pass: sk
+        storeKeeper = new Storekeeper(loginCheck.getConnection());
+        setStorekeeperPane();
+      } else {
+        System.out.println("DATABASE ERROR");
+
+      }
     }
   }
 
@@ -63,8 +80,10 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     ManagerPaneController managerController = loader.getController();
+    managerController.setManager(manager);
     managerController.setController(controller);
     managerController.setLoginController(this);
+    managerController.addToSaleList();
     controller.setPane(managerPane);
   }
 
@@ -77,8 +96,11 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     SellerPaneController sellerController = loader.getController();
+    sellerController.setSeller(seller);
     sellerController.setController(controller);
     sellerController.setLoginController(this);
+    sellerController.addToProductList(seller.getProducts());
+
     controller.setPane(sellerPane);
   }
 
@@ -91,6 +113,7 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     StorekeeperPaneController storekeeperController = loader.getController();
+    storekeeperController.setStoreKeeper(storeKeeper);
     storekeeperController.setController(controller);
     storekeeperController.setLoginController(this);
     controller.setPane(storekeeperPane);
