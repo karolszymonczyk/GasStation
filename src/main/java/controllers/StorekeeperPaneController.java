@@ -9,8 +9,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import utils.DialogUtils;
+import workers.Storekeeper;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.util.ArrayList;
 import java.util.Optional;
 //
 public class StorekeeperPaneController {
@@ -30,9 +34,16 @@ public class StorekeeperPaneController {
   public Button bAddNewProduct;
   public Button bDelete;
   public Button bFinishDelivery;
+  Storekeeper storekeeper;
+  boolean transactionStarted = false;
+
+  Savepoint delete;
+
 
   private MainController controller;
   private LoginPaneController loginController;
+
+  String deliverer;
 
   @FXML
   public void initialize() {
@@ -62,39 +73,80 @@ public class StorekeeperPaneController {
 
   public void bLogoutClick(ActionEvent event) {
     if(logoutConfirmation()) {
+      try {
+        storekeeper.getConnection().rollback();
+        storekeeper.getConnection().setAutoCommit(true);
+      } catch (SQLException e) {
+        System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
+      }
+      storekeeper.deleteDelivery();
       controller.setLoginPane();
     }
   }
 
   public void bAddClick(ActionEvent event) {
+
     lError.setVisible(false);
     lSuccess.setVisible(false);
 
-    String deliverer = tfDeliverer.getText();
+    deliverer = tfDeliverer.getText();
     String code = tfCode.getText();
     String amount = tfAmount.getText();
 
-//    if(!checkFormat(amount)) {
-//      lError.setVisible(true);
-//      return;
-//    }
+    try {
+      delete = storekeeper.getConnection().setSavepoint("delete");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
-    int amountInt;
-    amountInt = checkFormat(amount);
-
-    if(amountInt == -1){
+    if(checkFormat(code)==-1 || checkFormat(amount)==-1 || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
+      
       lError.setVisible(true);
       return;
     }
 
-    ProductForDeliver product = new ProductForDeliver("Z bazy", code, amountInt);
-    tvProducts.getItems().add(product);
+    int amountInt;
+    int codeInt;
+    amountInt = checkFormat(amount);
+    codeInt = Integer.parseInt(code);
+
+    if(!storekeeper.isTranactionStarted()){
+      storekeeper.setTranactionStarted(true);
+
+      try {
+        storekeeper.getConnection().setAutoCommit(false);
+        storekeeper.createDelivery();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    String name = storekeeper.getProductName(codeInt);
+
+    ProductForDeliver product = new ProductForDeliver(name, code, amountInt);
+    storekeeper.addDeliveryProduct(product);
+
+    storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount),deliverer);
 
     lSuccess.setVisible(true);
+
+    addToList(storekeeper.getDeliveredProducts());
+  }
+
+  public void addToList(ArrayList<ProductForDeliver> deliveredProducts){
+    tvProducts.getItems().clear();
+    for(ProductForDeliver productForDeliver : deliveredProducts){
+      tvProducts.getItems().add(productForDeliver);
+    }
   }
 
   public void bNewProductClick(ActionEvent event) {
     setNewProductPane();
+    try {
+      delete = storekeeper.getConnection().setSavepoint("delete");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   private void setNewProductPane() {
@@ -106,6 +158,7 @@ public class StorekeeperPaneController {
       e.printStackTrace();
     }
     NewProductPaneController newProductController = loader.getController();
+    newProductController.setStorekeeper(storekeeper);
     newProductController.setController(controller);
     newProductController.setLoginController(loginController);
     controller.setPane(newProductPane);
@@ -132,6 +185,11 @@ public class StorekeeperPaneController {
   public void bDeleteClick(ActionEvent event) {
     lError.setVisible(false);
     lSuccess.setVisible(false);
+    try {
+      storekeeper.getConnection().rollback(delete);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
     tvProducts.getItems().remove(selectedItem);
   }
@@ -139,6 +197,16 @@ public class StorekeeperPaneController {
   public void bFinishClick(ActionEvent event) {
     lError.setVisible(false);
     lSuccess.setVisible(false);
+
+    storekeeper.setTranactionStarted(false);
+    try {
+      storekeeper.endDelivery();
+      storekeeper.getConnection().commit();
+      storekeeper.getConnection().setAutoCommit(true);
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     tvProducts.getItems().clear();
 
@@ -157,5 +225,9 @@ public class StorekeeperPaneController {
     bAddNewProduct.setDisable(true);
     bFinishDelivery.setDisable(true);
     bDelete.setDisable(true);
+  }
+
+  public void setStoreKeeper(Storekeeper storeKeeper) {
+    this.storekeeper=storeKeeper;
   }
 }

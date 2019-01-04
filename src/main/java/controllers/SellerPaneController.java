@@ -9,10 +9,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+
 import utils.DialogUtils;
 
 import java.io.IOException;
+import java.sql.Savepoint;
 import java.util.Optional;
+import workers.Seller;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 //TODO dodać delete żeby można było usunąć z rachunku
 //TODO dodać przycisk finalizujący transakcje który dodaje do tabeli sale
@@ -42,6 +49,10 @@ public class SellerPaneController {
 
   private LoginPaneController loginController;
 
+  Savepoint delete;
+
+  private Seller seller;
+
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
@@ -51,26 +62,17 @@ public class SellerPaneController {
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
     tvcQuantity.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
     tvcSum.setCellValueFactory(new PropertyValueFactory<>("Sum"));
-    addToProductList();
+
   }
 
-  public void addToProductList() { //TODO tutaj trzeba podpiąc produkty z bazy
-    addProduct("Karty", "192342144");
-    addProduct("Papieroski", "212342144");
-    addProduct("Kajzerki", "312342144");
-    addProduct("Piwo", "412342144");
-    addProduct("Snickers", "512342144");
-    addProduct("Bounty", "612342144");
-    addProduct("Haribo", "712342144");
-    addProduct("Benzyna", "812342144");
-    addProduct("Gumy kulki", "912342144");
-    addProduct("Prince Polo", "102342144");
-    addProduct("Gaz", "112342144");
-    addProduct("Popcorn", "123542134");
+  void addToProductList(ArrayList<Product> products) {
+
+    for(Product product : products) {
+      addProduct(product);
+    }
   }
 
-  public void addProduct(String name, String code) {
-    Product product = new Product(name, code);
+  private void addProduct(Product product) {
     tvProducts.getItems().add(product);
   }
 
@@ -78,45 +80,77 @@ public class SellerPaneController {
     this.controller = controller;
   }
 
-  public void setLoginController(LoginPaneController LoginController) {
+  void setLoginController(LoginPaneController LoginController) {
     this.loginController = LoginController;
   }
 
   public void bLogoutClick(ActionEvent event) {
+
     if(logoutConfirmation()) {
-      controller.setLoginPane();
+      try {
+      seller.getConnection().rollback();
+      seller.getConnection().setAutoCommit(true);
+    } catch (SQLException e) {
+      System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
+    }
+    seller.deleteBill();
+    controller.setLoginPane();
     }
   }
 
-  public void bAddClick(ActionEvent event) { //TODO tutaj po kliknięciu trzeba sprawdzić czy dany kod jest w bazie i jak jest to odczytać jaki produkt ma dany kod
-    lWarning.setText("");
-    //pobieramy kod z taProduct i szukamy go w bazie
-    String code = taProduct.getText();
-    String quantity = taQuantity.getText();
+  public void bAddClick(ActionEvent event) {
 
-    if(code.equals("") || quantity.equals("")) {
+
+    lWarning.setText("");
+    String sCode = taProduct.getText();
+    String quantity = taQuantity.getText();
+    int intQuantity;
+    int iCode;
+
+
+    if(!seller.isTransactionStarted()){
+      seller.setTransactionStarted(true);
+
+      try {
+        seller.getConnection().setAutoCommit(false);
+        seller.createBill();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    if(sCode.equals("") || quantity.equals("")) {
       lWarning.setText("Wrong input!");
       return;
     }
 
-    int intQuantity;
     try {
       intQuantity = Integer.parseInt(quantity);
+      iCode = Integer.parseInt(sCode);
     } catch (NumberFormatException e) {
       lWarning.setText("Wrong input!");
       return;
     }
 
-    //TODO tutaj dodać że jak nie ma w bazie takiego kodu to tak jak wyżej ustawić label i return
-    //TODO trzeba też tutaj sprawdzić czy jest tyle dostępne
-
-    //TODO jak kod jest w bazie to trzeba pobrać jego nazwe i ilosc
-
-    //TODO tutaj zamiast code trzeba podać nazwę produktu o takim kodzie i jego cene
-    BillElement billElement = new BillElement(code, intQuantity, 12.99);
-
-    tvBill.getItems().add(billElement);
-    setTotal();
+    if(!seller.searchForProductFromCode(iCode)){
+      lWarning.setText("No such product!");
+      return;
+    }else if(seller.checkAmount(iCode) >= intQuantity && seller.isTransactionStarted()){
+      try {
+       delete =  seller.getConnection().setSavepoint("delete");
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      float price = seller.getPrice(iCode);
+      seller.createSale(iCode,intQuantity);
+      seller.addToBill(price*intQuantity);
+      BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price,-1);
+      tvBill.getItems().add(billElement);
+      setTotal();
+    }  else {
+      lWarning.setText("Not enough products!");
+      return;
+    }
 
     taProduct.setText("");
     taQuantity.setText("");
@@ -137,11 +171,30 @@ public class SellerPaneController {
 
   public void bSellClick(ActionEvent event) {
 
+
+    seller.setTransactionStarted(false);
+    Integer NIP;
+
     if(tfCustomer.getText().equals("")) {
-      System.out.println("NULL");
+      NIP = null;
+      seller.closeBillWithoutCustomer();
     } else {
-      System.out.println(tfCustomer.getText());
+      NIP = Integer.parseInt(tfCustomer.getText());
+      seller.closeBill(NIP);
     }
+
+    try {
+
+      seller.getConnection().commit();
+      seller.getConnection().setAutoCommit(true);
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+
+
+    //TODO (DONE)  PO KLIKNIECIU SALE WSZYSTKIE KOMMITY SIĘ WYKONUĄJĄ(TE KTORE  NIE WYKONAŁY SIĘ W METODZIE CREATE SALE (INSERTOWANIE DO TABELI SALE W DB))
 
     //TODO pobrac wszystko z tvBill i dodac do tabeli sale
     //tvBill.getItems();
@@ -155,20 +208,22 @@ public class SellerPaneController {
   }
 
   public void bDeleteClick(ActionEvent event) {
-    Object selectedItem = tvBill.getSelectionModel().getSelectedItem();
+    BillElement selectedItem = (BillElement) tvBill.getSelectionModel().getSelectedItem();
+    try {
+      seller.getConnection().rollback(delete);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     tvBill.getItems().remove(selectedItem);
+    setTotal();
   }
 //
   public void bAvailabilityClick(ActionEvent event) {
     //setAvailabilityPane();
     Product selectedItem = (Product) tvProducts.getSelectionModel().getSelectedItem();
-    if(selectedItem == null) {
-      return;
-    }
-    //TODO tak bierzemy kod i sprawdzamy ile jest towru w bazie i ustawiamy label tak jak niżej
-    String code = selectedItem.getCode();
-    //TODO przypisać ilość do amount
-    String amount = "21";
+    String sCode = selectedItem.getCode();
+    int iCode = Integer.parseInt(sCode);
+    int amount = seller.checkAmount(iCode);
     lWarning.setText("Available amount is : " + amount);
   }
 
@@ -185,6 +240,7 @@ public class SellerPaneController {
       e.printStackTrace();
     }
     CardPaneController cardController = loader.getController();
+    cardController.setSeller(seller);
     cardController.setController(controller);
     cardController.setLoginController(loginController);
     controller.setPane(cardPane);
@@ -197,4 +253,25 @@ public class SellerPaneController {
     }
     return false;
   }
+  
+  public void setAvailabilityPane() {
+    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
+    AnchorPane availabilityPane = null;
+    try {
+      availabilityPane = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    AvailabilityPaneController availabilityController = loader.getController();
+    availabilityController.setController(controller);
+    availabilityController.setLoginController(loginController);
+    availabilityController.setTvProducts(tvProducts);
+    controller.setPane(availabilityPane);
+  }
+
+  public void setSeller(Seller seller) {
+    this.seller = seller;
+  }
+
+
 }

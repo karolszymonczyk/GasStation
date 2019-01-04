@@ -1,12 +1,16 @@
 package controllers;
 
+import elements.ProductForDeliver;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-//
+import workers.Storekeeper;
+
+import java.sql.SQLException;
+
 public class NewProductPaneController {
 
   public TextField tfName;
@@ -18,6 +22,8 @@ public class NewProductPaneController {
   public TextField tfPrice;
   public TextField tfTax;
   public TextField taDeliverer;
+
+  private Storekeeper storekeeper;
 
   private MainController controller;
   private LoginPaneController loginController;
@@ -37,6 +43,8 @@ public class NewProductPaneController {
 
   public void bBackClick(ActionEvent event) {
     loginController.setStorekeeperPane();
+
+
   }
 
   public void bCreateClick(ActionEvent event) {
@@ -53,7 +61,27 @@ public class NewProductPaneController {
       lError.setVisible(true);
       return;
     }
-//
+
+
+    if(!storekeeper.isTranactionStarted()){
+      storekeeper.setTranactionStarted(true);
+
+      try {
+        storekeeper.getConnection().setAutoCommit(false);
+        storekeeper.createDelivery();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    int amountInt = Integer.parseInt(amount);
+    int codeInt = Integer.parseInt(code);
+
+    storekeeper.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),deliverer);
+
+    ProductForDeliver productForDeliver = new ProductForDeliver(storekeeper.getProductName(codeInt),code,amountInt);
+    storekeeper.addDeliveryProduct(productForDeliver);
+
     lSucces.setVisible(true);
     setDisbledPane();
   }
@@ -76,5 +104,9 @@ public class NewProductPaneController {
       return false;
     }
     return true;
+  }
+
+  public void setStorekeeper(Storekeeper storekeeper) {
+    this.storekeeper = storekeeper;
   }
 }

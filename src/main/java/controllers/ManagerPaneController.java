@@ -11,7 +11,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import utils.DialogUtils;
+//import utils.DialogUtils;
+import workers.Manager;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +42,9 @@ public class ManagerPaneController {
 
   private MainController controller;
   private LoginPaneController loginController;
-//
+  private Manager manager;
+  private ArrayList<ManagerSale> bills;
+
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
@@ -51,32 +55,22 @@ public class ManagerPaneController {
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("product"));
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-    addToSaleList();
+//    addToSaleList();
   }
 
-  private void addToSaleList() {
+  public void addToSaleList() {
 
-    //TODO tymczasowe do testów XD
-    ArrayList<ManagerBill> elements1 = new ArrayList<>();
-    ManagerBill e1 = new ManagerBill("Hot-Dog", 2, 12.98);
-    ManagerBill e2 = new ManagerBill("Piwko", 4, 12.99);
-    elements1.add(e1);
-    elements1.add(e2);
+    bills = manager.getBills();
 
-    addSale(1, "2018-09-19 21:37:00", "Robert Siemaszko", 666.66, elements1);
-
-    //TODO tymczasowe do testów XD
-    ArrayList<ManagerBill> elements2 = new ArrayList<>();
-    ManagerBill e3 = new ManagerBill("Dog-Hog", 1, 9.989);
-    ManagerBill e4 = new ManagerBill("LPG", 5, 25.50);
-    elements2.add(e3);
-    elements2.add(e4);
-
-    addSale(2,"2018-19-19 22:22:22", "Roksana Siema", 420.42, elements2);
+    for (ManagerSale managerSale : bills) {
+      addSale(managerSale);
+//      for (ManagerBill managerBill : managerSale.getElements()) {
+//        System.out.println("element = " + managerBill);
+//      }
+    }
   }
 
-  public void addSale(int id, String date, String seller, double value, ArrayList<ManagerBill> elements) {
-    ManagerSale managerSale = new ManagerSale(id, date, seller, value, elements);
+  public void addSale(ManagerSale managerSale) {
     tvSales.getItems().add(managerSale);
   }
 
@@ -89,7 +83,7 @@ public class ManagerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    if(logoutConfirmation()) {
+    if (true) {
       controller.setLoginPane();
     }
   }
@@ -98,11 +92,11 @@ public class ManagerPaneController {
     tvBill.getItems().clear();
 
     ManagerSale selectedItem = (ManagerSale) tvSales.getSelectionModel().getSelectedItem();
-    if(selectedItem == null) {
+    if (selectedItem == null) {
       return;
     }
     ArrayList<ManagerBill> elements = selectedItem.getElements();
-    for(ManagerBill element : elements) {
+    for (ManagerBill element : elements) {
       tvBill.getItems().add(element);
     }
   }
@@ -123,6 +117,8 @@ public class ManagerPaneController {
     viewWorkersController.setController(controller);
     viewWorkersController.setLoginController(loginController);
     viewWorkersController.setManagerController(this);
+    viewWorkersController.setManager(manager);
+    viewWorkersController.addWorkerList();
     controller.setPane(viewWorkersPane);
   }
 
@@ -160,6 +156,8 @@ public class ManagerPaneController {
     viewProductsController.setController(controller);
     viewProductsController.setLoginController(loginController);
     viewProductsController.setManagerController(this);
+    viewProductsController.setManager(manager);
+    viewProductsController.addProductList();
     controller.setPane(viewProductsPane);
   }
 
@@ -192,11 +190,19 @@ public class ManagerPaneController {
     controller.setPane(addSalePane);
   }
 
-  public boolean logoutConfirmation() {
-    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
-    if (result.get() == ButtonType.OK) {
-      return true;
-    }
-    return false;
+  public void setManager(Manager manager) {
+    this.manager=manager;
   }
-}
+
+//  public boolean logoutConfirmation() {
+//    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
+//    if (result.get() == ButtonType.OK) {
+//      return true;
+//    }
+//    return false;
+//  }
+//    public void setManager (Manager manager){
+//      this.manager = manager;
+//    }
+  }
+

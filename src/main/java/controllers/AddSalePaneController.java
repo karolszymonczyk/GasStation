@@ -101,9 +101,9 @@ public class AddSalePaneController {
     //TODO jak kod jest w bazie to trzeba pobrać jego nazwe i ilosc
 
     //TODO tutaj zamiast code trzeba podać nazwę produktu o takim kodzie i jego cene
-    BillElement billElement = new BillElement(code, intQuantity, 12.99);
+    //BillElement billElement = new BillElement(code, intQuantity, 12.99);
 
-    tvBill.getItems().add(billElement);
+    //tvBill.getItems().add(billElement);
     setTotal();
 
     taProduct.setText("");

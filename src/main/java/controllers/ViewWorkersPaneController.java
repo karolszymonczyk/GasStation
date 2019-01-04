@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import workers.Manager;
 
 import java.io.IOException;
 
@@ -31,6 +32,8 @@ public class ViewWorkersPaneController {
   private LoginPaneController loginController;
   private ManagerPaneController managerController;
 
+  Manager manager;
+
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
@@ -43,7 +46,7 @@ public class ViewWorkersPaneController {
     tvcEndContract.setCellValueFactory(new PropertyValueFactory<>("endContract"));
     tvcJob.setCellValueFactory(new PropertyValueFactory<>("job"));
     tvcStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-    addToWorkersList();
+    //addToWorkersList();
   }
 
   private void addToWorkersList() {
@@ -51,8 +54,13 @@ public class ViewWorkersPaneController {
   }
 
   private void addWorker(int id, String name, String surname, String login, String password, String startContract, String endContract, String job, String status) {
+//  private void addToWorkersList() {
+//    addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031" ,"seller", "working");
+//  }
+//
+  public void addWorkerList() {
 
-    Worker worker = new Worker(id, name, surname, login, password, startContract, endContract, job, status);
+    for(elements.Worker worker : manager.getWorkers())
     tvWorkers.getItems().add(worker);
   }
 
@@ -89,5 +97,9 @@ public class ViewWorkersPaneController {
   public void bDeleteClick(ActionEvent event) {
     Object selectedItem = tvWorkers.getSelectionModel().getSelectedItem();
     tvWorkers.getItems().remove(selectedItem);
+  }
+
+  public void setManager(Manager manager) {
+    this.manager = manager;
   }
 }
