@@ -49,7 +49,7 @@ public class ViewWorkersPaneController {
   private void addToWorkersList() {
     addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031" ,"seller", "working");
   }
-//
+
   private void addWorker(int id, String name, String surname, String login, String password, String startContract, String endContract, String job, String status) {
 
     Worker worker = new Worker(id, name, surname, login, password, startContract, endContract, job, status);
