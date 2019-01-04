@@ -52,4 +52,20 @@ public abstract class Worker {
   public Connection getConnection() {
     return connection;
   }
+
+  public String getProductName(int code) {
+    String name= null;
+    try {
+      st = connection.createStatement();
+      rs = st.executeQuery("SELECT name FROM product WHERE code = " + code);
+      while(rs.next()) {
+        name = rs.getString("name");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return name;
+  }
 }
+

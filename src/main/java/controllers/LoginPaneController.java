@@ -116,6 +116,7 @@ public class LoginPaneController {
     storekeeperController.setStoreKeeper(storeKeeper);
     storekeeperController.setController(controller);
     storekeeperController.setLoginController(this);
+    storekeeperController.addToList(storeKeeper.getDeliveredProducts());
     controller.setPane(storekeeperPane);
   }
 }

@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import utils.DialogUtils;
 
 import java.io.IOException;
+import java.sql.Savepoint;
 import java.util.Optional;
 import workers.Seller;
 
@@ -48,7 +49,7 @@ public class SellerPaneController {
 
   private LoginPaneController loginController;
 
-
+  Savepoint delete;
 
   private Seller seller;
 
@@ -135,10 +136,15 @@ public class SellerPaneController {
       lWarning.setText("No such product!");
       return;
     }else if(seller.checkAmount(iCode) >= intQuantity && seller.isTransactionStarted()){
+      try {
+       delete =  seller.getConnection().setSavepoint("delete");
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
       float price = seller.getPrice(iCode);
-      BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price);
       seller.createSale(iCode,intQuantity);
       seller.addToBill(price*intQuantity);
+      BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price,-1);
       tvBill.getItems().add(billElement);
       setTotal();
     }  else {
@@ -165,23 +171,28 @@ public class SellerPaneController {
 
   public void bSellClick(ActionEvent event) {
 
+
+    seller.setTransactionStarted(false);
     Integer NIP;
 
     if(tfCustomer.getText().equals("")) {
       NIP = null;
+      seller.closeBillWithoutCustomer();
     } else {
       NIP = Integer.parseInt(tfCustomer.getText());
+      seller.closeBill(NIP);
     }
 
-    seller.setTransactionStarted(false);
     try {
-      seller.closeBill(NIP);
+
       seller.getConnection().commit();
       seller.getConnection().setAutoCommit(true);
 
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
+
 
     //TODO (DONE)  PO KLIKNIECIU SALE WSZYSTKIE KOMMITY SIĘ WYKONUĄJĄ(TE KTORE  NIE WYKONAŁY SIĘ W METODZIE CREATE SALE (INSERTOWANIE DO TABELI SALE W DB))
 
@@ -197,7 +208,12 @@ public class SellerPaneController {
   }
 
   public void bDeleteClick(ActionEvent event) {
-    Object selectedItem = tvBill.getSelectionModel().getSelectedItem();
+    BillElement selectedItem = (BillElement) tvBill.getSelectionModel().getSelectedItem();
+    try {
+      seller.getConnection().rollback(delete);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     tvBill.getItems().remove(selectedItem);
     setTotal();
   }

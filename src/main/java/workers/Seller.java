@@ -114,20 +114,20 @@ public class Seller extends Worker{
     }
   }
 
-  public String getProductName(int code) {
-    String name= null;
-    try {
-      st = connection.createStatement();
-      rs = st.executeQuery("SELECT name FROM product WHERE code = " + code);
-      while(rs.next()) {
-        name = rs.getString("name");
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return name;
-  }
+//  public String getProductName(int code) {
+//    String name= null;
+//    try {
+//      st = connection.createStatement();
+//      rs = st.executeQuery("SELECT name FROM product WHERE code = " + code);
+//      while(rs.next()) {
+//        name = rs.getString("name");
+//      }
+//    } catch (SQLException e) {
+//      e.printStackTrace();
+//    }
+//
+//    return name;
+//  }
 
   public float getPrice(int code) {
 
@@ -154,7 +154,7 @@ public class Seller extends Worker{
     transactionStarted = status;
   }
 
-  public void closeBill(int NIP) {
+  public void closeBill(Integer NIP) {
     try {
       cSt = connection.prepareCall("{CALL closeBill(?)}");
       cSt.setInt(1,NIP);
@@ -178,6 +178,40 @@ public class Seller extends Worker{
     try {
       cSt = connection.prepareCall("{CALL billValueUpdate(?)}");
       cSt.setFloat(1,value);
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+//  public int findSaleID(int iCode, int intQuantity) {
+//    try {
+//      cSt = connection.prepareCall("{? = CALL findSaleID(?,?)}");
+//      cSt.registerOutParameter(1, Types.INTEGER);
+//      cSt.setInt(2,iCode);
+//      cSt.setInt(3,intQuantity);
+//      cSt.executeQuery();
+//      return cSt.getInt(1);
+//    } catch (SQLException e) {
+//      e.printStackTrace();
+//    }
+//    return 0;
+//  }
+
+  public void deleteProduct(int saleID) {
+
+    try {
+      cSt = connection.prepareCall("{CALL deleteProduct(?)}");
+      cSt.setInt(1,saleID);
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void closeBillWithoutCustomer() {
+    try {
+      cSt = connection.prepareCall("{CALL closeBillWithoutCustomer()}");
       cSt.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();

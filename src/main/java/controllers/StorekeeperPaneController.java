@@ -13,6 +13,8 @@ import workers.Storekeeper;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class StorekeeperPaneController {
@@ -34,6 +36,8 @@ public class StorekeeperPaneController {
   public Button bFinishDelivery;
   Storekeeper storekeeper;
   boolean transactionStarted = false;
+
+  Savepoint delete;
 
 
   private MainController controller;
@@ -89,14 +93,22 @@ public class StorekeeperPaneController {
     String code = tfCode.getText();
     String amount = tfAmount.getText();
 
-    int amountInt;
-    amountInt = checkFormat(amount);
-      
+    try {
+      delete = storekeeper.getConnection().setSavepoint("delete");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
     if(checkFormat(code)==-1 || checkFormat(amount)==-1 || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
       
       lError.setVisible(true);
       return;
     }
+
+    int amountInt;
+    int codeInt;
+    amountInt = checkFormat(amount);
+    codeInt = Integer.parseInt(code);
 
     if(!storekeeper.isTranactionStarted()){
       storekeeper.setTranactionStarted(true);
@@ -109,15 +121,32 @@ public class StorekeeperPaneController {
       }
     }
 
-    ProductForDeliver product = new ProductForDeliver("Z bazy", code, amountInt);
-    tvProducts.getItems().add(product);
+    String name = storekeeper.getProductName(codeInt);
+
+    ProductForDeliver product = new ProductForDeliver(name, code, amountInt);
+    storekeeper.addDeliveryProduct(product);
+
     storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount),deliverer);
 
     lSuccess.setVisible(true);
+
+    addToList(storekeeper.getDeliveredProducts());
+  }
+
+  public void addToList(ArrayList<ProductForDeliver> deliveredProducts){
+    tvProducts.getItems().clear();
+    for(ProductForDeliver productForDeliver : deliveredProducts){
+      tvProducts.getItems().add(productForDeliver);
+    }
   }
 
   public void bNewProductClick(ActionEvent event) {
     setNewProductPane();
+    try {
+      delete = storekeeper.getConnection().setSavepoint("delete");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   private void setNewProductPane() {
@@ -156,6 +185,11 @@ public class StorekeeperPaneController {
   public void bDeleteClick(ActionEvent event) {
     lError.setVisible(false);
     lSuccess.setVisible(false);
+    try {
+      storekeeper.getConnection().rollback(delete);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
     tvProducts.getItems().remove(selectedItem);
   }

@@ -7,15 +7,17 @@ public class BillElement {
   double price;
   int quantity;
   double sum;
+  int saleID;
 
   public BillElement() {
 
   }
 
-  public BillElement(String product, int quantity, double price) {
+  public BillElement(String product, int quantity, double price, int saleID) {
     this.product = product;
     this.quantity = quantity;
     this.price = price;
+    this.saleID = saleID;
     calculateSum();
   }
 
@@ -53,5 +55,9 @@ public class BillElement {
 
   public void setSum(double sum) {
     this.sum = sum;
+  }
+
+  public int getSaleID() {
+    return saleID;
   }
 }

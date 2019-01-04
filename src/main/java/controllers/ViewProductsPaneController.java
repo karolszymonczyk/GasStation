@@ -10,6 +10,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import workers.Manager;
 
 import java.io.IOException;
 
@@ -26,6 +27,8 @@ public class ViewProductsPaneController {
   private LoginPaneController loginController;
   private ManagerPaneController managerController;
 
+  Manager manager;
+
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
@@ -34,16 +37,15 @@ public class ViewProductsPaneController {
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
     tvcTax.setCellValueFactory(new PropertyValueFactory<>("tax"));
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
-    addToProductsList();
   }
 
-  private void addToProductsList() {
-    addProduct("161", "Placuszki", 30.99, 0.1, 40);
-  }
+//  private void addToProductsList() {
+//    addProduct("161", "Placuszki", 30.99, 0.1, 40);
+//  }
 
-  private void addProduct(String code, String name, double price, double tax, int amount) {
+  public void addProductList() {
 
-    ProductView productView = new ProductView(code, name, price, tax, amount);
+    for(ProductView productView : manager.getProducts())
     tvProducts.getItems().add(productView);
   }
 
@@ -81,5 +83,9 @@ public class ViewProductsPaneController {
   public void bDeleteClick(ActionEvent event) {
     Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
     tvProducts.getItems().remove(selectedItem);
+  }
+
+  public void setManager(Manager manager) {
+    this.manager = manager;
   }
 }

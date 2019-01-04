@@ -63,9 +63,9 @@ public class ManagerPaneController {
 
     for (ManagerSale managerSale : bills) {
       addSale(managerSale);
-      for (ManagerBill managerBill : managerSale.getElements()) {
-        System.out.println("element = " + managerBill);
-      }
+//      for (ManagerBill managerBill : managerSale.getElements()) {
+//        System.out.println("element = " + managerBill);
+//      }
     }
   }
 
@@ -116,6 +116,8 @@ public class ManagerPaneController {
     viewWorkersController.setController(controller);
     viewWorkersController.setLoginController(loginController);
     viewWorkersController.setManagerController(this);
+    viewWorkersController.setManager(manager);
+    viewWorkersController.addWorkerList();
     controller.setPane(viewWorkersPane);
   }
 
@@ -153,6 +155,8 @@ public class ManagerPaneController {
     viewProductsController.setController(controller);
     viewProductsController.setLoginController(loginController);
     viewProductsController.setManagerController(this);
+    viewProductsController.setManager(manager);
+    viewProductsController.addProductList();
     controller.setPane(viewProductsPane);
   }
 

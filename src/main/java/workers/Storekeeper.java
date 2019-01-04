@@ -1,14 +1,20 @@
 package workers;
 
+import elements.ProductForDeliver;
+
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Storekeeper extends Worker{
 
   boolean tranactionStarted = false;
 
+  ArrayList<ProductForDeliver> deliveredProducts;
+
 
   public Storekeeper(Connection connection){
     this.connection = connection;
+    deliveredProducts = new ArrayList<>();
   }
 
   public boolean existingProductDeliver(int code, int amount, String deliverer){
@@ -75,5 +81,13 @@ public class Storekeeper extends Worker{
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  public ArrayList<ProductForDeliver> getDeliveredProducts() {
+    return deliveredProducts;
+  }
+
+  public void addDeliveryProduct(ProductForDeliver product){
+    deliveredProducts.add(product);
   }
 }
