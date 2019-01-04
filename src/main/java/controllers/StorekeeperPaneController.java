@@ -73,7 +73,6 @@ public class StorekeeperPaneController {
         storekeeper.getConnection().rollback();
         storekeeper.getConnection().setAutoCommit(true);
       } catch (SQLException e) {
-        e.printStackTrace();
         System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
       }
       storekeeper.deleteDelivery();
