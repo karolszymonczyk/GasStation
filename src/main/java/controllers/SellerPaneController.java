@@ -20,7 +20,7 @@ import java.util.Optional;
 //TODO gdzies jeszcze trzeba sprawdzać po kliknieciu add czy jest dostępne taka ilosc produktu
 
 //TODO zrobic dodawanie karty i uwzględnienie zniżki
-
+//
 public class SellerPaneController {
 
   @FXML

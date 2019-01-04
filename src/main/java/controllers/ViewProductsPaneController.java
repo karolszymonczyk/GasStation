@@ -12,7 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-
+//
 public class ViewProductsPaneController {
 
   public TableView tvProducts;

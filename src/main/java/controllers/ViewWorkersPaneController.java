@@ -13,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
 //TODO DODAC KOLUMNE Z KONCEM
-
+//
 public class ViewWorkersPaneController {
 
   public TableView tvWorkers;

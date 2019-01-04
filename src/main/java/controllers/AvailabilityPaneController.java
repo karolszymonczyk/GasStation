@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
-
+//
 public class AvailabilityPaneController {
 
   public TableView tvProducts;
