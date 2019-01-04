@@ -27,6 +27,7 @@ import java.util.Optional;
 
 //TODO dodac jeszcze dodawanie i usuwanie sprzedaży
 
+//
 public class ManagerPaneController {
 
   public TableView tvSales;

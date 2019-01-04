@@ -16,16 +16,24 @@
                 <Font size="48.0" />
             </font>
         </Label>
-        <TableView fx:id="tvDelivers" layoutX="51.0" layoutY="125.0" prefHeight="478.0" prefWidth="645.0">
-            <columns>
-                <TableColumn fx:id="tvcId" prefWidth="39.0" text="id" />
-                <TableColumn fx:id="tvcDate" prefWidth="153.0" text="date" />
-                <TableColumn fx:id="tvcStorekeeper" prefWidth="187.0" text="storekeeper" />
-                <TableColumn fx:id="tvcValue" prefWidth="135.0" text="product name" />
-            <TableColumn prefWidth="129.0" text="amount" />
-            </columns>
-        </TableView>
         <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" text="add delivery" />
         <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" text="delete delivery" />
+      <Button layoutX="35.0" layoutY="84.0" mnemonicParsing="false" onAction="#bRefreshClick" text="refresh" />
+      <TableView fx:id="tvDelivers" layoutX="61.0" layoutY="135.0" prefHeight="478.0" prefWidth="391.0">
+         <columns>
+            <TableColumn fx:id="tvcId" prefWidth="30.0" text="id" />
+            <TableColumn fx:id="tvcData" prefWidth="128.0" text="date" />
+            <TableColumn fx:id="tvcDeliverer" prefWidth="115.0" text="deliverer" />
+            <TableColumn fx:id="tvcStorekeeper" prefWidth="116.0" text="storekeeper" />
+         </columns>
+      </TableView>
+      <TableView fx:id="tvProducts" layoutX="490.0" layoutY="135.0" prefHeight="478.0" prefWidth="227.0">
+         <columns>
+            <TableColumn fx:id="tvcProduct" prefWidth="78.0" text="product" />
+            <TableColumn fx:id="tvcCode" prefWidth="91.0" text="code" />
+            <TableColumn fx:id="tvcAmount" minWidth="0.0" prefWidth="57.0" text="amount" />
+         </columns>
+      </TableView>
+      <Button layoutX="745.0" layoutY="450.0" mnemonicParsing="false" onAction="#bShowClick" prefHeight="25.0" prefWidth="94.0" text="show delivery" />
     </children>
 </AnchorPane>

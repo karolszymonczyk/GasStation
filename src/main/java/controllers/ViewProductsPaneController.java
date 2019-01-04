@@ -13,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import workers.Manager;
 
 import java.io.IOException;
-
+//
 public class ViewProductsPaneController {
 
   public TableView tvProducts;
@@ -67,17 +67,17 @@ public class ViewProductsPaneController {
 
   public void bAddClick(ActionEvent event) {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AddProductPane.fxml"));
-    AnchorPane addWorkerPane = null;
+    AnchorPane addProductPane = null;
     try {
-      addWorkerPane = loader.load();
+      addProductPane = loader.load();
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    AddProductPaneController addWorkerController = loader.getController();
-    addWorkerController.setController(controller);
-    addWorkerController.setManagerController(managerController);
-    controller.setPane(addWorkerPane);
+    AddProductPaneController addProductController = loader.getController();
+    addProductController.setController(controller);
+    addProductController.setManagerController(managerController);
+    controller.setPane(addProductPane);
   }
 
   public void bDeleteClick(ActionEvent event) {

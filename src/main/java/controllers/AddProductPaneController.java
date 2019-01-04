@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+//
 public class AddProductPaneController {
   public TextField tfName;
   public TextField tfCode;
@@ -16,7 +17,7 @@ public class AddProductPaneController {
   public Label lSucces;
   public TextField tfPrice;
   public TextField tfTax;
-  public TextField taDeliverer;
+//  public TextField taDeliverer;
 
   private MainController controller;
 //  private LoginPaneController loginController;
@@ -48,7 +49,7 @@ public class AddProductPaneController {
     String price = tfPrice.getText();
     String tax = tfTax.getText();
     String amount = taAmount.getText();
-    String deliverer = taDeliverer.getText();
+//    String deliverer = taDeliverer.getText();
 
     if(!checkFormat(price) || !checkFormat(amount)) {
       lError.setVisible(true);
@@ -65,7 +66,7 @@ public class AddProductPaneController {
     tfPrice.setDisable(true);
     tfTax.setDisable(true);
     taAmount.setDisable(true);
-    taDeliverer.setDisable(true);
+//    taDeliverer.setDisable(true);
     bCreate.setDisable(true);
   }
 

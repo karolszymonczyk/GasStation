@@ -1,5 +1,5 @@
 package elements;
-
+//
 public class ManagerBill {
 
   String product;

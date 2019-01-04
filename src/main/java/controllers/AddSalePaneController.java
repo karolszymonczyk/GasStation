@@ -14,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-
+//
 public class AddSalePaneController {
 
   @FXML

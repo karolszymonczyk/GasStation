@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-
+//
 //TODO zaminić password na PasswordLabel
 
 public class LoginPaneController {

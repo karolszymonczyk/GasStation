@@ -14,7 +14,7 @@ import workers.Manager;
 import java.io.IOException;
 
 //TODO DODAC KOLUMNE Z KONCEM
-
+//
 public class ViewWorkersPaneController {
 
   public TableView tvWorkers;
@@ -49,6 +49,11 @@ public class ViewWorkersPaneController {
     //addToWorkersList();
   }
 
+  private void addToWorkersList() {
+    addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031" ,"seller", "working");
+  }
+
+  private void addWorker(int id, String name, String surname, String login, String password, String startContract, String endContract, String job, String status) {
 //  private void addToWorkersList() {
 //    addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031" ,"seller", "working");
 //  }
