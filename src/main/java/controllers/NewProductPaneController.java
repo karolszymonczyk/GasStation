@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import workers.Storekeeper;
 
+import java.sql.SQLException;
+
 public class NewProductPaneController {
 
   public TextField tfName;
@@ -58,8 +60,18 @@ public class NewProductPaneController {
     }
 
 
+    if(!storekeeper.isTranactionStarted()){
+      storekeeper.setTranactionStarted(true);
 
-    storekeeper.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),"ZMIENICwWYWOLANIUmetody");
+      try {
+        storekeeper.getConnection().setAutoCommit(false);
+        storekeeper.createDelivery();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    storekeeper.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),deliverer);
 
     lSucces.setVisible(true);
     setDisbledPane();

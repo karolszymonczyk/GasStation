@@ -11,7 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import utils.DialogUtils;
+//import utils.DialogUtils;
 import workers.Manager;
 
 
@@ -61,9 +61,9 @@ public class ManagerPaneController {
 
     bills = manager.getBills();
 
-    for(ManagerSale managerSale : bills){
+    for (ManagerSale managerSale : bills) {
       addSale(managerSale);
-      for(ManagerBill managerBill : managerSale.getElements()){
+      for (ManagerBill managerBill : managerSale.getElements()) {
         System.out.println("element = " + managerBill);
       }
     }
@@ -82,7 +82,7 @@ public class ManagerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    if(logoutConfirmation()) {
+    if (true) {
       controller.setLoginPane();
     }
   }
@@ -91,11 +91,11 @@ public class ManagerPaneController {
     tvBill.getItems().clear();
 
     ManagerSale selectedItem = (ManagerSale) tvSales.getSelectionModel().getSelectedItem();
-    if(selectedItem == null) {
+    if (selectedItem == null) {
       return;
     }
     ArrayList<ManagerBill> elements = selectedItem.getElements();
-    for(ManagerBill element : elements) {
+    for (ManagerBill element : elements) {
       tvBill.getItems().add(element);
     }
   }
@@ -185,13 +185,19 @@ public class ManagerPaneController {
     controller.setPane(addSalePane);
   }
 
-  public boolean logoutConfirmation() {
-    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
-    if (result.get() == ButtonType.OK) {
-      return true;
-    }
-    return false;
   public void setManager(Manager manager) {
-    this.manager = manager;
+    this.manager=manager;
   }
-}
+
+//  public boolean logoutConfirmation() {
+//    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
+//    if (result.get() == ButtonType.OK) {
+//      return true;
+//    }
+//    return false;
+//  }
+//    public void setManager (Manager manager){
+//      this.manager = manager;
+//    }
+  }
+

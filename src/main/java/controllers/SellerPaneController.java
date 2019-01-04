@@ -94,7 +94,6 @@ public class SellerPaneController {
     }
     seller.deleteBill();
     controller.setLoginPane();
-      controller.setLoginPane();
     }
   }
 
@@ -166,15 +165,17 @@ public class SellerPaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    Integer NIP;
+
     if(tfCustomer.getText().equals("")) {
-      System.out.println("NULL");
+      NIP = null;
     } else {
-      System.out.println(tfCustomer.getText());
+      NIP = Integer.parseInt(tfCustomer.getText());
     }
 
     seller.setTransactionStarted(false);
     try {
-      seller.closeBill(1);
+      seller.closeBill(NIP);
       seller.getConnection().commit();
       seller.getConnection().setAutoCommit(true);
 

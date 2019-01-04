@@ -4,6 +4,8 @@ import java.sql.*;
 
 public class Storekeeper extends Worker{
 
+  boolean tranactionStarted = false;
+
 
   public Storekeeper(Connection connection){
     this.connection = connection;
@@ -33,8 +35,45 @@ public class Storekeeper extends Worker{
       cSt.setString(6,deliverer);
       cSt.execute();
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
     return true;
+  }
+
+  public boolean isTranactionStarted() {
+    return tranactionStarted;
+  }
+
+  public void setTranactionStarted(boolean tranactionStarted) {
+    this.tranactionStarted = tranactionStarted;
+  }
+
+  public void createDelivery() {
+    try {
+    cSt = connection.prepareCall("{CALL createDelivery()}");
+    cSt.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void deleteDelivery() {
+    try {
+      cSt = connection.prepareCall("{CALL deleteDelivery()}");
+      cSt.executeQuery();
+      System.out.println("Usunalem dostawe");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void endDelivery() {
+    try {
+      cSt = connection.prepareCall("{CALL endDelivery()}");
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 }

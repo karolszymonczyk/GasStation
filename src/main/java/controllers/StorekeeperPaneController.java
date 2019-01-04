@@ -12,6 +12,7 @@ import utils.DialogUtils;
 import workers.Storekeeper;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
 
 public class StorekeeperPaneController {
@@ -37,6 +38,8 @@ public class StorekeeperPaneController {
 
   private MainController controller;
   private LoginPaneController loginController;
+
+  String deliverer;
 
   @FXML
   public void initialize() {
@@ -66,6 +69,14 @@ public class StorekeeperPaneController {
 
   public void bLogoutClick(ActionEvent event) {
     if(logoutConfirmation()) {
+      try {
+        storekeeper.getConnection().rollback();
+        storekeeper.getConnection().setAutoCommit(true);
+      } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
+      }
+      storekeeper.deleteDelivery();
       controller.setLoginPane();
     }
   }
@@ -75,22 +86,28 @@ public class StorekeeperPaneController {
     lError.setVisible(false);
     lSuccess.setVisible(false);
 
-    String deliverer = tfDeliverer.getText();
+    deliverer = tfDeliverer.getText();
     String code = tfCode.getText();
     String amount = tfAmount.getText();
-
-//    if(!checkFormat(amount)) {
-//      lError.setVisible(true);
-//      return;
-//    }
 
     int amountInt;
     amountInt = checkFormat(amount);
       
-    if(!checkFormat(code) || !checkFormat(amount) || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
+    if(checkFormat(code)==-1 || checkFormat(amount)==-1 || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
       
       lError.setVisible(true);
       return;
+    }
+
+    if(!storekeeper.isTranactionStarted()){
+      storekeeper.setTranactionStarted(true);
+
+      try {
+        storekeeper.getConnection().setAutoCommit(false);
+        storekeeper.createDelivery();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
 
     ProductForDeliver product = new ProductForDeliver("Z bazy", code, amountInt);
@@ -147,6 +164,16 @@ public class StorekeeperPaneController {
   public void bFinishClick(ActionEvent event) {
     lError.setVisible(false);
     lSuccess.setVisible(false);
+
+    storekeeper.setTranactionStarted(false);
+    try {
+      storekeeper.endDelivery();
+      storekeeper.getConnection().commit();
+      storekeeper.getConnection().setAutoCommit(true);
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     tvProducts.getItems().clear();
 

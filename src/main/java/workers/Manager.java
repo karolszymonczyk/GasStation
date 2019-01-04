@@ -16,6 +16,8 @@ public class Manager extends Worker {
   ManagerSale managerSale;
   ManagerBill managerBill;
 
+  boolean tranactionStarted = false;
+
   public Manager(Connection connection) {
     this.connection = connection;
     downloadBills();
@@ -73,4 +75,14 @@ public class Manager extends Worker {
   public ArrayList<ManagerSale> getBills() {
     return bills;
   }
+
+  public boolean isTranactionStarted() {
+    return tranactionStarted;
+  }
+
+  public void setTranactionStarted(boolean tranactionStarted) {
+    this.tranactionStarted = tranactionStarted;
+  }
+
+
 }
