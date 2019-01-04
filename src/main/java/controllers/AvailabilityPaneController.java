@@ -8,6 +8,7 @@ import javafx.scene.control.TableView;
 public class AvailabilityPaneController {
 
   public TableView tvProducts;
+
   private MainController controller;
   private LoginPaneController loginController;
 

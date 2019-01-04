@@ -41,7 +41,6 @@ public class ManagerPaneController {
 
   private MainController controller;
   private LoginPaneController loginController;
-
   private Manager manager;
   private ArrayList<ManagerSale> bills;
 

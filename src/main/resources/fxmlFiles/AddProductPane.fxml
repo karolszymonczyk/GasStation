@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddProductPaneController">
+    <children>
+        <Label layoutX="222.0" layoutY="55.0" text="NEW PRODUCT">
+            <font>
+                <Font size="64.0" />
+            </font>
+        </Label>
+        <Button layoutX="784.0" layoutY="21.0" mnemonicParsing="false" onAction="#bBackClick" text="Back" />
+        <HBox layoutX="326.0" layoutY="159.0" prefHeight="145.0" prefWidth="200.0">
+            <children>
+                <VBox alignment="TOP_RIGHT" prefHeight="302.0" prefWidth="58.0" spacing="40.0">
+                    <children>
+                        <Label prefHeight="17.0" prefWidth="36.0" text="Name" />
+                        <Label text="Code" />
+                        <Label text="Price" />
+                        <Label text="Tax" />
+                        <Label text="Amount" />
+                        <Label prefHeight="17.0" prefWidth="52.0" text="Deliverer" />
+                    </children>
+                    <padding>
+                        <Insets right="7.0" />
+                    </padding>
+                </VBox>
+                <VBox prefHeight="190.0" prefWidth="148.0" spacing="30.0">
+                    <children>
+                        <TextField fx:id="tfName" promptText="name" />
+                        <TextField fx:id="tfCode" promptText="code" />
+                        <TextField fx:id="tfPrice" promptText="price" />
+                        <TextField fx:id="tfTax" promptText="tax" />
+                        <TextField fx:id="taAmount" promptText="amount" />
+                        <TextField fx:id="taDeliverer" promptText="deliverer" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+        <Button fx:id="bCreate" layoutX="386.0" layoutY="491.0" mnemonicParsing="false" onAction="#bCreateClick" prefHeight="25.0" prefWidth="114.0" text="Add new product" />
+        <Label fx:id="lError" layoutX="326.0" layoutY="529.0" text="Wrong input!" textFill="#f50505" visible="false">
+            <font>
+                <Font size="29.0" />
+            </font>
+        </Label>
+        <Label fx:id="lSucces" layoutX="158.0" layoutY="529.0" text="New product has been successfully added" textFill="#75f507" visible="false">
+            <font>
+                <Font size="29.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>

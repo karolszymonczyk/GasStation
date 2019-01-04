@@ -6,10 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import workers.Storekeeper;
 
-public class NewProductPaneController {
-
+public class AddProductPaneController {
   public TextField tfName;
   public TextField tfCode;
   public TextField taAmount;
@@ -20,10 +18,9 @@ public class NewProductPaneController {
   public TextField tfTax;
   public TextField taDeliverer;
 
-  private Storekeeper storekeeper;
-
   private MainController controller;
-  private LoginPaneController loginController;
+//  private LoginPaneController loginController;
+  private ManagerPaneController managerController;
 
   @FXML
   public void initialize() {
@@ -34,15 +31,16 @@ public class NewProductPaneController {
     this.controller = controller;
   }
 
-  public void setLoginController(LoginPaneController LoginController) {
-    this.loginController = LoginController;
+  public void setManagerController(ManagerPaneController managerController) {
+    this.managerController = managerController;
   }
 
   public void bBackClick(ActionEvent event) {
-    loginController.setStorekeeperPane();
+    managerController.setViewProductsPane();
   }
 
   public void bCreateClick(ActionEvent event) {
+
     lError.setVisible(false);
 
     String name = tfName.getText();
@@ -56,10 +54,6 @@ public class NewProductPaneController {
       lError.setVisible(true);
       return;
     }
-
-
-
-    storekeeper.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),"ZMIENICwWYWOLANIUmetody");
 
     lSucces.setVisible(true);
     setDisbledPane();
@@ -83,9 +77,5 @@ public class NewProductPaneController {
       return false;
     }
     return true;
-  }
-
-  public void setStorekeeper(Storekeeper storekeeper) {
-    this.storekeeper = storekeeper;
   }
 }

@@ -1,14 +1,16 @@
 package elements;
 
-public class Product {
+public class ProductForDeliver {
 
   String name;
   String code;
+  int amount;
 
-  public Product(String name, String code) {
+  public ProductForDeliver(String name, String code, int amount) {
 
     this.name = name;
     this.code = code;
+    this.amount = amount;
   }
 
   public String getName() {
@@ -17,5 +19,9 @@ public class Product {
 
   public String getCode() {
     return code;
+  }
+
+  public int getAmount() {
+    return amount;
   }
 }

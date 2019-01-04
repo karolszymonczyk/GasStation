@@ -21,6 +21,7 @@ public class LoginPaneController {
   public Label lError;
   private MainController controller;
 
+
   private Seller seller;
   private Storekeeper storeKeeper;
   private Manager manager;

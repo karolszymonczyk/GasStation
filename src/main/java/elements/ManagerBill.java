@@ -3,6 +3,7 @@ package elements;
 public class ManagerBill {
 
   String product;
+
   int amount;
   double price;
 

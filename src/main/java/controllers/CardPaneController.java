@@ -38,6 +38,7 @@ public class CardPaneController {
   }
 
   public void bCreateClick(ActionEvent event) {
+
     lError.setVisible(false);
 
     String name = tfName.getText();

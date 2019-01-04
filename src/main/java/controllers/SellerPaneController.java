@@ -200,7 +200,7 @@ public class SellerPaneController {
     tvBill.getItems().remove(selectedItem);
     setTotal();
   }
-
+//
   public void bAvailabilityClick(ActionEvent event) {
     //setAvailabilityPane();
     Product selectedItem = (Product) tvProducts.getSelectionModel().getSelectedItem();
