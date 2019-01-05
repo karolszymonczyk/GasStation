@@ -13,7 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import workers.Manager;
 
 import java.io.IOException;
-//
+
 public class ViewProductsPaneController {
 
   public TableView tvProducts;
@@ -39,10 +39,6 @@ public class ViewProductsPaneController {
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
   }
 
-//  private void addToProductsList() {
-//    addProduct("161", "Placuszki", 30.99, 0.1, 40);
-//  }
-
   public void addProductList() {
 
     for(ProductView productView : manager.getProducts())
@@ -67,21 +63,23 @@ public class ViewProductsPaneController {
 
   public void bAddClick(ActionEvent event) {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AddProductPane.fxml"));
-    AnchorPane addProductPane = null;
+    AnchorPane addWorkerPane = null;
     try {
-      addProductPane = loader.load();
+      addWorkerPane = loader.load();
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    AddProductPaneController addProductController = loader.getController();
-    addProductController.setController(controller);
-    addProductController.setManagerController(managerController);
-    controller.setPane(addProductPane);
+    AddProductPaneController addProductPaneController = loader.getController();
+    addProductPaneController.setController(controller);
+    addProductPaneController.setManagerController(managerController);
+    addProductPaneController.setManager(manager);
+    controller.setPane(addWorkerPane);
   }
 
   public void bDeleteClick(ActionEvent event) {
-    Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
+    ProductView selectedItem = (ProductView) tvProducts.getSelectionModel().getSelectedItem();
+    manager.deleteProduct(Integer.parseInt(selectedItem.getCode()));
     tvProducts.getItems().remove(selectedItem);
   }
 

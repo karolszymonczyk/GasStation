@@ -137,6 +137,8 @@ public class ManagerPaneController {
     ViewDeliversPaneController viewDeliversController = loader.getController();
     viewDeliversController.setController(controller);
     viewDeliversController.setLoginController(loginController);
+    viewDeliversController.setManager(manager);
+    viewDeliversController.addDeliveriesToList();
     controller.setPane(viewDeliversPane);
   }
 
@@ -162,13 +164,13 @@ public class ManagerPaneController {
   }
 
   public void bRefreshClick(ActionEvent event) {
-    System.out.println("REFRESH");
+    manager.downloadAll();
   }
 
   public void bDeleteSaleClick(ActionEvent event) { //TODO można dodać ze jak nie ma selected item to nic nie robi
-    Object selectedItem = tvSales.getSelectionModel().getSelectedItem();
+    ManagerSale selectedItem = (ManagerSale) tvSales.getSelectionModel().getSelectedItem();
     tvSales.getItems().remove(selectedItem);
-
+    manager.deleteSale(selectedItem.getId());
     tvBill.getItems().clear();
   }
 
@@ -187,6 +189,8 @@ public class ManagerPaneController {
     AddSalePaneController addSaleController = loader.getController();
     addSaleController.setController(controller);
     addSaleController.setLoginController(loginController);
+    addSaleController.setManager(manager);
+    addSaleController.addToProductList();
     controller.setPane(addSalePane);
   }
 
@@ -194,7 +198,11 @@ public class ManagerPaneController {
     this.manager=manager;
   }
 
-//  public boolean logoutConfirmation() {
+  public Manager getManager() {
+    return manager;
+  }
+
+  //  public boolean logoutConfirmation() {
 //    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
 //    if (result.get() == ButtonType.OK) {
 //      return true;
@@ -204,5 +212,7 @@ public class ManagerPaneController {
 //    public void setManager (Manager manager){
 //      this.manager = manager;
 //    }
+
+
   }
 

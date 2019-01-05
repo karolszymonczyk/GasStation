@@ -46,60 +46,59 @@ public class ViewWorkersPaneController {
     tvcEndContract.setCellValueFactory(new PropertyValueFactory<>("endContract"));
     tvcJob.setCellValueFactory(new PropertyValueFactory<>("job"));
     tvcStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-    //addToWorkersList();
   }
 
-  private void addToWorkersList() {
-    addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031" ,"seller", "working");
-  }
-
-  private void addWorker(int id, String name, String surname, String login, String password, String startContract, String endContract, String job, String status) {
 //  private void addToWorkersList() {
+//    addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031", "seller", "working");
+//  }
+
+//  private void addWorker(int id, String name, String surname, String login, String password, String startContract, String endContract, String job, String status) {
 //    addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031" ,"seller", "working");
 //  }
-//
-  public void addWorkerList() {
 
-    for(elements.Worker worker : manager.getWorkers())
-    tvWorkers.getItems().add(worker);
-  }
+    public void addWorkerList () {
 
-  public void setController(MainController controller) {
-    this.controller = controller;
-  }
-
-  public void setLoginController(LoginPaneController LoginController) {
-    this.loginController = LoginController;
-  }
-
-  public void setManagerController(ManagerPaneController managerController) {
-    this.managerController = managerController;
-  }
-
-  public void bBackClick(ActionEvent event) {
-    loginController.setManagerPane();
-  }
-
-  public void bAddClick(ActionEvent event) {
-    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AddWorkerPane.fxml"));
-    AnchorPane addProductPane = null;
-    try {
-      addProductPane = loader.load();
-    } catch (IOException e) {
-      e.printStackTrace();
+      for (elements.Worker worker : manager.getWorkers())
+        tvWorkers.getItems().add(worker);
     }
-    AddWorkerPaneController addProductController = loader.getController();
-    addProductController.setController(controller);
-    addProductController.setManagerController(managerController);
-    controller.setPane(addProductPane);
-  }
 
-  public void bDeleteClick(ActionEvent event) {
-    Object selectedItem = tvWorkers.getSelectionModel().getSelectedItem();
-    tvWorkers.getItems().remove(selectedItem);
-  }
+    public void setController (MainController controller){
+      this.controller = controller;
+    }
 
-  public void setManager(Manager manager) {
-    this.manager = manager;
+    public void setLoginController (LoginPaneController LoginController){
+      this.loginController = LoginController;
+    }
+
+    public void setManagerController (ManagerPaneController managerController){
+      this.managerController = managerController;
+    }
+
+    public void bBackClick (ActionEvent event){
+      loginController.setManagerPane();
+    }
+
+    public void bAddClick (ActionEvent event){
+      FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AddWorkerPane.fxml"));
+      AnchorPane addProductPane = null;
+      try {
+        addProductPane = loader.load();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      AddWorkerPaneController addProductController = loader.getController();
+      addProductController.setController(controller);
+      addProductController.setManagerController(managerController);
+      addProductController.setManager(manager);
+      controller.setPane(addProductPane);
+    }
+
+    public void bDeleteClick (ActionEvent event){
+      Object selectedItem = tvWorkers.getSelectionModel().getSelectedItem();
+      tvWorkers.getItems().remove(selectedItem);
+    }
+
+    public void setManager (Manager manager){
+      this.manager = manager;
+    }
   }
-}

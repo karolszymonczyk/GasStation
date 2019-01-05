@@ -12,9 +12,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import workers.Manager;
 
 import java.io.IOException;
-//
+import java.sql.SQLException;
+import java.sql.Savepoint;
+
 public class AddSalePaneController {
 
   @FXML
@@ -35,6 +38,9 @@ public class AddSalePaneController {
   private MainController controller;
 
   private LoginPaneController loginController;
+  private Manager manager;
+
+  Savepoint delete;
 
   @FXML
   public void initialize() {
@@ -45,26 +51,11 @@ public class AddSalePaneController {
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
     tvcQuantity.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
     tvcSum.setCellValueFactory(new PropertyValueFactory<>("Sum"));
-    addToProductList();
   }
 
-  public void addToProductList() { //TODO tutaj trzeba podpiąc produkty z bazy
-    addProduct("Narty", "192342144");
-    addProduct("Papieroski", "212342144");
-    addProduct("Kajzerki", "312342144");
-    addProduct("Piwo", "412342144");
-    addProduct("Snickers", "512342144");
-    addProduct("Bounty", "612342144");
-    addProduct("Haribo", "712342144");
-    addProduct("Benzyna", "812342144");
-    addProduct("Gumy kulki", "912342144");
-    addProduct("Prince Polo", "102342144");
-    addProduct("Gaz", "112342144");
-    addProduct("Popcorn", "123542134");
-  }
 
-  public void addProduct(String name, String code) {
-    Product product = new Product(name, code);
+  public void addToProductList() {
+    for(Product product : manager.getProductsToSale())
     tvProducts.getItems().add(product);
   }
 
@@ -76,34 +67,55 @@ public class AddSalePaneController {
     this.loginController = LoginController;
   }
 
-  public void bAddClick(ActionEvent event) { //TODO tutaj po kliknięciu trzeba sprawdzić czy dany kod jest w bazie i jak jest to odczytać jaki produkt ma dany kod
+  public void bAddClick(ActionEvent event) {
     lWarning.setText("");
-    //pobieramy kod z taProduct i szukamy go w bazie
-    String code = taProduct.getText();
+    String sCode = taProduct.getText();
     String quantity = taQuantity.getText();
 
-    if(code.equals("") || quantity.equals("")) {
-      lWarning.setText("Wrong input!");
-      return;
+    int intQuantity;
+    int iCode;
+
+    if(!manager.isTransactionStarted()){
+      manager.setTransactionStarted(true);
+
+      try {
+        manager.getConnection().setAutoCommit(false);
+        manager.createBill();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
 
-    int intQuantity;
     try {
       intQuantity = Integer.parseInt(quantity);
+      iCode = Integer.parseInt(sCode);
     } catch (NumberFormatException e) {
       lWarning.setText("Wrong input!");
       return;
     }
 
-    //TODO tutaj dodać że jak nie ma w bazie takiego kodu to tak jak wyżej ustawić label i return
-    //TODO trzeba też tutaj sprawdzić czy jest tyle dostępne
+    if(!manager.searchForProductFromCode(iCode)){
+      lWarning.setText("No such product!");
+      return;
+    }else if(manager.checkAmount(iCode) >= intQuantity && manager.isTransactionStarted()){
+      try {
+        delete =  manager.getConnection().setSavepoint("delete");
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+      float price = manager.getPrice(iCode);
+      manager.createSale(iCode,intQuantity);
+      manager.addToBill(price*intQuantity);
+      BillElement billElement = new BillElement(manager.getProductName(iCode),intQuantity,price,-1);
+      tvBill.getItems().add(billElement);
+      setTotal();
+    }  else {
+      lWarning.setText("Not enough products!");
+      return;
+    }
 
-    //TODO jak kod jest w bazie to trzeba pobrać jego nazwe i ilosc
 
-    //TODO tutaj zamiast code trzeba podać nazwę produktu o takim kodzie i jego cene
-    //BillElement billElement = new BillElement(code, intQuantity, 12.99);
 
-    //tvBill.getItems().add(billElement);
     setTotal();
 
     taProduct.setText("");
@@ -126,17 +138,25 @@ public class AddSalePaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    manager.setTransactionStarted(false);
+    Integer NIP;
+
     if(tfCustomer.getText().equals("")) {
-      System.out.println("NULL");
+      NIP = null;
+      manager.closeBillWithoutCustomer();
     } else {
-      System.out.println(tfCustomer.getText());
+      NIP = Integer.parseInt(tfCustomer.getText());
+      manager.closeBill(NIP);
     }
 
-    //TODO pobrac wszystko z tvBill i dodac do tabeli sale
-    //tvBill.getItems();
+    try {
 
-    //TODO pobrac całą cene total (UWAGA bo tam jest string z dodatkiem zł na końcu!)
-    //lTotal.getText();
+      manager.getConnection().commit();
+      manager.getConnection().setAutoCommit(true);
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
@@ -144,11 +164,32 @@ public class AddSalePaneController {
   }
 
   public void bDeleteClick(ActionEvent event) {
-    Object selectedItem = tvBill.getSelectionModel().getSelectedItem();
+
+    BillElement selectedItem = (BillElement) tvBill.getSelectionModel().getSelectedItem();
+    try {
+      manager.getConnection().rollback(delete);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
     tvBill.getItems().remove(selectedItem);
+    setTotal();
   }
 
   public void bBackClick(ActionEvent event) {
-    loginController.setManagerPane();
+
+
+      try {
+        manager.getConnection().rollback();
+        manager.getConnection().setAutoCommit(true);
+      } catch (SQLException e) {
+        System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
+      }
+      manager.deleteBill();
+      manager.downloadBills();
+      loginController.setManagerPane();
+  }
+
+  public void setManager(Manager manager) {
+    this.manager=manager;
   }
 }

@@ -1,11 +1,14 @@
 package controllers;
 
+import elements.Product;
+import elements.ProductView;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import workers.Manager;
 
 //
 public class AddProductPaneController {
@@ -18,6 +21,8 @@ public class AddProductPaneController {
   public TextField tfPrice;
   public TextField tfTax;
 //  public TextField taDeliverer;
+
+  private Manager manager;
 
   private MainController controller;
 //  private LoginPaneController loginController;
@@ -37,7 +42,11 @@ public class AddProductPaneController {
   }
 
   public void bBackClick(ActionEvent event) {
+    manager.downloadProducts();
+//  managerController.getManager().downloadProducts();
     managerController.setViewProductsPane();
+
+
   }
 
   public void bCreateClick(ActionEvent event) {
@@ -55,6 +64,10 @@ public class AddProductPaneController {
       lError.setVisible(true);
       return;
     }
+
+    manager.addProduct(name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(code),Integer.parseInt(amount));
+
+    //ProductView product = new ProductView(code,name,Double.parseDouble(price),Double.parseDouble(tax),Integer.parseInt(amount));
 
     lSucces.setVisible(true);
     setDisbledPane();
@@ -78,5 +91,9 @@ public class AddProductPaneController {
       return false;
     }
     return true;
+  }
+
+  public void setManager(Manager manager) {
+    this.manager=manager;
   }
 }

@@ -16,8 +16,8 @@
                 <Font size="48.0" />
             </font>
         </Label>
-        <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" text="add delivery" />
-        <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" text="delete delivery" />
+        <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" onAction="#bDeleteClick" text="add delivery" />
+        <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" onAction="#bDeleteClick" text="delete delivery" />
       <Button layoutX="35.0" layoutY="84.0" mnemonicParsing="false" onAction="#bRefreshClick" text="refresh" />
       <TableView fx:id="tvDelivers" layoutX="61.0" layoutY="135.0" prefHeight="478.0" prefWidth="391.0">
          <columns>

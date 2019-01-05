@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import workers.Manager;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,6 +18,8 @@ public class AddWorkerPaneController {
   public Button bCreate;
   public Label lError;
   public Label lSucces;
+
+  Manager manager;
 
   private MainController controller;
   //  private LoginPaneController loginController;
@@ -40,6 +43,7 @@ public class AddWorkerPaneController {
   }
 
   public void bBackClick(ActionEvent event) {
+    manager.downloadWorkers();
     managerController.setViewWorkersPane();
   }
 
@@ -64,5 +68,9 @@ public class AddWorkerPaneController {
     dpStart.setDisable(true);
     dpEnd.setDisable(true);
     bCreate.setDisable(true);
+  }
+
+  public void setManager(Manager manager) {
+    this.manager = manager;
   }
 }

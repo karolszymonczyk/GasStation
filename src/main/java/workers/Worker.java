@@ -67,5 +67,100 @@ public abstract class Worker {
 
     return name;
   }
+
+  public void createBill(){
+    try {
+      cSt = connection.prepareCall("{CALL createBill()}");
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      System.out.println("ERROR");
+    }
+  }
+
+  public int checkAmount(int code) {
+
+    int amount = 0;
+
+    try {
+      st = connection.createStatement();
+      rs = st.executeQuery("SELECT amount FROM product WHERE code = '" + code + "'");
+
+      while (rs.next()) {
+        amount = rs.getInt("amount");
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return amount;
+  }
+
+  public float getPrice(int code) {
+
+    float price = 0;
+
+    try {
+      st = connection.createStatement();
+      rs = st.executeQuery("SELECT price FROM product WHERE code =" + code);
+      while(rs.next()) {
+        price = rs.getFloat("price");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return price;
+  }
+
+  public void createSale(int code, int amount) {
+    try {
+      cSt = connection.prepareCall("{CALL addSale(?, ?)}");
+      cSt.setInt(1,code);
+      cSt.setInt(2,amount);
+      cSt.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void addToBill(float value){
+    try {
+      cSt = connection.prepareCall("{CALL billValueUpdate(?)}");
+      cSt.setFloat(1,value);
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void closeBillWithoutCustomer() {
+    try {
+      cSt = connection.prepareCall("{CALL closeBillWithoutCustomer()}");
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void closeBill(Integer NIP) {
+    try {
+      cSt = connection.prepareCall("{CALL closeBill(?)}");
+      cSt.setInt(1,NIP);
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void deleteBill(){
+    try {
+      cSt = connection.prepareCall("{CALL deleteBill()}");
+      cSt.executeQuery();
+      System.out.println("Usunalem rachunek");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
 }
 

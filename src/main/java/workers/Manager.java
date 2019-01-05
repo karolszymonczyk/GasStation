@@ -1,12 +1,10 @@
 package workers;
 
-import elements.ManagerBill;
-import elements.ManagerSale;
-import elements.Product;
-import elements.ProductView;
+import elements.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Manager extends Worker {
@@ -15,16 +13,20 @@ public class Manager extends Worker {
   ArrayList<ManagerBill> billElements;
   ManagerSale managerSale;
   ManagerBill managerBill;
+  boolean transactionStarted = false;
 
   boolean tranactionStarted = false;
   private ArrayList<ProductView> products;
+  private ArrayList<Product> productsToSale;
   ArrayList<elements.Worker> workers;
+  ArrayList<Deliver> deliveries;
+  ArrayList<ProductForDeliver> deliveryElements;
+  ProductForDeliver productForDeliver;
+  private Deliver delivery;
 
   public Manager(Connection connection) {
     this.connection = connection;
-    downloadBills();
-    downloadProducts();
-    downloadWorkers();
+    downloadAll();
   }
 
   public void downloadBills(){
@@ -44,7 +46,7 @@ public class Manager extends Worker {
 
 
         id1 = rs.getInt("id");
-        String time = rs.getDate("time").toString();
+        String time = rs.getTimestamp("time").toString();
         String seller = rs.getString("worker");
         double value = rs.getFloat("value");
         String product = rs.getString("product");
@@ -74,6 +76,47 @@ public class Manager extends Worker {
     }
   }
 
+  public void downloadDeliveries(){
+    deliveries = new ArrayList<>();
+
+    try {
+      st = connection.createStatement();
+      rs = st.executeQuery("SELECT d.id,d.time,de.product_id,de.amount,(SELECT name FROM product where code = de.product_id) as name,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = d.storekeeper) as storekeeper, de.deliverer FROM delivery d JOIN delivery_deliveryelement dde ON dde.delivery = d.id JOIN delivery_element de ON dde.delivery_element = de.id;");
+      int id1;
+      int id2=-1;
+      while (rs.next()) {
+
+        id1 = rs.getInt("id");
+        String time = rs.getTimestamp("time").toString();
+        String storekeeper = rs.getString("storekeeper");
+        String deliverer = rs.getString("deliverer");
+        String name = rs.getString("name");
+        int amount = rs.getInt("amount");
+        Integer code = rs.getInt("product_id");
+
+        productForDeliver = new ProductForDeliver(name, code.toString(), amount);
+
+
+        if(id1==id2){
+          deliveries.remove(deliveries.size()-1);
+        }
+
+        else{
+          deliveryElements = new ArrayList<>();
+        }
+
+        deliveryElements.add(productForDeliver);
+        delivery = new Deliver(id1,time,deliverer,storekeeper,deliveryElements);
+        deliveries.add(delivery);
+        id2=id1;
+
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
   public ArrayList<ManagerSale> getBills() {
     return bills;
   }
@@ -88,6 +131,7 @@ public class Manager extends Worker {
 
   public void downloadProducts(){
     products = new ArrayList<>();
+    productsToSale = new ArrayList<>();
 
     try {
       st = connection.createStatement();
@@ -102,6 +146,8 @@ public class Manager extends Worker {
         int amount = rs.getInt("amount");
 
         ProductView productView = new ProductView(code.toString(),name,price,tax,amount);
+        Product product = new Product(name,code.toString());
+        productsToSale.add(product);
         products.add(productView);
       }
 
@@ -109,6 +155,7 @@ public class Manager extends Worker {
       e.printStackTrace();
     }
   }
+
 
   public void downloadWorkers(){
     workers = new ArrayList<>();
@@ -144,5 +191,68 @@ public class Manager extends Worker {
 
   public ArrayList<elements.Worker> getWorkers() {
     return workers;
+  }
+
+  public void addProduct(String name, float price, float tax, int code, int amount) {
+    try {
+      st = connection.createStatement();
+      String sql = "INSERT INTO product (name, price, tax, code, amount) VALUES ('"+name+"',"+price+","+tax+","+code+","+amount+")";
+      st.executeUpdate(sql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void deleteProduct(int code){
+    try {
+      st = connection.createStatement();
+      String sql = "DELETE FROM product WHERE code = " + code;
+      st.executeUpdate(sql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void deleteSale(int id){
+    try {
+      st = connection.createStatement();
+      String sql = "DELETE FROM bill WHERE id = " + id;
+      st.executeUpdate(sql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void deleteDelivery(int id){
+    try {
+      st = connection.createStatement();
+      String sql = "DELETE FROM delivery WHERE id = " + id;
+      st.executeUpdate(sql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void downloadAll(){
+    downloadWorkers();
+    downloadProducts();
+    downloadBills();
+    downloadDeliveries();
+  }
+
+  public ArrayList<Product> getProductsToSale() {
+    return productsToSale;
+  }
+
+  public boolean isTransactionStarted() {
+    return transactionStarted;
+  }
+
+  public void setTransactionStarted(boolean transactionStarted) {
+    this.transactionStarted = transactionStarted;
+  }
+
+  public ArrayList<Deliver> getDeliveries() {
+    return deliveries;
   }
 }
