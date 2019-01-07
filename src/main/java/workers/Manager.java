@@ -4,6 +4,7 @@ import elements.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class Manager extends Worker {
 
@@ -21,9 +22,11 @@ public class Manager extends Worker {
   ArrayList<ProductForDeliver> deliveryElements;
   ProductForDeliver productForDeliver;
   private Deliver delivery;
+  private ArrayList<ProductForDeliver> deliveredProducts;
 
   public Manager(Connection connection) {
     this.connection = connection;
+    deliveredProducts = new ArrayList<>();
     downloadAll();
   }
 
@@ -295,5 +298,12 @@ public class Manager extends Worker {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+  public void addDeliveryProduct(ProductForDeliver product){
+    deliveredProducts.add(product);
+  }
+
+  public ArrayList<ProductForDeliver> getDeliveredProducts() {
+    return deliveredProducts;
   }
 }

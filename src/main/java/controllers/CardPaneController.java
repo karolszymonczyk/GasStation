@@ -19,6 +19,7 @@ public class CardPaneController {
   private MainController controller;
   private LoginPaneController loginController;
   private Seller seller;
+  private String customer;
 
   @FXML
   public void initialize() {
@@ -34,7 +35,7 @@ public class CardPaneController {
   }
 
   public void bBackClick(ActionEvent event) {
-    loginController.setSellerPane();
+    loginController.setSellerPane(customer);
   }
 
   public void bCreateClick(ActionEvent event) {
@@ -77,5 +78,9 @@ public class CardPaneController {
 
   void setSeller(Seller seller) {
     this.seller = seller;
+  }
+
+  public void setCustomer(String customer) {
+    this.customer = customer;
   }
 }

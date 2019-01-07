@@ -30,6 +30,6 @@ public class AvailabilityPaneController {
   }
 
   public void bBackClick(ActionEvent event) {
-    loginController.setSellerPane();
+    loginController.setSellerPane("");
   }
 }

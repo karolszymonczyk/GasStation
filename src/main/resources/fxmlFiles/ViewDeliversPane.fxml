@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewDeliversPaneController">
     <children>
+      <ImageView fitHeight="650.0" fitWidth="894.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/theme.jpg" />
+         </image>
+      </ImageView>
         <Button layoutX="784.0" layoutY="14.0" mnemonicParsing="false" onAction="#bBackClick" text="Back" />
-        <Label layoutX="312.0" layoutY="39.0" text="DELIVERS">
-            <font>
-                <Font size="48.0" />
-            </font>
-        </Label>
-        <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" onAction="#bDeleteClick" text="add delivery" />
-        <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" onAction="#bDeleteClick" text="delete delivery" />
-      <Button layoutX="35.0" layoutY="84.0" mnemonicParsing="false" onAction="#bRefreshClick" text="refresh" />
-      <TableView fx:id="tvDelivers" layoutX="61.0" layoutY="135.0" prefHeight="478.0" prefWidth="391.0">
+        <Button layoutX="699.0" layoutY="498.0" mnemonicParsing="false" onAction="#bAddClick" prefWidth="125.0" text="Add delivery" />
+        <Button layoutX="697.0" layoutY="556.0" mnemonicParsing="false" onAction="#bDeleteClick" prefWidth="125.0" text="Delete delivery" />
+      <Button layoutX="697.0" layoutY="325.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
+      <TableView fx:id="tvDelivers" layoutX="40.0" layoutY="40.0" prefHeight="580.0" prefWidth="391.0">
          <columns>
             <TableColumn fx:id="tvcId" prefWidth="30.0" text="id" />
             <TableColumn fx:id="tvcData" prefWidth="128.0" text="date" />
@@ -27,13 +27,13 @@
             <TableColumn fx:id="tvcStorekeeper" prefWidth="116.0" text="storekeeper" />
          </columns>
       </TableView>
-      <TableView fx:id="tvProducts" layoutX="490.0" layoutY="135.0" prefHeight="478.0" prefWidth="227.0">
+      <TableView fx:id="tvProducts" layoutX="460.0" layoutY="40.0" prefHeight="580.0" prefWidth="227.0">
          <columns>
             <TableColumn fx:id="tvcProduct" prefWidth="78.0" text="product" />
             <TableColumn fx:id="tvcCode" prefWidth="91.0" text="code" />
-            <TableColumn fx:id="tvcAmount" minWidth="0.0" prefWidth="57.0" text="amount" />
+            <TableColumn fx:id="tvcAmount" minWidth="0.0" prefWidth="56.0" text="amount" />
          </columns>
       </TableView>
-      <Button layoutX="745.0" layoutY="450.0" mnemonicParsing="false" onAction="#bShowClick" prefHeight="25.0" prefWidth="94.0" text="show delivery" />
+      <Button layoutX="699.0" layoutY="441.0" mnemonicParsing="false" onAction="#bShowClick" prefHeight="25.0" prefWidth="125.0" text="Show delivery" />
     </children>
 </AnchorPane>

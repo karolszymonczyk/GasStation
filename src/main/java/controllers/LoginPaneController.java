@@ -58,12 +58,12 @@ public class LoginPaneController {
 
       } else if ("seller".equals(loginCheck.job)) {
         seller = new Seller(loginCheck.getConnection());
-        setSellerPane();
+        setSellerPane("");
         //seller.createBill();
 
       } else if ("storekeeper".equals(loginCheck.job)) {//TODO test.storekeeper pass: sk
         storeKeeper = new Storekeeper(loginCheck.getConnection());
-        setStorekeeperPane();
+        setStorekeeperPane("");
       } else {
         System.out.println("DATABASE ERROR");
 
@@ -87,7 +87,7 @@ public class LoginPaneController {
     controller.setPane(managerPane);
   }
 
-  public void setSellerPane() {
+  public void setSellerPane(String customer) {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/SellerPane.fxml"));
     AnchorPane sellerPane = null;
     try {
@@ -99,12 +99,13 @@ public class LoginPaneController {
     sellerController.setSeller(seller);
     sellerController.setController(controller);
     sellerController.setLoginController(this);
+    sellerController.setCustomer(customer);
     sellerController.addToProductList(seller.getProducts());
 
     controller.setPane(sellerPane);
   }
 
-  public void setStorekeeperPane() {
+  public void setStorekeeperPane(String deliverer) {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/StorekeeperPane.fxml"));
     AnchorPane storekeeperPane = null;
     try {
@@ -116,6 +117,7 @@ public class LoginPaneController {
     storekeeperController.setStoreKeeper(storeKeeper);
     storekeeperController.setController(controller);
     storekeeperController.setLoginController(this);
+    storekeeperController.setDeliverer(deliverer);
     storekeeperController.addToList(storeKeeper.getDeliveredProducts());
     controller.setPane(storekeeperPane);
   }

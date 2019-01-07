@@ -40,8 +40,8 @@ public class StorekeeperPaneController {
   Savepoint delete;
 
 
-  private MainController controller;
-  private LoginPaneController loginController;
+  MainController controller;
+  LoginPaneController loginController;
 
   String deliverer;
 
@@ -161,6 +161,7 @@ public class StorekeeperPaneController {
     newProductController.setStorekeeper(storekeeper);
     newProductController.setController(controller);
     newProductController.setLoginController(loginController);
+    newProductController.setDeliverer(tfDeliverer.getText());
     controller.setPane(newProductPane);
   }
 
@@ -225,6 +226,9 @@ public class StorekeeperPaneController {
     bAddNewProduct.setDisable(true);
     bFinishDelivery.setDisable(true);
     bDelete.setDisable(true);
+  }
+  public void setDeliverer(String deliverer) {
+    tfDeliverer.setText(deliverer);
   }
 
   public void setStoreKeeper(Storekeeper storeKeeper) {

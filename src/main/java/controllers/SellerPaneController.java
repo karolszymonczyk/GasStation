@@ -144,7 +144,7 @@ public class SellerPaneController {
       float price = seller.getPrice(iCode);
       seller.createSale(iCode,intQuantity);
       seller.addToBill(price*intQuantity);
-      BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price,-1);
+      BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price);
       tvBill.getItems().add(billElement);
       setTotal();
     }  else {
@@ -243,6 +243,7 @@ public class SellerPaneController {
     cardController.setSeller(seller);
     cardController.setController(controller);
     cardController.setLoginController(loginController);
+    cardController.setCustomer(tfCustomer.getText());
     controller.setPane(cardPane);
   }
 
@@ -274,4 +275,7 @@ public class SellerPaneController {
   }
 
 
+  public void setCustomer(String customer) {
+    tfCustomer.setText(customer);
+  }
 }

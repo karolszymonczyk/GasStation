@@ -123,10 +123,10 @@ public class ManagerPaneController {
   }
 
   public void bDeliversClick(ActionEvent event) {
-    setViewDeliveryPane();
+    setViewDeliversPane();
   }
 
-  public void setViewDeliveryPane() {
+  public void setViewDeliversPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewDeliversPane.fxml"));
     AnchorPane viewDeliversPane = null;
     try {
@@ -137,6 +137,7 @@ public class ManagerPaneController {
     ViewDeliversPaneController viewDeliversController = loader.getController();
     viewDeliversController.setController(controller);
     viewDeliversController.setLoginController(loginController);
+    viewDeliversController.setManagerController(this);
     viewDeliversController.setManager(manager);
     viewDeliversController.addDeliveriesToList();
     controller.setPane(viewDeliversPane);

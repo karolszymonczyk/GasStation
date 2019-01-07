@@ -27,6 +27,7 @@ public class NewProductPaneController {
 
   private MainController controller;
   private LoginPaneController loginController;
+  public String deliverer;
 
   @FXML
   public void initialize() {
@@ -41,8 +42,12 @@ public class NewProductPaneController {
     this.loginController = LoginController;
   }
 
+  public void setDeliverer(String deliverer) {
+    this.deliverer = deliverer;
+  }
+
   public void bBackClick(ActionEvent event) {
-    loginController.setStorekeeperPane();
+    loginController.setStorekeeperPane(deliverer);
 
 
   }
@@ -86,7 +91,7 @@ public class NewProductPaneController {
     setDisbledPane();
   }
 
-  private void setDisbledPane() {
+  void setDisbledPane() {
     tfName.setDisable(true);
     tfCode.setDisable(true);
     tfPrice.setDisable(true);

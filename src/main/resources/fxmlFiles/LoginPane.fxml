@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginPaneController">
+<AnchorPane prefHeight="650.0" prefWidth="849.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginPaneController">
    <children>
-      <VBox alignment="TOP_CENTER" layoutX="278.0" layoutY="167.0" prefHeight="316.0" prefWidth="295.0" spacing="30.0">
+      <ImageView fitHeight="650.0" fitWidth="849.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/theme.jpg" />
+         </image>
+      </ImageView>
+      <VBox alignment="TOP_CENTER" layoutX="277.0" layoutY="167.0" prefHeight="316.0" prefWidth="295.0" spacing="30.0">
          <children>
-            <Label text="SIGN IN">
+            <Label text="WELCOME">
                <font>
                   <Font size="50.0" />
                </font>
@@ -36,7 +41,7 @@
                   </VBox>
                </children>
             </HBox>
-            <Button fx:id="bLogin" defaultButton="true" mnemonicParsing="false" onAction="#bLoginClick" text="Log in">
+            <Button fx:id="bLogin" defaultButton="true" mnemonicParsing="false" onAction="#bLoginClick" text="LOG IN">
                <font>
                   <Font size="27.0" />
                </font>

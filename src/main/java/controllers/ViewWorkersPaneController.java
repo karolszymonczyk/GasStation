@@ -79,10 +79,10 @@ public class ViewWorkersPaneController {
       } catch (IOException e) {
         e.printStackTrace();
       }
-      AddWorkerPaneController addProductController = loader.getController();
-      addProductController.setController(controller);
-      addProductController.setManagerController(managerController);
-      addProductController.setManager(manager);
+      AddWorkerPaneController addWorkerController = loader.getController();
+      addWorkerController.setController(controller);
+      addWorkerController.setManagerController(managerController);
+      addWorkerController.setManager(manager);
       controller.setPane(addProductPane);
     }
 
@@ -90,9 +90,14 @@ public class ViewWorkersPaneController {
       elements.Worker selectedItem = (elements.Worker) tvWorkers.getSelectionModel().getSelectedItem();
       tvWorkers.getItems().remove(selectedItem);
       manager.deleteUser(selectedItem.getId());
+      manager.downloadWorkers();
     }
 
     public void setManager (Manager manager){
       this.manager = manager;
     }
+
+  public void bRefreshClick(ActionEvent event) {
+    manager.downloadAll();
   }
+}

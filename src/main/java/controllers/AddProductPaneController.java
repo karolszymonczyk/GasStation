@@ -45,6 +45,7 @@ public class AddProductPaneController {
     manager.downloadProducts();
 //  managerController.getManager().downloadProducts();
     managerController.setViewProductsPane();
+    manager.downloadProducts();
 
 
   }

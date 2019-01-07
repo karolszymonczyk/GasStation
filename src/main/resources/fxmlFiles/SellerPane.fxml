@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SellerPaneController">
     <children>
-        <Button layoutX="784.0" layoutY="14.0" mnemonicParsing="false" onAction="#bLogoutClick" text="Logout" />
-        <Label layoutX="343.0" layoutY="14.0" text="SELLER">
-            <font>
-                <Font size="48.0" />
-            </font>
-        </Label>
-      <VBox layoutX="734.0" layoutY="109.0" prefHeight="121.0" prefWidth="100.0" spacing="30.0">
+      <ImageView fitHeight="650.0" fitWidth="908.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/theme.jpg" />
+         </image>
+      </ImageView>
+        <Button layoutX="785.0" layoutY="10.0" mnemonicParsing="false" onAction="#bLogoutClick" text="Logout" />
+      <VBox layoutX="697.0" layoutY="130.0" prefHeight="100.0" prefWidth="125.0" spacing="30.0">
          <children>
-            <Button minWidth="100.0" mnemonicParsing="false" onAction="#bAvailabilityClick" text="Check  availability" textAlignment="CENTER" wrapText="true" />
-            <Button minWidth="100.0" mnemonicParsing="false" onAction="#bCardClick" text="Create bonus card" textAlignment="CENTER" wrapText="true" />
+            <Button minWidth="100.0" mnemonicParsing="false" onAction="#bAvailabilityClick" prefWidth="125.0" text="Check  availability" textAlignment="CENTER" wrapText="true" />
+            <Button minWidth="100.0" mnemonicParsing="false" onAction="#bCardClick" prefWidth="125.0" text="Create bonus card" textAlignment="CENTER" wrapText="true" />
          </children>
       </VBox>
       <HBox layoutX="37.0" layoutY="49.0" prefHeight="25.0" prefWidth="200.0" />
-      <TableView fx:id="tvProducts" layoutX="37.0" layoutY="41.0" prefHeight="580.0" prefWidth="200.0">
+      <TableView fx:id="tvProducts" layoutX="40.0" layoutY="40.0" prefHeight="580.0" prefWidth="250.0">
         <columns>
-          <TableColumn fx:id="tvName" prefWidth="95.0" text="name" />
-          <TableColumn fx:id="tvCode" prefWidth="103.0" text="code" />
+          <TableColumn fx:id="tvName" prefWidth="124.0" text="name" />
+          <TableColumn fx:id="tvCode" prefWidth="124.0" text="code" />
         </columns>
       </TableView>
-      <TableView fx:id="tvBill" layoutX="317.0" layoutY="118.0" prefHeight="366.0" prefWidth="361.0">
+      <TableView fx:id="tvBill" layoutX="320.0" layoutY="40.0" prefHeight="445.0" prefWidth="360.0">
         <columns>
           <TableColumn fx:id="tvcProduct" prefWidth="142.0" text="product" />
           <TableColumn fx:id="tvcPrice" prefWidth="79.0" text="price pc." />
@@ -37,14 +37,9 @@
             <TableColumn fx:id="tvcSum" prefWidth="68.0" text="sum" />
         </columns>
       </TableView>
-      <Label layoutX="479.0" layoutY="84.0" text="Bill">
+      <Label layoutX="573.0" layoutY="491.0" prefHeight="20.0" prefWidth="40.0" text="Total:">
          <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <Label layoutX="577.0" layoutY="491.0" prefHeight="17.0" prefWidth="36.0" text="Total:">
-         <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Label>
       <Label fx:id="lTotal" layoutX="623.0" layoutY="491.0" text="0,00 zł">
@@ -52,20 +47,20 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <HBox layoutX="318.0" layoutY="529.0" prefHeight="28.0" prefWidth="520.0" spacing="40.0">
+      <Button layoutX="697.0" layoutY="529.0" mnemonicParsing="false" onAction="#bAddClick" prefHeight="25.0" prefWidth="125.0" text="Add" />
+      <HBox layoutX="320.0" layoutY="527.0" prefHeight="28.0" prefWidth="338.0" spacing="40.0">
          <children>
             <TextField fx:id="taProduct" promptText="code" />
             <TextField fx:id="taQuantity" promptText="quantity" />
-            <Button mnemonicParsing="false" onAction="#bAddClick" prefHeight="25.0" prefWidth="65.0" text="Add" />
          </children>
       </HBox>
-      <Label fx:id="lWarning" layoutX="423.0" layoutY="593.0" textFill="#f50303">
+      <Label fx:id="lWarning" layoutX="390.0" layoutY="606.0" textFill="#f50303">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Button layoutX="697.0" layoutY="581.0" mnemonicParsing="false" onAction="#bSellClick" prefHeight="25.0" prefWidth="133.0" text="Sell" />
-      <Button layoutX="697.0" layoutY="459.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="65.0" text="Delete" />
-      <TextField fx:id="tfCustomer" layoutX="318.0" layoutY="581.0" prefHeight="25.0" prefWidth="339.0" promptText="Customer NIP" />
+      <Button layoutX="697.0" layoutY="581.0" mnemonicParsing="false" onAction="#bSellClick" prefHeight="25.0" prefWidth="125.0" text="Sell" />
+      <Button layoutX="697.0" layoutY="460.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="125.0" text="Delete" />
+      <TextField fx:id="tfCustomer" layoutX="320.0" layoutY="581.0" prefHeight="25.0" prefWidth="338.0" promptText="Customer NIP" />
     </children>
 </AnchorPane>

@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewWorkersPaneController">
     <children>
-        <Button layoutX="784.0" layoutY="14.0" mnemonicParsing="false" onAction="#bBackClick" text="Back" />
-        <Label layoutX="312.0" layoutY="39.0" text="WORKERS">
-            <font>
-                <Font size="48.0" />
-            </font>
-        </Label>
-        <TableView fx:id="tvWorkers" layoutX="21.0" layoutY="125.0" prefHeight="478.0" prefWidth="732.0">
+      <ImageView fitHeight="650.0" fitWidth="856.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/theme.jpg" />
+         </image>
+      </ImageView>
+        <Button layoutX="785.0" layoutY="10.0" mnemonicParsing="false" onAction="#bBackClick" prefWidth="54.0" text="Back" />
+        <TableView fx:id="tvWorkers" layoutX="40.0" layoutY="40.0" prefHeight="580.0" prefWidth="640.0">
             <columns>
-                <TableColumn fx:id="tvcId" prefWidth="34.0" text="id" />
-                <TableColumn fx:id="tvcName" prefWidth="61.0" text="name" />
-                <TableColumn fx:id="tvcSurname" prefWidth="95.0" text="surname" />
-                <TableColumn fx:id="tvcLogin" prefWidth="121.0" text="login" />
-            <TableColumn fx:id="tvcPassword" prefWidth="95.0" text="password" />
-            <TableColumn fx:id="tvcStartContract" prefWidth="97.0" text="start of contract" />
-            <TableColumn fx:id="tvcEndContract" prefWidth="95.0" text="end of contract" />
-            <TableColumn fx:id="tvcJob" prefWidth="61.0" text="job" />
-            <TableColumn fx:id="tvcStatus" prefWidth="72.0" text="status" />
+                <TableColumn fx:id="tvcId" prefWidth="25.0" text="id" />
+                <TableColumn fx:id="tvcName" prefWidth="53.0" text="name" />
+                <TableColumn fx:id="tvcSurname" prefWidth="85.0" text="surname" />
+                <TableColumn fx:id="tvcLogin" prefWidth="106.0" text="login" />
+            <TableColumn fx:id="tvcPassword" prefWidth="62.0" text="password" />
+            <TableColumn fx:id="tvcStartContract" prefWidth="100.0" text="start of contract" />
+            <TableColumn fx:id="tvcEndContract" prefWidth="91.0" text="end of contract" />
+            <TableColumn fx:id="tvcJob" minWidth="4.0" prefWidth="61.0" text="job" />
+            <TableColumn fx:id="tvcStatus" prefWidth="55.0" text="status" />
             </columns>
         </TableView>
-        <Button layoutX="758.0" layoutY="501.0" mnemonicParsing="false" onAction="#bAddClick" text="add worker" />
-        <Button layoutX="758.0" layoutY="563.0" mnemonicParsing="false" onAction="#bDeleteClick" text="delete worker" />
+        <Button layoutX="697.0" layoutY="595.0" mnemonicParsing="false" onAction="#bAddClick" prefWidth="125.0" text="Add worker" />
+        <Button layoutX="697.0" layoutY="540.0" mnemonicParsing="false" onAction="#bDeleteClick" prefWidth="125.0" text="Delete worker" />
+      <Button layoutX="707.0" layoutY="335.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
     </children>
 </AnchorPane>

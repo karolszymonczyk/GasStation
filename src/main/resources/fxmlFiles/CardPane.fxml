@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -10,32 +11,32 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.geometry.Insets?>
 
-<!--<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CardPaneController">-->
-<!--<children>-->
-<!--<Label layoutX="343.0" layoutY="46.0" text="CARD">-->
-<!--<font>-->
-<!--<Font size="64.0" />-->
-<!--</font>-->
-<!--</Label>-->
-<!--<Button layoutX="784.0" layoutY="21.0" mnemonicParsing="false" text="Back" />-->
-<!--</children>-->
-<!--</AnchorPane>-->
-
 <AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.CardPaneController">
    <children>
-      <Label layoutX="343.0" layoutY="46.0" text="CARD">
-         <font>
-            <Font size="64.0" />
-         </font>
-      </Label>
-      <Button layoutX="784.0" layoutY="21.0" mnemonicParsing="false" onAction="#bBackClick" text="Back" />
-      <HBox layoutX="326.0" layoutY="195.0" prefHeight="145.0" prefWidth="200.0">
+      <ImageView fitHeight="650.0" fitWidth="949.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/theme.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutX="785.0" layoutY="10.0" mnemonicParsing="false" onAction="#bBackClick" prefWidth="54.0" text="Back" />
+      <HBox layoutX="307.0" layoutY="205.0" prefHeight="145.0" prefWidth="200.0">
          <children>
-            <VBox alignment="TOP_RIGHT" prefHeight="308.0" prefWidth="67.0" spacing="40.0">
+            <VBox alignment="TOP_RIGHT" prefHeight="308.0" prefWidth="67.0" spacing="30.0">
                <children>
-                  <Label text="Name" />
-                  <Label text="Surname" />
-                  <Label text="NIP" />
+                  <Label text="Name">
+                     <padding>
+                        <Insets bottom="5.0" top="3.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Surname">
+                     <padding>
+                        <Insets bottom="5.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label text="NIP">
+                     <padding>
+                        <Insets top="3.0" />
+                     </padding></Label>
                </children>
                <padding>
                   <Insets right="7.0" />
@@ -50,15 +51,15 @@
             </VBox>
          </children>
       </HBox>
-      <Button fx:id="bCreate" layoutX="400.0" layoutY="374.0" mnemonicParsing="false" onAction="#bCreateClick" prefHeight="25.0" prefWidth="85.0" text="Create card" />
-      <Label fx:id="lError" layoutX="321.0" layoutY="486.0" text="Wrong input!" textFill="#f50505" visible="false">
+      <Button fx:id="bCreate" layoutX="383.0" layoutY="382.0" mnemonicParsing="false" onAction="#bCreateClick" prefHeight="25.0" prefWidth="85.0" text="Create card" />
+      <Label fx:id="lError" layoutX="352.0" layoutY="490.0" text="Wrong input!" textFill="#f50505" visible="false">
          <font>
-            <Font size="29.0" />
+            <Font size="25.0" />
          </font>
       </Label>
-      <Label fx:id="lSucces" layoutX="227.0" layoutY="486.0" text="Card has been successfully created" textFill="#75f507" visible="false">
+      <Label fx:id="lSucces" layoutX="234.0" layoutY="490.0" text="Card has been successfully created" textFill="#75f507" visible="false">
          <font>
-            <Font size="29.0" />
+            <Font size="25.0" />
          </font>
       </Label>
    </children>

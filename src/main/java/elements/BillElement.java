@@ -13,11 +13,11 @@ public class BillElement {
 
   }
 
-  public BillElement(String product, int quantity, double price, int saleID) {
+  public BillElement(String product, int quantity, double price) {
     this.product = product;
     this.quantity = quantity;
     this.price = price;
-    this.saleID = saleID;
+//    this.saleID = saleID;
     calculateSum();
   }
 

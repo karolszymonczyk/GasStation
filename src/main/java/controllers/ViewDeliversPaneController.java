@@ -7,11 +7,14 @@ import elements.ProductForDeliver;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import workers.Manager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 //
 public class ViewDeliversPaneController {
@@ -29,6 +32,7 @@ public class ViewDeliversPaneController {
   private LoginPaneController loginController;
 
   Manager manager;
+  public ManagerPaneController managerController;
 
   @FXML
   public void initialize() {
@@ -77,6 +81,10 @@ public class ViewDeliversPaneController {
     this.loginController = LoginController;
   }
 
+  public void setManagerController(ManagerPaneController managerController) {
+    this.managerController = managerController;
+  }
+
   public void bBackClick(ActionEvent event) {
     loginController.setManagerPane();
   }
@@ -95,6 +103,7 @@ public class ViewDeliversPaneController {
     tvDelivers.getItems().remove(selectedItem);
     tvProducts.getItems().clear();
     manager.deleteDelivery(selectedItem.getId());
+    manager.downloadDeliveries();
   }
 
   public void bShowClick(ActionEvent event) {
@@ -111,7 +120,26 @@ public class ViewDeliversPaneController {
   }
 
   public void bAddClick(ActionEvent event){
-    //add DeliveryForManager
+   setAddDeliveryPane("");
+  }
+
+  public void setAddDeliveryPane(String deliverer) {
+    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AddDeliveryPane.fxml"));
+    AnchorPane addDeliveryPane = null;
+    try {
+      addDeliveryPane = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    AddDeliveryPaneController addDeliveryController = loader.getController();
+    addDeliveryController.setController(controller);
+    addDeliveryController.setLoginController(loginController);
+    addDeliveryController.setManagerController(managerController);
+    addDeliveryController.setViewDeliversPaneController(this);
+    addDeliveryController.setDeliverer(deliverer);
+    addDeliveryController.setManager(manager);
+    controller.setPane(addDeliveryPane);
+
   }
 
   public void setManager(Manager manager) {

@@ -106,7 +106,7 @@ public class AddSalePaneController {
       float price = manager.getPrice(iCode);
       manager.createSale(iCode,intQuantity);
       manager.addToBill(price*intQuantity);
-      BillElement billElement = new BillElement(manager.getProductName(iCode),intQuantity,price,-1);
+      BillElement billElement = new BillElement(manager.getProductName(iCode),intQuantity,price);
       tvBill.getItems().add(billElement);
       setTotal();
     }  else {
@@ -191,5 +191,16 @@ public class AddSalePaneController {
 
   public void setManager(Manager manager) {
     this.manager=manager;
+  }
+
+  public void bAvailabilityClick(ActionEvent event) {
+
+    Product selectedItem = (Product) tvProducts.getSelectionModel().getSelectedItem();
+    String sCode = selectedItem.getCode();
+    int iCode = Integer.parseInt(sCode);
+    int amount = manager.checkAmount(iCode);
+    lWarning.setText("Available amount is : " + amount);
+
+
   }
 }
