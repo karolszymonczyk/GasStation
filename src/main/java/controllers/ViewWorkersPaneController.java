@@ -48,13 +48,6 @@ public class ViewWorkersPaneController {
     tvcStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
   }
 
-//  private void addToWorkersList() {
-//    addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031", "seller", "working");
-//  }
-
-//  private void addWorker(int id, String name, String surname, String login, String password, String startContract, String endContract, String job, String status) {
-//    addWorker(1, "Marcin", "Zapała", "marcin.zapala", "12345", "03-01-2019", "03-01-2031" ,"seller", "working");
-//  }
 
     public void addWorkerList () {
 
@@ -94,8 +87,9 @@ public class ViewWorkersPaneController {
     }
 
     public void bDeleteClick (ActionEvent event){
-      Object selectedItem = tvWorkers.getSelectionModel().getSelectedItem();
+      elements.Worker selectedItem = (elements.Worker) tvWorkers.getSelectionModel().getSelectedItem();
       tvWorkers.getItems().remove(selectedItem);
+      manager.deleteUser(selectedItem.getId());
     }
 
     public void setManager (Manager manager){

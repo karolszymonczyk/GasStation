@@ -22,20 +22,14 @@ public class LoginCheck {
     try {
       st = connection.createStatement();
 
-      rs = st.executeQuery("SELECT * FROM users JOIN worker ON users.worker_id = worker.id");
-
+      rs = st.executeQuery("SELECT * FROM users JOIN worker ON users.worker_id = worker.id WHERE login= \'" + inputUser + "\'&& password =\'" +inputPassword + "\'");
+      System.out.println("przed petla");
       while(rs.next()){
-        String user = rs.getString("login");
-        if(user.equals(inputUser)){
 
-          String password = rs.getString("password");
-          if(password.equals(inputPassword)){
 
             job = rs.getString("job");
-
+            System.out.println("job = " + job);
             return true;
-          }
-        }
       }
     } catch (SQLException e) {
       e.printStackTrace();

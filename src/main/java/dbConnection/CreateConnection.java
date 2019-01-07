@@ -29,10 +29,11 @@ public class CreateConnection {
     Connection connection = null;
 
     try {
-
-      connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/stacjapaliw?verifyServerCertificate=false&useSSL=true", user, password);
+      System.out.println(user + "  " + password);
+      connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/stacjapaliw?serverTimezone=UTC", user, password);
 
     } catch (SQLException e) {
+      e.printStackTrace();
       System.out.println("Connection Failed.");
     }
     return connection;

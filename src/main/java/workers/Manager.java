@@ -2,9 +2,7 @@ package workers;
 
 import elements.*;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Manager extends Worker {
@@ -254,5 +252,48 @@ public class Manager extends Worker {
 
   public ArrayList<Deliver> getDeliveries() {
     return deliveries;
+  }
+
+  public void deleteUser(int id){
+    try {
+
+      cSt = connection.prepareCall("{CALL deleteUser(?)}");
+      cSt.setInt(1, id);
+      cSt.execute();
+
+      st = connection.createStatement();
+      String sql = "DELETE FROM worker WHERE id = " + id;
+      st.executeUpdate(sql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void createUser(String name, String surname, String job, Date start, Date end) {
+
+
+    try{
+      cSt = connection.prepareCall("{CALL createWorker(?,?,?,?,?)}");
+      cSt.setString(1,name);
+      cSt.setString(2,surname);
+      cSt.setString(3,job);
+      cSt.setDate(4,start);
+      cSt.setDate(5,end);
+      cSt.execute();
+
+      st = connection.createStatement();
+      rs = st.executeQuery("SELECT id FROM worker WHERE name = '"+name+"' && surname = '" + surname + "'");
+      int id = 0;
+      while (rs.next()) {
+
+        id = rs.getInt("id");
+
+      }
+      cSt = connection.prepareCall("CALL createUser(?)");
+      cSt.setInt(1,id);
+      cSt.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 }

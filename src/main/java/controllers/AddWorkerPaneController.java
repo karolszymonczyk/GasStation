@@ -6,8 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import workers.Manager;
 
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
+
 //
 public class AddWorkerPaneController {
   public TextField tfName;
@@ -55,6 +56,18 @@ public class AddWorkerPaneController {
     String job = cbJob.getValue();
     String start = dpStart.getValue().toString();
     String end = dpEnd.getValue().toString();
+
+    Date startD = null;
+    Date endD = null;
+
+    try{
+      startD = Date.valueOf(start);
+      endD = Date.valueOf(end);
+    } catch (Exception e ){
+      e.printStackTrace();
+    }
+
+    manager.createUser(name,surname,job, startD,endD);
 
     lSucces.setVisible(true);
     setDisbledPane();
