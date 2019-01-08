@@ -102,6 +102,10 @@ public class LoginPaneController {
     sellerController.setLoginController(this);
     sellerController.setCustomer(customer);
     sellerController.addToProductList(seller.getProducts());
+    sellerController.updateBillList(seller.getActiveBill());
+    if(seller.getActiveBill().size()==0){
+      sellerController.disableButtons(true);
+    }
 
     controller.setPane(sellerPane);
   }

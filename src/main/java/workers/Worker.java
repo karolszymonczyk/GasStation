@@ -1,8 +1,9 @@
 package workers;
 
-import java.math.RoundingMode;
+import elements.BillElement;
+
 import java.sql.*;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public abstract class Worker {
 
@@ -10,40 +11,8 @@ public abstract class Worker {
   CallableStatement cSt;
   Statement st;
   ResultSet rs;
-  DecimalFormat df;
+  private ArrayList<BillElement> activeBill = new ArrayList<>();
 
-  public Worker(){
-    df = new DecimalFormat("##.##");
-    df.setRoundingMode(RoundingMode.DOWN);
-  }
-
-  public void startTransaction(){
-    try {
-      connection.setAutoCommit(false);
-    } catch (SQLException e) {
-      System.out.println("Starting transaction failed.");
-      e.printStackTrace();
-    }
-  }
-
-  public void endTransaction(){
-    try {
-      connection.commit();
-      connection.setAutoCommit(true);
-    } catch (SQLException e) {
-      System.out.println("Ending transaction failed.");
-      e.printStackTrace();
-    }
-  }
-
-  public void rollBack(){
-      try {
-        connection.rollback();
-      } catch (SQLException e) {
-        System.out.println("Rollback failed.");
-        e.printStackTrace();
-      }
-  }
   public boolean searchForProductFromCode(int code) {
     try {
       cSt = connection.prepareCall("{? = CALL searchProductFromCode(?)}");
@@ -160,6 +129,7 @@ public abstract class Worker {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    activeBill.clear();
   }
 
   public void deleteBill(){
@@ -204,6 +174,14 @@ public abstract class Worker {
 
   public double round(Double number){
     return Math.round(number*1e2)/1e2;
+  }
+
+  public void addToActiveBill(BillElement billElement){
+    activeBill.add(billElement);
+  }
+
+  public ArrayList<BillElement> getActiveBill() {
+    return activeBill;
   }
 }
 

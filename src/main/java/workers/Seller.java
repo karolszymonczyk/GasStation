@@ -1,5 +1,6 @@
 package workers;
 
+import elements.BillElement;
 import elements.Product;
 
 import java.sql.*;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 public class Seller extends Worker{
 
   private ArrayList<Product> products;
+
   private boolean transactionStarted = false;
 
   public Seller(Connection connection) {
@@ -77,4 +79,5 @@ public class Seller extends Worker{
   public void setTransactionStarted(boolean status){
     transactionStarted = status;
   }
+
 }

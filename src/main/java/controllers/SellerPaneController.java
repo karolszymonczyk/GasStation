@@ -51,21 +51,22 @@ public class SellerPaneController {
 
   private LoginPaneController loginController;
 
-  Savepoint delete;
+  private Savepoint delete;
 
   private Seller seller;
 
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
-    disableButtons(true);
+//    if(tvBill.getItems().isEmpty()){
+//      disableButtons(true);
+//    }
     tvName.setCellValueFactory(new PropertyValueFactory<>("Name"));
     tvCode.setCellValueFactory(new PropertyValueFactory<>("Code"));
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("Product"));
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
     tvcQuantity.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
     tvcSum.setCellValueFactory(new PropertyValueFactory<>("Sum"));
-
   }
 
   void addToProductList(ArrayList<Product> products) {
@@ -149,7 +150,7 @@ public class SellerPaneController {
       seller.createSale(iCode,intQuantity);
       seller.addToBill(price*intQuantity);
       BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price);
-      tvBill.getItems().add(billElement);
+      updateActiveBill(billElement);
       setTotal();
     }  else {
       lWarning.setText("Not enough products!");
@@ -160,9 +161,17 @@ public class SellerPaneController {
     taQuantity.setText("");
   }
 
-  public void setTotal() {
+  private void updateActiveBill(BillElement billElement){
+    seller.addToActiveBill(billElement);
+    tvBill.getItems().clear();
+    for(BillElement be : seller.getActiveBill()) {
+      tvBill.getItems().add(be);
+    }
+  }
+
+  private void setTotal() {
     double total = 0;
-    BillElement billElement = new BillElement();
+    BillElement billElement;
 
     for(int i = 0; i < tvBill.getItems().size(); i ++) {
       billElement = (BillElement)tvBill.getItems().get(i);
@@ -175,13 +184,9 @@ public class SellerPaneController {
 
   public void bSellClick(ActionEvent event) {
 
-    disableButtons(true);
-
-    seller.setTransactionStarted(false);
     Integer NIP;
 
     if(tfCustomer.getText().equals("")) {
-      NIP = null;
       seller.closeBillWithoutCustomer();
     } else {
       NIP = Integer.parseInt(tfCustomer.getText());
@@ -196,16 +201,11 @@ public class SellerPaneController {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    disableButtons(true);
 
+    seller.setTransactionStarted(false);
 
-
-    //TODO (DONE)  PO KLIKNIECIU SALE WSZYSTKIE KOMMITY SIĘ WYKONUĄJĄ(TE KTORE  NIE WYKONAŁY SIĘ W METODZIE CREATE SALE (INSERTOWANIE DO TABELI SALE W DB))
-
-    //TODO pobrac wszystko z tvBill i dodac do tabeli sale
-    //tvBill.getItems();
-
-    //TODO pobrac całą cene total (UWAGA bo tam jest string z dodatkiem zł na końcu!)
-    //lTotal.getText();
+    seller.getActiveBill().clear();
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
@@ -226,9 +226,8 @@ public class SellerPaneController {
       disableButtons(true);
     }
   }
-//
+
   public void bAvailabilityClick(ActionEvent event) {
-    //setAvailabilityPane();
     Product selectedItem = (Product) tvProducts.getSelectionModel().getSelectedItem();
     String sCode = selectedItem.getCode();
     int iCode = Integer.parseInt(sCode);
@@ -252,6 +251,7 @@ public class SellerPaneController {
     cardController.setSeller(seller);
     cardController.setController(controller);
     cardController.setLoginController(loginController);
+    cardController.setSellerController(this);
     cardController.setCustomer(tfCustomer.getText());
     controller.setPane(cardPane);
   }
@@ -263,21 +263,7 @@ public class SellerPaneController {
     }
     return false;
   }
-  
-//  public void setAvailabilityPane() {
-//    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
-//    AnchorPane availabilityPane = null;
-//    try {
-//      availabilityPane = loader.load();
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//    AvailabilityPaneController availabilityController = loader.getController();
-//    availabilityController.setController(controller);
-//    availabilityController.setLoginController(loginController);
-//    availabilityController.setTvProducts(tvProducts);
-//    controller.setPane(availabilityPane);
-//  }
+
 
   public void setSeller(Seller seller) {
     this.seller = seller;
@@ -297,5 +283,12 @@ public class SellerPaneController {
     tfCustomer.setText("");
     taQuantity.setText("");
     taProduct.setText("");
+  }
+
+  public void updateBillList(ArrayList<BillElement> billElements){
+    for(BillElement billElement : billElements){
+      System.out.println("DODAJE DODAJE");
+      tvBill.getItems().add(billElement);
+    }
   }
 }

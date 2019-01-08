@@ -1,5 +1,6 @@
 package controllers;
 
+import elements.BillElement;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ public class CardPaneController {
   private LoginPaneController loginController;
   private Seller seller;
   private String customer;
+  private SellerPaneController sellerController;
 
   @FXML
   public void initialize() {
@@ -35,7 +37,12 @@ public class CardPaneController {
   }
 
   public void bBackClick(ActionEvent event) {
+
+    for(BillElement billElement : seller.getActiveBill()){
+      System.out.println("bill elemenet = " + billElement);
+    }
     loginController.setSellerPane(customer);
+    sellerController.updateBillList(seller.getActiveBill());
   }
 
   public void bCreateClick(ActionEvent event) {
@@ -80,7 +87,11 @@ public class CardPaneController {
     this.seller = seller;
   }
 
-  public void setCustomer(String customer) {
+  void setCustomer(String customer) {
     this.customer = customer;
+  }
+
+  void setSellerController(SellerPaneController sellerController) {
+    this.sellerController = sellerController;
   }
 }
