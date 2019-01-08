@@ -8,9 +8,9 @@ import java.sql.SQLException;
 
 public class AddNewProductPaneController extends NewProductPaneController {
 
-  ViewDeliversPaneController viewDeliversController;
+  private ViewDeliversPaneController viewDeliversController;
   Manager manager;
-  public void setViewDeliversController(ViewDeliversPaneController viewDeliversController) {
+  void setViewDeliversController(ViewDeliversPaneController viewDeliversController) {
     this.viewDeliversController = viewDeliversController;
   }
 
@@ -39,8 +39,8 @@ public class AddNewProductPaneController extends NewProductPaneController {
     ProductForDeliver productForDeliver = new ProductForDeliver(manager.getProductName(codeInt),code,amountInt);
     manager.addDeliveryProduct(productForDeliver);
 
-    lSucces.setVisible(true);
-    setDisbledPane();
+    lSuccess.setVisible(true);
+    setDisabledPane();
   }
 
   public void setManager(Manager manager) {
