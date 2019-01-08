@@ -108,6 +108,9 @@ public class ManagerPaneController {
   }
 
   void setViewDeliversPane() {
+
+    manager.downloadDeliveries();
+
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewDeliversPane.fxml"));
     AnchorPane viewDeliversPane = null;
     try {

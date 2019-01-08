@@ -21,7 +21,8 @@ public class BillElement {
   }
 
   private void calculateSum() {
-    sum = quantity * price;
+    sum = Math.round(quantity * price*100);
+    sum = sum/100;
   }
 
   public String getProduct() {

@@ -182,7 +182,6 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
     lError.setVisible(false);
     lSuccess.setVisible(false);
     try {
-      System.out.println("przed nullem delete =  " + deleted);
       manager.getConnection().rollback(deleted);
     } catch (SQLException e) {
       e.printStackTrace();
