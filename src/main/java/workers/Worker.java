@@ -1,6 +1,8 @@
 package workers;
 
+import java.math.RoundingMode;
 import java.sql.*;
+import java.text.DecimalFormat;
 
 public abstract class Worker {
 
@@ -8,6 +10,12 @@ public abstract class Worker {
   CallableStatement cSt;
   Statement st;
   ResultSet rs;
+  DecimalFormat df;
+
+  public Worker(){
+    df = new DecimalFormat("##.##");
+    df.setRoundingMode(RoundingMode.DOWN);
+  }
 
   public void startTransaction(){
     try {
@@ -96,21 +104,22 @@ public abstract class Worker {
     return amount;
   }
 
-  public float getPrice(int code) {
+  public double getPrice(int code) {
 
-    float price = 0;
+    double price = 0;
 
     try {
       st = connection.createStatement();
       rs = st.executeQuery("SELECT price FROM product WHERE code =" + code);
       while(rs.next()) {
         price = rs.getFloat("price");
+        round(price);
       }
     } catch (SQLException e) {
       e.printStackTrace();
     }
 
-    return price;
+    return round(price);
   }
 
   public void createSale(int code, int amount) {
@@ -124,10 +133,10 @@ public abstract class Worker {
     }
   }
 
-  public void addToBill(float value){
+  public void addToBill(double value){
     try {
       cSt = connection.prepareCall("{CALL billValueUpdate(?)}");
-      cSt.setFloat(1,value);
+      cSt.setFloat(1,(float)value);
       cSt.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -191,6 +200,10 @@ public abstract class Worker {
       return false;
     }
     return true;
+  }
+
+  public double round(Double number){
+    return Math.round(number*1e2)/1e2;
   }
 }
 

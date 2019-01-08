@@ -48,6 +48,7 @@ public class StorekeeperPaneController {
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
+    disableButtons(true);
     tvcName.setCellValueFactory(new PropertyValueFactory<>("name"));
     tvcCode.setCellValueFactory(new PropertyValueFactory<>("code"));
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
@@ -85,6 +86,8 @@ public class StorekeeperPaneController {
   }
 
   public void bAddClick(ActionEvent event) {
+
+    disableButtons(false);
 
     lError.setVisible(false);
     lSuccess.setVisible(false);
@@ -131,6 +134,9 @@ public class StorekeeperPaneController {
     lSuccess.setVisible(true);
 
     addToList(storekeeper.getDeliveredProducts());
+
+    tfCode.setText("");
+    tfAmount.setText("");
   }
 
   public void addToList(ArrayList<ProductForDeliver> deliveredProducts){
@@ -193,9 +199,15 @@ public class StorekeeperPaneController {
     }
     Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
     tvProducts.getItems().remove(selectedItem);
+    if(tvProducts.getItems().isEmpty()){
+      disableButtons(true);
+    }
   }
 
   public void bFinishClick(ActionEvent event) {
+
+    disableButtons(true);
+
     lError.setVisible(false);
     lSuccess.setVisible(false);
 
@@ -211,27 +223,40 @@ public class StorekeeperPaneController {
 
     tvProducts.getItems().clear();
 
-    setDisabledPane();
+    clearTextFields();
+
+//    setDisabledPane();
   }
 
-  private void setDisabledPane() {
-
-    tfDeliverer.setDisable(true);
-    tfAmount.setDisable(true);
-    tfCode.setDisable(true);
-    tfAmount.setText("");
-    tfDeliverer.setText("");
-    tfCode.setText("");
-    bAdd.setDisable(true);
-    bAddNewProduct.setDisable(true);
-    bFinishDelivery.setDisable(true);
-    bDelete.setDisable(true);
-  }
+//  private void setDisabledPane() {
+//
+//    tfDeliverer.setDisable(true);
+//    tfAmount.setDisable(true);
+//    tfCode.setDisable(true);
+//    tfAmount.setText("");
+//    tfDeliverer.setText("");
+//    tfCode.setText("");
+//    bAdd.setDisable(true);
+//    bAddNewProduct.setDisable(true);
+//    bFinishDelivery.setDisable(true);
+//    bDelete.setDisable(true);
+//  }
   public void setDeliverer(String deliverer) {
     tfDeliverer.setText(deliverer);
   }
 
   public void setStoreKeeper(Storekeeper storeKeeper) {
     this.storekeeper=storeKeeper;
+  }
+
+  public void disableButtons(boolean bool){
+    bFinishDelivery.setDisable(bool);
+    bDelete.setDisable(bool);
+  }
+
+  public void clearTextFields(){
+    tfDeliverer.setText("");
+    tfCode.setText("");
+    tfAmount.setText("");
   }
 }

@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
 //
 //TODO zaminić password na PasswordLabel
 
@@ -50,7 +51,7 @@ public class LoginPaneController {
     login = tLogin.getText();
     password = tPassword.getText();
     LoginCheck loginCheck = new LoginCheck(login,password);
-
+    try {
     if(loginCheck.correctUserAndPass()) {
       if ("manager".equals(loginCheck.job)) {
         manager = new Manager(loginCheck.getConnection());
@@ -64,10 +65,10 @@ public class LoginPaneController {
       } else if ("storekeeper".equals(loginCheck.job)) {//TODO test.storekeeper pass: sk
         storeKeeper = new Storekeeper(loginCheck.getConnection());
         setStorekeeperPane("");
-      } else {
-        System.out.println("DATABASE ERROR");
-
       }
+    }
+    }catch (SQLException e){
+      lError.setVisible(true);
     }
   }
 

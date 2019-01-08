@@ -44,31 +44,10 @@ public class ViewDeliversPaneController {
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("name"));
     tvcCode.setCellValueFactory(new PropertyValueFactory<>("code"));
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
-    //addToDeliversList();
   }
 
-//  private void addToDeliversList() {
-//    //TODO tymczasowe do testów XD
-//    ArrayList<ProductForDeliver> elements1 = new ArrayList<>();
-//    ProductForDeliver d1 = new ProductForDeliver("piwko", "123", 1);
-//    ProductForDeliver d2 = new ProductForDeliver("paliwko", "555", 12);
-//    elements1.add(d1);
-//    elements1.add(d2);
-//
-//    addDeliver(1, "2018-09-19 21:37:00", "Robert Siemaszko", "Robi Ziomek", elements1);
-//
-//    //TODO tymczasowe do testów XD
-//    ArrayList<ProductForDeliver> elements2 = new ArrayList<>();
-//    ProductForDeliver d3 = new ProductForDeliver("hot-dog", "1253", 3);
-//    ProductForDeliver d4 = new ProductForDeliver("LPG", "11111", 100);
-//    elements2.add(d3);
-//    elements2.add(d4);
-//
-//    addDeliver(2,"2018-19-19 22:22:22", "Roksana Siema", "Norbi Ziomek", elements2);
-//  }
 
   public void addDeliveriesToList() {
-//    Deliver deliver = new Deliver(id, date, deliverer, storekeeper, elements);
     for(Deliver deliver : manager.getDeliveries())
     tvDelivers.getItems().add(deliver);
   }

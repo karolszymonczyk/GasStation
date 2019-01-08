@@ -44,6 +44,8 @@ public class SellerPaneController {
   public Label lWarning;
   public TableView tvBill;
   public TextField tfCustomer;
+  public Button bSell;
+  public Button bDelete;
 
   private MainController controller;
 
@@ -56,6 +58,7 @@ public class SellerPaneController {
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
+    disableButtons(true);
     tvName.setCellValueFactory(new PropertyValueFactory<>("Name"));
     tvCode.setCellValueFactory(new PropertyValueFactory<>("Code"));
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("Product"));
@@ -100,6 +103,7 @@ public class SellerPaneController {
 
   public void bAddClick(ActionEvent event) {
 
+    disableButtons(false);
 
     lWarning.setText("");
     String sCode = taProduct.getText();
@@ -141,7 +145,7 @@ public class SellerPaneController {
       } catch (SQLException e) {
         e.printStackTrace();
       }
-      float price = seller.getPrice(iCode);
+      double price = seller.getPrice(iCode);
       seller.createSale(iCode,intQuantity);
       seller.addToBill(price*intQuantity);
       BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price);
@@ -171,6 +175,7 @@ public class SellerPaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    disableButtons(true);
 
     seller.setTransactionStarted(false);
     Integer NIP;
@@ -204,7 +209,7 @@ public class SellerPaneController {
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
-    tfCustomer.setText("");
+    clearTextFields();
   }
 
   public void bDeleteClick(ActionEvent event) {
@@ -216,6 +221,10 @@ public class SellerPaneController {
     }
     tvBill.getItems().remove(selectedItem);
     setTotal();
+
+    if(tvBill.getItems().isEmpty()){
+      disableButtons(true);
+    }
   }
 //
   public void bAvailabilityClick(ActionEvent event) {
@@ -255,20 +264,20 @@ public class SellerPaneController {
     return false;
   }
   
-  public void setAvailabilityPane() {
-    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
-    AnchorPane availabilityPane = null;
-    try {
-      availabilityPane = loader.load();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    AvailabilityPaneController availabilityController = loader.getController();
-    availabilityController.setController(controller);
-    availabilityController.setLoginController(loginController);
-    availabilityController.setTvProducts(tvProducts);
-    controller.setPane(availabilityPane);
-  }
+//  public void setAvailabilityPane() {
+//    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
+//    AnchorPane availabilityPane = null;
+//    try {
+//      availabilityPane = loader.load();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//    AvailabilityPaneController availabilityController = loader.getController();
+//    availabilityController.setController(controller);
+//    availabilityController.setLoginController(loginController);
+//    availabilityController.setTvProducts(tvProducts);
+//    controller.setPane(availabilityPane);
+//  }
 
   public void setSeller(Seller seller) {
     this.seller = seller;
@@ -277,5 +286,16 @@ public class SellerPaneController {
 
   public void setCustomer(String customer) {
     tfCustomer.setText(customer);
+  }
+
+  public void disableButtons(boolean bool){
+    bSell.setDisable(bool);
+    bDelete.setDisable(bool);
+  }
+
+  public void clearTextFields(){
+    tfCustomer.setText("");
+    taQuantity.setText("");
+    taProduct.setText("");
   }
 }

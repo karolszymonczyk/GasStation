@@ -34,7 +34,7 @@
           <TableColumn fx:id="tvcProduct" prefWidth="142.0" text="product" />
           <TableColumn fx:id="tvcPrice" prefWidth="79.0" text="price pc." />
             <TableColumn fx:id="tvcQuantity" prefWidth="70.0" text="quantity" />
-            <TableColumn fx:id="tvcSum" prefWidth="68.0" text="sum" />
+            <TableColumn fx:id="tvcSum" prefWidth="67.0" text="sum" />
         </columns>
       </TableView>
       <Label layoutX="573.0" layoutY="491.0" prefHeight="20.0" prefWidth="40.0" text="Total:">
@@ -59,8 +59,8 @@
             <Font name="System Bold" size="19.0" />
          </font>
       </Label>
-      <Button layoutX="697.0" layoutY="581.0" mnemonicParsing="false" onAction="#bSellClick" prefHeight="25.0" prefWidth="125.0" text="Sell" />
-      <Button layoutX="697.0" layoutY="460.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="125.0" text="Delete" />
+      <Button fx:id="bSell" layoutX="697.0" layoutY="581.0" mnemonicParsing="false" onAction="#bSellClick" prefHeight="25.0" prefWidth="125.0" text="Sell" />
+      <Button fx:id="bDelete" layoutX="697.0" layoutY="460.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="125.0" text="Delete" />
       <TextField fx:id="tfCustomer" layoutX="320.0" layoutY="581.0" prefHeight="25.0" prefWidth="338.0" promptText="Customer NIP" />
     </children>
 </AnchorPane>

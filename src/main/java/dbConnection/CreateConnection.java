@@ -12,14 +12,14 @@ public class CreateConnection {
   private String user;
   private String password;
 
-  public CreateConnection(String user, String password) {
+  public CreateConnection (String user, String password) throws SQLException {
 
     this.user = user;
     this.password = password;
     this.connection = connector();
   }
 
-  private Connection connector() {
+  private Connection connector() throws SQLException {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
     } catch (ClassNotFoundException e) {
@@ -28,14 +28,15 @@ public class CreateConnection {
 
     Connection connection = null;
 
-    try {
+//    try {
       System.out.println(user + "  " + password);
       connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/stacjapaliw?serverTimezone=UTC", user, password);
 
-    } catch (SQLException e) {
-      e.printStackTrace();
-      System.out.println("Connection Failed.");
-    }
+//    } catch (SQLException e) {
+//      lError.setVisible(true);
+//      e.printStackTrace();
+//      System.out.println("Connection Failed.");
+//    }
     return connection;
   }
 

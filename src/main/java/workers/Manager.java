@@ -2,7 +2,9 @@ package workers;
 
 import elements.*;
 
+import java.math.RoundingMode;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Queue;
 
@@ -24,9 +26,13 @@ public class Manager extends Worker {
   private Deliver delivery;
   private ArrayList<ProductForDeliver> deliveredProducts;
 
+//  DecimalFormat df = new DecimalFormat("##.##");
+
+
   public Manager(Connection connection) {
     this.connection = connection;
     deliveredProducts = new ArrayList<>();
+//    df.setRoundingMode(RoundingMode.DOWN);
     downloadAll();
   }
 
@@ -52,7 +58,9 @@ public class Manager extends Worker {
         double value = rs.getFloat("value");
         String product = rs.getString("product");
         int amount = rs.getInt("amount");
-        float price = rs.getFloat("price");
+        double price = rs.getFloat("price");
+        price = round(price);
+        value = round(value);
 
         managerBill = new ManagerBill(product,amount,price);
 
@@ -142,9 +150,11 @@ public class Manager extends Worker {
 
         Integer code = rs.getInt("code");
         String name = rs.getString("name");
-        float price = rs.getFloat("price");
+        double price = rs.getFloat("price");
         double tax = rs.getFloat("tax");
         int amount = rs.getInt("amount");
+        price = round(price);
+        tax = round(tax);
 
         ProductView productView = new ProductView(code.toString(),name,price,tax,amount);
         Product product = new Product(name,code.toString());

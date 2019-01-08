@@ -57,7 +57,7 @@
          <columns>
             <TableColumn fx:id="tvcName" prefWidth="102.0" text="name" />
             <TableColumn fx:id="tvcCode" prefWidth="84.0" text="code" />
-            <TableColumn fx:id="tvcAmount" prefWidth="69.0" text="amount" />
+            <TableColumn fx:id="tvcAmount" prefWidth="68.0" text="amount" />
          </columns>
       </TableView>
       <Button fx:id="bDelete" layoutX="697.0" layoutY="518.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="125.0" text="Delete" />

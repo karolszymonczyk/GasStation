@@ -103,7 +103,7 @@ public class AddSalePaneController {
       } catch (SQLException e) {
         e.printStackTrace();
       }
-      float price = manager.getPrice(iCode);
+      double price = manager.getPrice(iCode);
       manager.createSale(iCode,intQuantity);
       manager.addToBill(price*intQuantity);
       BillElement billElement = new BillElement(manager.getProductName(iCode),intQuantity,price);
