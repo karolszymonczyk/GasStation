@@ -8,9 +8,10 @@ import java.sql.SQLException;
 
 public class AddNewProductPaneController extends NewProductPaneController {
 
-  private ViewDeliversPaneController viewDeliversController;
+  ViewDeliversPaneController viewDeliversController;
   Manager manager;
-  void setViewDeliversController(ViewDeliversPaneController viewDeliversController) {
+
+  public void setViewDeliversController(ViewDeliversPaneController viewDeliversController) {
     this.viewDeliversController = viewDeliversController;
   }
 
@@ -28,13 +29,14 @@ public class AddNewProductPaneController extends NewProductPaneController {
     String price = tfPrice.getText();
     String tax = tfTax.getText();
     String amount = taAmount.getText();
-    String deliverer = taDeliverer.getText();
+//    String deliverer = taDeliverer.getText();
 
 
     int amountInt = Integer.parseInt(amount);
     int codeInt = Integer.parseInt(code);
+    System.out.println("MANAGER = " + manager);
 
-    manager.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),deliverer);
+    manager.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount));
 
     ProductForDeliver productForDeliver = new ProductForDeliver(manager.getProductName(codeInt),code,amountInt);
     manager.addDeliveryProduct(productForDeliver);

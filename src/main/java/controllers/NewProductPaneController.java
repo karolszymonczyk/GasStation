@@ -58,7 +58,7 @@ public class NewProductPaneController {
     String price = tfPrice.getText();
     String tax = tfTax.getText();
     String amount = taAmount.getText();
-    String deliverer = taDeliverer.getText();
+//    String deliverer = taDeliverer.getText();
 
     if (!checkFormat(price) || !checkFormat(amount)) {
       lError.setVisible(true);
@@ -66,8 +66,8 @@ public class NewProductPaneController {
     }
 
 
-    if (!storekeeper.isTranactionStarted()) {
-      storekeeper.setTranactionStarted(true);
+    if (!storekeeper.isTransactionStarted()) {
+      storekeeper.setTransactionStarted(true);
 
       try {
         storekeeper.getConnection().setAutoCommit(false);
@@ -80,7 +80,7 @@ public class NewProductPaneController {
     int amountInt = Integer.parseInt(amount);
     int codeInt = Integer.parseInt(code);
 
-    storekeeper.addNewProduct(Integer.parseInt(code), name, Float.parseFloat(price), Float.parseFloat(tax), Integer.parseInt(amount), deliverer);
+    storekeeper.addNewProduct(Integer.parseInt(code), name, Float.parseFloat(price), Float.parseFloat(tax), Integer.parseInt(amount));
 
     ProductForDeliver productForDeliver = new ProductForDeliver(storekeeper.getProductName(codeInt), code, amountInt);
     storekeeper.addDeliveryProduct(productForDeliver);
@@ -95,7 +95,6 @@ public class NewProductPaneController {
     tfPrice.setDisable(true);
     tfTax.setDisable(true);
     taAmount.setDisable(true);
-    taDeliverer.setDisable(true);
     bCreate.setDisable(true);
   }
 

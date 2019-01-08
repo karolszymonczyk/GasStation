@@ -103,11 +103,12 @@ public class StorekeeperPaneController {
     amountInt = checkFormat(amount);
     codeInt = Integer.parseInt(code);
 
-    if(!storekeeper.isTranactionStarted()){
-      storekeeper.setTranactionStarted(true);
+    if(!storekeeper.isTransactionStarted()){
+      storekeeper.setTransactionStarted(true);
 
       try {
         storekeeper.getConnection().setAutoCommit(false);
+        System.out.println("Zacząłem tranze");
         storekeeper.createDelivery();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -119,7 +120,7 @@ public class StorekeeperPaneController {
     ProductForDeliver product = new ProductForDeliver(name, code, amountInt);
     storekeeper.addDeliveryProduct(product);
 
-    storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount),deliverer);
+    storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount));
 
     lSuccess.setVisible(true);
 
@@ -197,15 +198,21 @@ public class StorekeeperPaneController {
 
     lError.setVisible(false);
     lSuccess.setVisible(false);
-    storekeeper.setTranactionStarted(false);
+    storekeeper.setTransactionStarted(false);
 
     try {
+
+      storekeeper.setDeliverer(tfDeliverer.getText());
       storekeeper.endDelivery();
+      System.out.println("USTAWIAM DELIVERERA = " + tfDeliverer.getText());
       storekeeper.getConnection().commit();
+      System.out.println("SKOńczyłem tranze");
       storekeeper.getConnection().setAutoCommit(true);
+
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    storekeeper.getDeliveredProducts().clear();
     tvProducts.getItems().clear();
     clearTextFields();
   }

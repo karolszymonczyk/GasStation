@@ -80,7 +80,7 @@ public class Manager extends Worker {
 
     try {
       st = connection.createStatement();
-      rs = st.executeQuery("SELECT d.id,d.time,de.product_id,de.amount,(SELECT name FROM product where code = de.product_id) as name,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = d.storekeeper) as storekeeper, de.deliverer FROM delivery d JOIN delivery_deliveryelement dde ON dde.delivery = d.id JOIN delivery_element de ON dde.delivery_element = de.id;");
+      rs = st.executeQuery("SELECT d.id,d.time,de.product_id,de.amount,(SELECT name FROM product where code = de.product_id) as name,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = d.storekeeper) as storekeeper, d.deliverer FROM delivery d JOIN delivery_deliveryelement dde ON dde.delivery = d.id JOIN delivery_element de ON dde.delivery_element = de.id;");
       int id1;
       int id2 = -1;
       while (rs.next()) {
