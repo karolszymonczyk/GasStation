@@ -11,7 +11,7 @@ public class AddNewProductPaneController extends NewProductPaneController implem
 
   ViewDeliversPaneController viewDeliversController;
   Manager manager;
-//
+
   public void setViewDeliversController(ViewDeliversPaneController viewDeliversController) {
     this.viewDeliversController = viewDeliversController;
   }
@@ -47,28 +47,17 @@ public class AddNewProductPaneController extends NewProductPaneController implem
       return;
     }
 
-
-//    if(!storekeeper.isTranactionStarted()){
-//      storekeeper.setTranactionStarted(true);
-//
-//      try {
-//        storekeeper.getConnection().setAutoCommit(false);
-//        storekeeper.createDelivery();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//    }
-
     int amountInt = Integer.parseInt(amount);
     int codeInt = Integer.parseInt(code);
+    System.out.println("MANAGER = " + manager);
 
-    manager.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),deliverer);
+    manager.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount));
 
     ProductForDeliver productForDeliver = new ProductForDeliver(manager.getProductName(codeInt),code,amountInt);
     manager.addDeliveryProduct(productForDeliver);
 
-    lSucces.setVisible(true);
-    setDisbledPane();
+    lSuccess.setVisible(true);
+    setDisabledPane();
   }
 
   public void setManager(Manager manager) {

@@ -10,8 +10,9 @@ import workers.Manager;
 import java.sql.Date;
 import java.time.LocalDate;
 
-//
+
 public class AddWorkerPaneController implements ErrorUtils {
+
   public TextField tfName;
   public TextField tfSurname;
   public ChoiceBox<String> cbJob;
@@ -19,12 +20,11 @@ public class AddWorkerPaneController implements ErrorUtils {
   public DatePicker dpEnd;
   public Button bCreate;
   public Label lError;
-  public Label lSucces;
+  public Label lSuccess;
 
   Manager manager;
 
   private MainController controller;
-  //  private LoginPaneController loginController;
   private ManagerPaneController managerController;
 
   @FXML
@@ -77,7 +77,7 @@ public class AddWorkerPaneController implements ErrorUtils {
 
     manager.createUser(name,surname,job, startD,endD);
 
-    lSucces.setVisible(true);
+    lSuccess.setVisible(true);
     setDisbledPane();
   }
 

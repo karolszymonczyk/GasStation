@@ -19,15 +19,25 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
 
   @Override
   public void bLogoutClick(ActionEvent event) {
+
+        try {
+          manager.getConnection().rollback();
+          manager.getConnection().setAutoCommit(true);
+        } catch (SQLException e) {
+          System.out.println("No active transaction - no rollback.");
+        }
+        manager.cancelDelivery();
+        controller.setLoginPane();
+
     managerController.setViewDeliversPane();
     manager.downloadDeliveries();
   }
 
-  public void setManagerController(ManagerPaneController managerController) {
+  void setManagerController(ManagerPaneController managerController) {
     this.managerController = managerController;
   }
 
-  public void setViewDeliversPaneController(ViewDeliversPaneController viewDeliversController) {
+  void setViewDeliversPaneController(ViewDeliversPaneController viewDeliversController) {
     this.viewDeliversController = viewDeliversController;
   }
 
@@ -49,6 +59,7 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
     addNewProductController.setLoginController(loginController);
     addNewProductController.setDeliverer(tfDeliverer.getText());
     addNewProductController.setViewDeliversController(viewDeliversController);
+    addNewProductController.setManager(manager);
     controller.setPane(addNewProductPane);
   }
 
@@ -58,9 +69,11 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
 
   @Override
   public void bAddClick(ActionEvent event) {
-
+    
     lError.setVisible(false);
     lSuccess.setVisible(false);
+
+    disableButtons(false);
 
     deliverer = tfDeliverer.getText();
     String code = tfCode.getText();
@@ -76,45 +89,83 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
       return;
     }
 
-//    try {
-//      delete = storekeeper.getConnection().setSavepoint("delete");
-//    } catch (SQLException e) {
-//      e.printStackTrace();
-//    }
-
-//    if(checkFormat(code)==-1 || checkFormat(amount)==-1 || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
-//
-//      lError.setVisible(true);
-//      return;
-//    }
+    try {
+      delete = manager.getConnection().setSavepoint("delete");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     int amountInt;
     int codeInt;
-    //amountInt = checkFormat(amount);
     amountInt = Integer.parseInt(amount);
     codeInt = Integer.parseInt(code);
 
-//    if(!storekeeper.isTranactionStarted()){
-//      storekeeper.setTranactionStarted(true);
-//
-//      try {
-//        storekeeper.getConnection().setAutoCommit(false);
-//        storekeeper.createDelivery();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//    }
+    if(!manager.isTransactionStarted()){
+      manager.setTransactionStarted(true);
+
+      try {
+        manager.getConnection().setAutoCommit(false);
+        System.out.println("Zacząłem tranze");
+        manager.createDelivery();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
 
     String name = manager.getProductName(codeInt);
 
     ProductForDeliver product = new ProductForDeliver(name, code, amountInt);
     manager.addDeliveryProduct(product);
 
-    manager.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount),deliverer);
+    manager.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount));
 
     lSuccess.setVisible(true);
 
     addToList(manager.getDeliveredProducts());
+
+    tfCode.setText("");
+    tfAmount.setText("");
   }
 
+  @Override
+  public void bFinishClick(ActionEvent event) {
+
+    disableButtons(true);
+
+    lError.setVisible(false);
+    lSuccess.setVisible(false);
+    manager.setTransactionStarted(false);
+
+    try {
+
+      manager.setDeliverer(tfDeliverer.getText());
+      manager.endDelivery();
+      System.out.println("USTAWIAM DELIVERERA = " + tfDeliverer.getText());
+      manager.getConnection().commit();
+      System.out.println("SKOńczyłem tranze");
+      manager.getConnection().setAutoCommit(true);
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    manager.getDeliveredProducts().clear();
+    tvProducts.getItems().clear();
+  }
+
+  @Override
+  public void bDeleteClick(ActionEvent event) {
+    lError.setVisible(false);
+    lSuccess.setVisible(false);
+    try {
+      manager.getConnection().rollback(delete);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
+    tvProducts.getItems().remove(selectedItem);
+    if(tvProducts.getItems().isEmpty()){
+      disableButtons(true);
+    }
+  }
 }
+

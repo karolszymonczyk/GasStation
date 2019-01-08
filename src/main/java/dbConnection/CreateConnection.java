@@ -28,15 +28,8 @@ public class CreateConnection {
 
     Connection connection = null;
 
-//    try {
-      System.out.println(user + "  " + password);
       connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/stacjapaliw?serverTimezone=UTC", user, password);
 
-//    } catch (SQLException e) {
-//      lError.setVisible(true);
-//      e.printStackTrace();
-//      System.out.println("Connection Failed.");
-//    }
     return connection;
   }
 

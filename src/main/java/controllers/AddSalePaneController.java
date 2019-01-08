@@ -10,9 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import utils.ErrorUtils;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import workers.Manager;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
@@ -57,8 +61,8 @@ public class AddSalePaneController implements ErrorUtils{
 
 
   public void addToProductList() {
-    for(Product product : manager.getProductsToSale())
-    tvProducts.getItems().add(product);
+    for (Product product : manager.getProductsToSale())
+      tvProducts.getItems().add(product);
   }
 
   public void setController(MainController controller) {
@@ -79,7 +83,7 @@ public class AddSalePaneController implements ErrorUtils{
     int intQuantity;
     int iCode;
 
-    if(!manager.isTransactionStarted()){
+    if (!manager.isTransactionStarted()) {
       manager.setTransactionStarted(true);
 
       try {
@@ -108,43 +112,43 @@ public class AddSalePaneController implements ErrorUtils{
     iCode = Integer.parseInt(sCode);
 
     if(!manager.searchForProductFromCode(iCode)){
+
       lWarning.setText("No such product!");
       return;
-    }else if(manager.checkAmount(iCode) >= intQuantity && manager.isTransactionStarted()){
+    } else if (manager.checkAmount(iCode) >= intQuantity && manager.isTransactionStarted()) {
       try {
-        delete =  manager.getConnection().setSavepoint("delete");
+        delete = manager.getConnection().setSavepoint("delete");
       } catch (SQLException e) {
         e.printStackTrace();
       }
       double price = manager.getPrice(iCode);
-      manager.createSale(iCode,intQuantity);
-      manager.addToBill(price*intQuantity);
-      BillElement billElement = new BillElement(manager.getProductName(iCode),intQuantity,price);
+      manager.createSale(iCode, intQuantity);
+      manager.addToBill(price * intQuantity);
+      BillElement billElement = new BillElement(manager.getProductName(iCode), intQuantity, price);
       tvBill.getItems().add(billElement);
       setTotal();
-    }  else {
+    } else {
       lWarning.setText("Not enough products!");
       return;
     }
 
-//    setTotal();
-
     disableButtons(false);
+
 
     taProduct.setText("");
     taQuantity.setText("");
   }
 
-  public void setTotal() {
+  private void setTotal() {
 
     double total = 0;
-    BillElement billElement = new BillElement();
+    BillElement billElement;
 
-    for(int i = 0; i < tvBill.getItems().size(); i ++) {
-      billElement = (BillElement)tvBill.getItems().get(i);
+    for (int i = 0; i < tvBill.getItems().size(); i++) {
+      billElement = (BillElement) tvBill.getItems().get(i);
       total += billElement.getSum();
     }
-    double totalRound = Math.round(total*100.0)/100.0;
+    double totalRound = Math.round(total * 100.0) / 100.0;
 
     lTotal.setText(Double.toString(totalRound) + " zł");
   }
@@ -156,8 +160,7 @@ public class AddSalePaneController implements ErrorUtils{
     manager.setTransactionStarted(false);
     Integer NIP;
 
-    if(tfCustomer.getText().equals("")) {
-      NIP = null;
+    if (tfCustomer.getText().equals("")) {
       manager.closeBillWithoutCustomer();
     }
 
@@ -203,19 +206,19 @@ public class AddSalePaneController implements ErrorUtils{
   public void bBackClick(ActionEvent event) {
 
 
-      try {
-        manager.getConnection().rollback();
-        manager.getConnection().setAutoCommit(true);
-      } catch (SQLException e) {
-        System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
-      }
-      manager.deleteBill();
-      manager.downloadBills();
-      loginController.setManagerPane();
+    try {
+      manager.getConnection().rollback();
+      manager.getConnection().setAutoCommit(true);
+    } catch (SQLException e) {
+      System.out.println("No active transaction - no rollback.");
+    }
+    manager.deleteBill();
+    manager.downloadBills();
+    loginController.setManagerPane();
   }
 
   public void setManager(Manager manager) {
-    this.manager=manager;
+    this.manager = manager;
   }
 
   public void bAvailabilityClick(ActionEvent event) {

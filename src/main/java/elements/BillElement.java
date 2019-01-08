@@ -1,5 +1,5 @@
 package elements;
-//
+
 public class BillElement {
 
   String product;
@@ -17,7 +17,6 @@ public class BillElement {
     this.product = product;
     this.quantity = quantity;
     this.price = price;
-//    this.saleID = saleID;
     calculateSum();
   }
 

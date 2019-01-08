@@ -1,8 +1,9 @@
 package workers;
 
-import java.math.RoundingMode;
+import elements.BillElement;
+
 import java.sql.*;
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public abstract class Worker {
 
@@ -10,40 +11,8 @@ public abstract class Worker {
   CallableStatement cSt;
   Statement st;
   ResultSet rs;
-  DecimalFormat df;
+  private ArrayList<BillElement> activeBill = new ArrayList<>();
 
-  public Worker(){
-    df = new DecimalFormat("##.##");
-    df.setRoundingMode(RoundingMode.DOWN);
-  }
-
-  public void startTransaction(){
-    try {
-      connection.setAutoCommit(false);
-    } catch (SQLException e) {
-      System.out.println("Starting transaction failed.");
-      e.printStackTrace();
-    }
-  }
-
-  public void endTransaction(){
-    try {
-      connection.commit();
-      connection.setAutoCommit(true);
-    } catch (SQLException e) {
-      System.out.println("Ending transaction failed.");
-      e.printStackTrace();
-    }
-  }
-
-  public void rollBack(){
-      try {
-        connection.rollback();
-      } catch (SQLException e) {
-        System.out.println("Rollback failed.");
-        e.printStackTrace();
-      }
-  }
   public boolean searchForProductFromCode(int code) {
     try {
       cSt = connection.prepareCall("{? = CALL searchProductFromCode(?)}");
@@ -160,40 +129,39 @@ public abstract class Worker {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    activeBill.clear();
   }
 
   public void deleteBill(){
     try {
       cSt = connection.prepareCall("{CALL deleteBill()}");
       cSt.executeQuery();
-      System.out.println("Usunalem rachunek");
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  public boolean existingProductDeliver(int code, int amount, String deliverer){
+  public boolean existingProductDeliver(int code, int amount){
     try {
-      cSt = connection.prepareCall("{CALL existingProductDelivery(?,?,?)}");
+      cSt = connection.prepareCall("{CALL existingProductDelivery(?,?)}");
       cSt.setInt(1,code);
       cSt.setInt(2,amount);
-      cSt.setString(3,deliverer);
       cSt.execute();
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
     return true;
   }
 
-  public boolean addNewProduct(int code, String name, float price, float tax, int amount, String deliverer){
+  public boolean addNewProduct(int code, String name, float price, float tax, int amount){
     try {
-      cSt = connection.prepareCall("{CALL newProductDelivery(?,?,?,?,?,?)}");
+      cSt = connection.prepareCall("{CALL newProductDelivery(?,?,?,?,?)}");
       cSt.setInt(1,code);
       cSt.setString(2,name);
       cSt.setFloat(3,price);
       cSt.setInt(4,amount);
       cSt.setFloat(5,tax);
-      cSt.setString(6,deliverer);
       cSt.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -202,8 +170,54 @@ public abstract class Worker {
     return true;
   }
 
+  public void createDelivery() {
+    try {
+      cSt = connection.prepareCall("{CALL createDelivery()}");
+      cSt.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void endDelivery() {
+    try {
+      cSt = connection.prepareCall("{CALL endDelivery()}");
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void setDeliverer(String deliverer){
+    try {
+      cSt = connection.prepareCall("{CALL setDeliverer(?)}");
+      cSt.setString(1,deliverer);
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void cancelDelivery() {
+    try {
+      cSt = connection.prepareCall("{CALL deleteDelivery()}");
+      cSt.executeQuery();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+
   public double round(Double number){
     return Math.round(number*1e2)/1e2;
+  }
+
+  public void addToActiveBill(BillElement billElement){
+    activeBill.add(billElement);
+  }
+
+  public ArrayList<BillElement> getActiveBill() {
+    return activeBill;
   }
 }
 

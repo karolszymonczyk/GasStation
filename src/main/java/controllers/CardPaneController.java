@@ -15,14 +15,15 @@ public class CardPaneController implements ErrorUtils {
   public TextField tfSurname;
   public TextField taNIP;
   public Label lError;
-  public Label lSucces;
   public Button bCreate;
+  public Label lSuccess;
 
   private MainController controller;
   private LoginPaneController loginController;
   private Seller seller;
 
   private String customer;
+  private SellerPaneController sellerController;
 
   @FXML
   public void initialize() {
@@ -38,7 +39,9 @@ public class CardPaneController implements ErrorUtils {
   }
 
   public void bBackClick(ActionEvent event) {
+
     loginController.setSellerPane(customer);
+    sellerController.updateBillList(seller.getActiveBill());
   }
 
   public void bCreateClick(ActionEvent event) {
@@ -61,13 +64,13 @@ public class CardPaneController implements ErrorUtils {
 
     int iNIP = Integer.parseInt(sNIP);
 
-    seller.addNewCustomer(name,surname,iNIP);
+    seller.addNewCustomer(name, surname, iNIP);
 
-    lSucces.setVisible(true);
-    setDisbledPane();
+    lSuccess.setVisible(true);
+    setDisabledPane();
   }
 
-  private void setDisbledPane() {
+  private void setDisabledPane() {
     tfName.setDisable(true);
     tfSurname.setDisable(true);
     taNIP.setDisable(true);
@@ -78,7 +81,11 @@ public class CardPaneController implements ErrorUtils {
     this.seller = seller;
   }
 
-  public void setCustomer(String customer) {
+  void setCustomer(String customer) {
     this.customer = customer;
+  }
+
+  void setSellerController(SellerPaneController sellerController) {
+    this.sellerController = sellerController;
   }
 }

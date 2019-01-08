@@ -19,7 +19,7 @@ public class NewProductPaneController implements ErrorUtils {
   public TextField taAmount;
   public Button bCreate;
   public Label lError;
-  public Label lSucces;
+  public Label lSuccess;
   public TextField tfPrice;
   public TextField tfTax;
 
@@ -59,7 +59,7 @@ public class NewProductPaneController implements ErrorUtils {
     String price = tfPrice.getText();
     String tax = tfTax.getText();
     String amount = taAmount.getText();
-
+    
     if(name.equals("") || code.equals("") || price.equals("") ||
             tax.equals("") || amount.equals("")) {
       lError.setVisible(true);
@@ -76,8 +76,8 @@ public class NewProductPaneController implements ErrorUtils {
       return;
     }
 
-    if(!storekeeper.isTranactionStarted()){
-      storekeeper.setTranactionStarted(true);
+    if (!storekeeper.isTransactionStarted()) {
+      storekeeper.setTransactionStarted(true);
 
       try {
         storekeeper.getConnection().setAutoCommit(false);
@@ -90,16 +90,16 @@ public class NewProductPaneController implements ErrorUtils {
     int amountInt = Integer.parseInt(amount);
     int codeInt = Integer.parseInt(code);
 
-    storekeeper.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),deliverer);
+    storekeeper.addNewProduct(Integer.parseInt(code), name, Float.parseFloat(price), Float.parseFloat(tax), Integer.parseInt(amount));
 
-    ProductForDeliver productForDeliver = new ProductForDeliver(storekeeper.getProductName(codeInt),code,amountInt);
+    ProductForDeliver productForDeliver = new ProductForDeliver(storekeeper.getProductName(codeInt), code, amountInt);
     storekeeper.addDeliveryProduct(productForDeliver);
 
-    lSucces.setVisible(true);
-    setDisbledPane();
+    lSuccess.setVisible(true);
+    setDisabledPane();
   }
 
-  void setDisbledPane() {
+  void setDisabledPane() {
     tfName.setDisable(true);
     tfCode.setDisable(true);
     tfPrice.setDisable(true);
@@ -108,17 +108,7 @@ public class NewProductPaneController implements ErrorUtils {
     bCreate.setDisable(true);
   }
 
-//  private boolean checkFormat(String check) {
-//    int i;
-//    try {
-//      i = Integer.parseInt(check);
-//    } catch (NumberFormatException e) {
-//      return false;
-//    }
-//    return true;
-//  }
-
-  public void setStorekeeper(Storekeeper storekeeper) {
+  void setStorekeeper(Storekeeper storekeeper) {
     this.storekeeper = storekeeper;
   }
 }

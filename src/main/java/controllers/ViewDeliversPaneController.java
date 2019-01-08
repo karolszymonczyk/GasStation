@@ -1,8 +1,6 @@
 package controllers;
 
 import elements.Deliver;
-import elements.ManagerBill;
-import elements.ManagerSale;
 import elements.ProductForDeliver;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -16,7 +14,7 @@ import workers.Manager;
 
 import java.io.IOException;
 import java.util.ArrayList;
-//
+
 public class ViewDeliversPaneController {
 
   public TableView tvDelivers;
@@ -30,9 +28,10 @@ public class ViewDeliversPaneController {
   public TableColumn tvcAmount;
   private MainController controller;
   private LoginPaneController loginController;
+  private ManagerPaneController managerController;
 
   Manager manager;
-  public ManagerPaneController managerController;
+
 
   @FXML
   public void initialize() {
@@ -47,9 +46,10 @@ public class ViewDeliversPaneController {
   }
 
 
-  public void addDeliveriesToList() {
-    for(Deliver deliver : manager.getDeliveries())
-    tvDelivers.getItems().add(deliver);
+  void addDeliveriesToList() {
+    for(Deliver deliver : manager.getDeliveries()) {
+      tvDelivers.getItems().add(deliver);
+    }
   }
 
   public void setController(MainController controller) {
@@ -60,7 +60,7 @@ public class ViewDeliversPaneController {
     this.loginController = LoginController;
   }
 
-  public void setManagerController(ManagerPaneController managerController) {
+  void setManagerController(ManagerPaneController managerController) {
     this.managerController = managerController;
   }
 
@@ -107,7 +107,7 @@ public class ViewDeliversPaneController {
    setAddDeliveryPane("");
   }
 
-  public void setAddDeliveryPane(String deliverer) {
+  void setAddDeliveryPane(String deliverer) {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AddDeliveryPane.fxml"));
     AnchorPane addDeliveryPane = null;
     try {

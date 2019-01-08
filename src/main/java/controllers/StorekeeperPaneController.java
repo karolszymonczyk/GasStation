@@ -17,8 +17,9 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Optional;
-//
+
 public class StorekeeperPaneController implements ErrorUtils {
+
 
   public TextField tfDeliverer;
   public TextField tfCode;
@@ -35,7 +36,7 @@ public class StorekeeperPaneController implements ErrorUtils {
   public Button bAddNewProduct;
   public Button bDelete;
   public Button bFinishDelivery;
-  Storekeeper storekeeper;
+  private Storekeeper storekeeper;
   boolean transactionStarted = false;
 
   Savepoint delete;
@@ -53,17 +54,7 @@ public class StorekeeperPaneController implements ErrorUtils {
     tvcName.setCellValueFactory(new PropertyValueFactory<>("name"));
     tvcCode.setCellValueFactory(new PropertyValueFactory<>("code"));
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
-//    addToProductList();
   }
-
-//  private void addToProductList() {
-//    addProduct("Pomidor", "997", 1000);
-//  }
-//
-//  private void addProduct(String name, String code, int amount) {
-//    ProductForDeliver product = new ProductForDeliver(name, code, amount);
-//    tvProducts.getItems().add(product);
-//  }
 
   public void setController(MainController controller) {
     this.controller = controller;
@@ -79,7 +70,7 @@ public class StorekeeperPaneController implements ErrorUtils {
         storekeeper.getConnection().rollback();
         storekeeper.getConnection().setAutoCommit(true);
       } catch (SQLException e) {
-        System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
+        System.out.println("No active transaction - no rollback.");
       }
       storekeeper.deleteDelivery();
       controller.setLoginPane();
@@ -88,10 +79,10 @@ public class StorekeeperPaneController implements ErrorUtils {
 
   public void bAddClick(ActionEvent event) {
 
-    disableButtons(false);
-
     lError.setVisible(false);
     lSuccess.setVisible(false);
+
+    disableButtons(false);
 
     deliverer = tfDeliverer.getText();
     String code = tfCode.getText();
@@ -123,6 +114,7 @@ public class StorekeeperPaneController implements ErrorUtils {
 
       try {
         storekeeper.getConnection().setAutoCommit(false);
+        System.out.println("Zacząłem tranze");
         storekeeper.createDelivery();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -134,7 +126,7 @@ public class StorekeeperPaneController implements ErrorUtils {
     ProductForDeliver product = new ProductForDeliver(name, code, amountInt);
     storekeeper.addDeliveryProduct(product);
 
-    storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount),deliverer);
+    storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount));
 
     lSuccess.setVisible(true);
 
@@ -144,7 +136,7 @@ public class StorekeeperPaneController implements ErrorUtils {
     tfAmount.setText("");
   }
 
-  public void addToList(ArrayList<ProductForDeliver> deliveredProducts){
+  void addToList(ArrayList<ProductForDeliver> deliveredProducts){
     tvProducts.getItems().clear();
     for(ProductForDeliver productForDeliver : deliveredProducts){
       tvProducts.getItems().add(productForDeliver);
@@ -176,22 +168,10 @@ public class StorekeeperPaneController implements ErrorUtils {
     controller.setPane(newProductPane);
   }
 
-//  private int checkFormat(String check) {
-//    int i;
-//    try {
-//      i = Integer.parseInt(check);
-//    } catch (NumberFormatException e) {
-//      return -1;
-//    }
-//    return i;
-//  }
 
-  public boolean logoutConfirmation() {
+  private boolean logoutConfirmation() {
     Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
-    if (result.get() == ButtonType.OK) {
-      return true;
-    }
-    return false;
+    return result.get() == ButtonType.OK;
   }
 
   public void bDeleteClick(ActionEvent event) {
@@ -215,51 +195,39 @@ public class StorekeeperPaneController implements ErrorUtils {
 
     lError.setVisible(false);
     lSuccess.setVisible(false);
+    storekeeper.setTransactionStarted(false);
 
-    storekeeper.setTranactionStarted(false);
     try {
+
+      storekeeper.setDeliverer(tfDeliverer.getText());
       storekeeper.endDelivery();
+      System.out.println("USTAWIAM DELIVERERA = " + tfDeliverer.getText());
       storekeeper.getConnection().commit();
+      System.out.println("SKOńczyłem tranze");
       storekeeper.getConnection().setAutoCommit(true);
 
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
+    storekeeper.getDeliveredProducts().clear();
     tvProducts.getItems().clear();
-
     clearTextFields();
-
-//    setDisabledPane();
   }
 
-//  private void setDisabledPane() {
-//
-//    tfDeliverer.setDisable(true);
-//    tfAmount.setDisable(true);
-//    tfCode.setDisable(true);
-//    tfAmount.setText("");
-//    tfDeliverer.setText("");
-//    tfCode.setText("");
-//    bAdd.setDisable(true);
-//    bAddNewProduct.setDisable(true);
-//    bFinishDelivery.setDisable(true);
-//    bDelete.setDisable(true);
-//  }
   public void setDeliverer(String deliverer) {
     tfDeliverer.setText(deliverer);
   }
 
-  public void setStoreKeeper(Storekeeper storeKeeper) {
+  void setStoreKeeper(Storekeeper storeKeeper) {
     this.storekeeper=storeKeeper;
   }
 
-  public void disableButtons(boolean bool){
+  void disableButtons(boolean bool){
     bFinishDelivery.setDisable(bool);
     bDelete.setDisable(bool);
   }
 
-  public void clearTextFields(){
+  private void clearTextFields(){
     tfDeliverer.setText("");
     tfCode.setText("");
     tfAmount.setText("");

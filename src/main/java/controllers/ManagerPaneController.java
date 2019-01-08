@@ -6,28 +6,15 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-//import utils.DialogUtils;
 import workers.Manager;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Optional;
 
-//TODO tutaj i w sellerze nwm czy wgl potrzebne sa te wszystkie tvc i nie wystarcza tylko tabele tv
-
-//TODO na odwrót niż w bazie jest bill i sale XD
-
-//TODO zmienić amount da double wszędzie bo nie można spredawać benzynki
-
-//TODO dodac jeszcze dodawanie i usuwanie sprzedaży
-
-//
 public class ManagerPaneController {
 
   public TableView tvSales;
@@ -55,22 +42,18 @@ public class ManagerPaneController {
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("product"));
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-//    addToSaleList();
   }
 
-  public void addToSaleList() {
+  void addToSaleList() {
 
     bills = manager.getBills();
 
     for (ManagerSale managerSale : bills) {
       addSale(managerSale);
-//      for (ManagerBill managerBill : managerSale.getElements()) {
-//        System.out.println("element = " + managerBill);
-//      }
     }
   }
 
-  public void addSale(ManagerSale managerSale) {
+  private void addSale(ManagerSale managerSale) {
     tvSales.getItems().add(managerSale);
   }
 
@@ -83,9 +66,7 @@ public class ManagerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    if (true) {
-      controller.setLoginPane();
-    }
+    controller.setLoginPane();
   }
 
   public void bShowClick(ActionEvent event) {
@@ -105,7 +86,7 @@ public class ManagerPaneController {
     setViewWorkersPane();
   }
 
-  public void setViewWorkersPane() {
+  void setViewWorkersPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewWorkersPane.fxml"));
     AnchorPane viewWorkersPane = null;
     try {
@@ -126,7 +107,7 @@ public class ManagerPaneController {
     setViewDeliversPane();
   }
 
-  public void setViewDeliversPane() {
+  void setViewDeliversPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewDeliversPane.fxml"));
     AnchorPane viewDeliversPane = null;
     try {
@@ -147,7 +128,7 @@ public class ManagerPaneController {
     setViewProductsPane();
   }
 
-  public void setViewProductsPane() {
+  void setViewProductsPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewProductsPane.fxml"));
     AnchorPane viewProductsPane = null;
     try {
@@ -173,7 +154,6 @@ public class ManagerPaneController {
     if(tvSales.getSelectionModel().getSelectedItem() == null) {
       return;
     }
-
     ManagerSale selectedItem = (ManagerSale) tvSales.getSelectionModel().getSelectedItem();
     tvSales.getItems().remove(selectedItem);
     manager.deleteSale(selectedItem.getId());
@@ -207,18 +187,5 @@ public class ManagerPaneController {
   public Manager getManager() {
     return manager;
   }
-
-  //  public boolean logoutConfirmation() {
-//    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
-//    if (result.get() == ButtonType.OK) {
-//      return true;
-//    }
-//    return false;
-//  }
-//    public void setManager (Manager manager){
-//      this.manager = manager;
-//    }
-
-
-  }
+}
 

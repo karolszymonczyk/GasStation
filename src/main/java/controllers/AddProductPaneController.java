@@ -1,7 +1,5 @@
 package controllers;
 
-import elements.Product;
-import elements.ProductView;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,8 +9,9 @@ import javafx.scene.control.TextField;
 import utils.ErrorUtils;
 import workers.Manager;
 
-//
+
 public class AddProductPaneController implements ErrorUtils{
+  
   public TextField tfName;
   public TextField tfCode;
   public TextField taAmount;
@@ -21,12 +20,10 @@ public class AddProductPaneController implements ErrorUtils{
   public Label lSucces;
   public TextField tfPrice;
   public TextField tfTax;
-//  public TextField taDeliverer;
 
   private Manager manager;
 
   private MainController controller;
-//  private LoginPaneController loginController;
   private ManagerPaneController managerController;
 
   @FXML
@@ -44,11 +41,8 @@ public class AddProductPaneController implements ErrorUtils{
 
   public void bBackClick(ActionEvent event) {
     manager.downloadProducts();
-//  managerController.getManager().downloadProducts();
     managerController.setViewProductsPane();
     manager.downloadProducts();
-
-
   }
 
   public void bCreateClick(ActionEvent event) {
@@ -60,7 +54,6 @@ public class AddProductPaneController implements ErrorUtils{
     String price = tfPrice.getText();
     String tax = tfTax.getText();
     String amount = taAmount.getText();
-//    String deliverer = taDeliverer.getText();
 
     if(name.equals("") || code.equals("") || price.equals("") ||
             tax.equals("") || amount.equals("")) {
@@ -80,31 +73,18 @@ public class AddProductPaneController implements ErrorUtils{
 
     manager.addProduct(name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(code),Integer.parseInt(amount));
 
-    //ProductView product = new ProductView(code,name,Double.parseDouble(price),Double.parseDouble(tax),Integer.parseInt(amount));
-
     lSucces.setVisible(true);
-    setDisbledPane();
+    setDisabledPane();
   }
 
-  private void setDisbledPane() {
+  private void setDisabledPane() {
     tfName.setDisable(true);
     tfCode.setDisable(true);
     tfPrice.setDisable(true);
     tfTax.setDisable(true);
     taAmount.setDisable(true);
-//    taDeliverer.setDisable(true);
     bCreate.setDisable(true);
   }
-
-//  private boolean checkFormat(String check) {
-//    int i;
-//    try {
-//      i = Integer.parseInt(check);
-//    } catch (NumberFormatException e) {
-//      return false;
-//    }
-//    return true;
-//  }
 
   public void setManager(Manager manager) {
     this.manager=manager;

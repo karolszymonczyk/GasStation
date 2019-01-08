@@ -17,22 +17,15 @@ public class LoginCheck {
   }
 
   public boolean correctUserAndPass() throws SQLException{
-//    try {
       CreateConnection createConnection = new CreateConnection(inputUser,inputPassword);
       connection  = createConnection.getConnection();
       st = connection.createStatement();
 
       rs = st.executeQuery("SELECT * FROM users JOIN worker ON users.worker_id = worker.id WHERE login= \'" + inputUser + "\'&& password =\'" +inputPassword + "\'");
       while(rs.next()){
-
-
-            job = rs.getString("job");
-            return true;
+        job = rs.getString("job");
+        return true;
       }
-//    } catch (SQLException e) {
-//
-//      e.printStackTrace();
-//    }
     return false;
   }
 
