@@ -75,6 +75,11 @@ public class ViewDeliversPaneController {
   }
 
   public void bDeleteClick(ActionEvent event){
+
+    if(tvDelivers.getSelectionModel().getSelectedItem() == null) {
+      return;
+    }
+
     Deliver selectedItem = (Deliver) tvDelivers.getSelectionModel().getSelectedItem();
     if(selectedItem == null) {
       return;

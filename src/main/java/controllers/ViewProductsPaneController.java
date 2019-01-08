@@ -78,6 +78,11 @@ public class ViewProductsPaneController {
   }
 
   public void bDeleteClick(ActionEvent event) {
+
+    if(tvProducts.getSelectionModel().getSelectedItem() == null) {
+      return;
+    }
+
     ProductView selectedItem = (ProductView) tvProducts.getSelectionModel().getSelectedItem();
     manager.deleteProduct(Integer.parseInt(selectedItem.getCode()));
     tvProducts.getItems().remove(selectedItem);

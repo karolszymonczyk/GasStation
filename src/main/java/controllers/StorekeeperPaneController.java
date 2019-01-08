@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import utils.DialogUtils;
+import utils.ErrorUtils;
 import workers.Storekeeper;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Optional;
 //
-public class StorekeeperPaneController {
+public class StorekeeperPaneController implements ErrorUtils {
 
   public TextField tfDeliverer;
   public TextField tfCode;
@@ -96,13 +97,11 @@ public class StorekeeperPaneController {
     String code = tfCode.getText();
     String amount = tfAmount.getText();
 
-    try {
-      delete = storekeeper.getConnection().setSavepoint("delete");
-    } catch (SQLException e) {
-      e.printStackTrace();
+    if(code.equals("") || amount.equals("")) {
+      lError.setVisible(true);
     }
 
-    if(checkFormat(code)==-1 || checkFormat(amount)==-1 || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
+    if(!ErrorUtils.checkInt(code) || !ErrorUtils.checkInt(amount) || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
       
       lError.setVisible(true);
       return;
@@ -110,8 +109,14 @@ public class StorekeeperPaneController {
 
     int amountInt;
     int codeInt;
-    amountInt = checkFormat(amount);
+    amountInt = Integer.parseInt(amount);
     codeInt = Integer.parseInt(code);
+
+    try {
+      delete = storekeeper.getConnection().setSavepoint("delete");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
 
     if(!storekeeper.isTranactionStarted()){
       storekeeper.setTranactionStarted(true);
@@ -171,15 +176,15 @@ public class StorekeeperPaneController {
     controller.setPane(newProductPane);
   }
 
-  private int checkFormat(String check) {
-    int i;
-    try {
-      i = Integer.parseInt(check);
-    } catch (NumberFormatException e) {
-      return -1;
-    }
-    return i;
-  }
+//  private int checkFormat(String check) {
+//    int i;
+//    try {
+//      i = Integer.parseInt(check);
+//    } catch (NumberFormatException e) {
+//      return -1;
+//    }
+//    return i;
+//  }
 
   public boolean logoutConfirmation() {
     Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");

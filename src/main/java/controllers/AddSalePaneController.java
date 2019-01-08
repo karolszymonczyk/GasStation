@@ -6,12 +6,10 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import utils.ErrorUtils;
 import workers.Manager;
 
 import java.io.IOException;
@@ -35,6 +33,9 @@ public class AddSalePaneController {
   public TableView tvBill;
   public TextField tfCustomer;
 
+  public Button bSell;
+  public Button bDelete;
+
   private MainController controller;
 
   private LoginPaneController loginController;
@@ -45,6 +46,7 @@ public class AddSalePaneController {
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
+    disableButtons(true);
     tvName.setCellValueFactory(new PropertyValueFactory<>("Name"));
     tvCode.setCellValueFactory(new PropertyValueFactory<>("Code"));
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("Product"));
@@ -114,9 +116,9 @@ public class AddSalePaneController {
       return;
     }
 
+//    setTotal();
 
-
-    setTotal();
+    disableButtons(false);
 
     taProduct.setText("");
     taQuantity.setText("");
@@ -138,16 +140,23 @@ public class AddSalePaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    disableButtons(true);
+
     manager.setTransactionStarted(false);
     Integer NIP;
 
     if(tfCustomer.getText().equals("")) {
       NIP = null;
       manager.closeBillWithoutCustomer();
-    } else {
-      NIP = Integer.parseInt(tfCustomer.getText());
-      manager.closeBill(NIP);
     }
+
+    if(!ErrorUtils.checkInt(tfCustomer.getText())) {
+      lWarning.setText("Wrong NIP format!");
+      return;
+    }
+
+    NIP = Integer.parseInt(tfCustomer.getText());
+    manager.closeBill(NIP);
 
     try {
 
@@ -160,7 +169,8 @@ public class AddSalePaneController {
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
-    tfCustomer.setText("");
+    lWarning.setText("");
+    clearTextFields();
   }
 
   public void bDeleteClick(ActionEvent event) {
@@ -173,6 +183,10 @@ public class AddSalePaneController {
     }
     tvBill.getItems().remove(selectedItem);
     setTotal();
+
+    if(tvBill.getItems().isEmpty()){
+      disableButtons(true);
+    }
   }
 
   public void bBackClick(ActionEvent event) {
@@ -200,7 +214,16 @@ public class AddSalePaneController {
     int iCode = Integer.parseInt(sCode);
     int amount = manager.checkAmount(iCode);
     lWarning.setText("Available amount is : " + amount);
+  }
 
+  public void disableButtons(boolean bool){
+    bSell.setDisable(bool);
+    bDelete.setDisable(bool);
+  }
 
+  public void clearTextFields(){
+    tfCustomer.setText("");
+    taQuantity.setText("");
+    taProduct.setText("");
   }
 }

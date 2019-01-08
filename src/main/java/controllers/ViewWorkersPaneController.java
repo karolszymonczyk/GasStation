@@ -87,6 +87,11 @@ public class ViewWorkersPaneController {
     }
 
     public void bDeleteClick (ActionEvent event){
+
+      if(tvWorkers.getSelectionModel().getSelectedItem() == null) {
+        return;
+      }
+
       elements.Worker selectedItem = (elements.Worker) tvWorkers.getSelectionModel().getSelectedItem();
       tvWorkers.getItems().remove(selectedItem);
       manager.deleteUser(selectedItem.getId());

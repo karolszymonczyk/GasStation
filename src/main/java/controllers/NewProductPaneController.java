@@ -7,11 +7,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import utils.ErrorUtils;
 import workers.Storekeeper;
 
 import java.sql.SQLException;
 
-public class NewProductPaneController {
+public class NewProductPaneController implements ErrorUtils {
 
   public TextField tfName;
   public TextField tfCode;
@@ -48,11 +49,10 @@ public class NewProductPaneController {
 
   public void bBackClick(ActionEvent event) {
     loginController.setStorekeeperPane(deliverer);
-
-
   }
 
   public void bCreateClick(ActionEvent event) {
+
     lError.setVisible(false);
 
     String name = tfName.getText();
@@ -62,11 +62,21 @@ public class NewProductPaneController {
     String amount = taAmount.getText();
     String deliverer = taDeliverer.getText();
 
-    if(!checkFormat(price) || !checkFormat(amount)) {
+    if(name.equals("") || code.equals("") || price.equals("") ||
+            tax.equals("") || amount.equals("") || deliverer.equals("")) {
       lError.setVisible(true);
       return;
     }
 
+    if(!ErrorUtils.checkInt(code) || !ErrorUtils.checkInt(amount)) {
+      lError.setVisible(true);
+      return;
+    }
+
+    if(!ErrorUtils.checkFloat(price) || !ErrorUtils.checkFloat(tax)) {
+      lError.setVisible(true);
+      return;
+    }
 
     if(!storekeeper.isTranactionStarted()){
       storekeeper.setTranactionStarted(true);
@@ -101,15 +111,15 @@ public class NewProductPaneController {
     bCreate.setDisable(true);
   }
 
-  private boolean checkFormat(String check) {
-    int i;
-    try {
-      i = Integer.parseInt(check);
-    } catch (NumberFormatException e) {
-      return false;
-    }
-    return true;
-  }
+//  private boolean checkFormat(String check) {
+//    int i;
+//    try {
+//      i = Integer.parseInt(check);
+//    } catch (NumberFormatException e) {
+//      return false;
+//    }
+//    return true;
+//  }
 
   public void setStorekeeper(Storekeeper storekeeper) {
     this.storekeeper = storekeeper;

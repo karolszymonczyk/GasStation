@@ -6,9 +6,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import utils.ErrorUtils;
 import workers.Seller;
 
-public class CardPaneController {
+public class CardPaneController implements ErrorUtils {
 
   public TextField tfName;
   public TextField tfSurname;
@@ -16,9 +17,11 @@ public class CardPaneController {
   public Label lError;
   public Label lSucces;
   public Button bCreate;
+
   private MainController controller;
   private LoginPaneController loginController;
   private Seller seller;
+
   private String customer;
 
   @FXML
@@ -46,7 +49,12 @@ public class CardPaneController {
     String surname = tfSurname.getText();
     String sNIP = taNIP.getText();
 
-    if(!checkFormat(sNIP)) {
+    if(name.equals("") || surname.equals("") || sNIP.equals("")) {
+      lError.setText("Empty field!");
+      return;
+    }
+
+    if(!ErrorUtils.checkInt(sNIP)) {
      lError.setVisible(true);
      return;
     }
@@ -64,16 +72,6 @@ public class CardPaneController {
     tfSurname.setDisable(true);
     taNIP.setDisable(true);
     bCreate.setDisable(true);
-  }
-
-  private boolean checkFormat(String check) {
-    int i;
-    try {
-      i = Integer.parseInt(check);
-    } catch (NumberFormatException e) {
-      return false;
-    }
-    return true;
   }
 
   void setSeller(Seller seller) {

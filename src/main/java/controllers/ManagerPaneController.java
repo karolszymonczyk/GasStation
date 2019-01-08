@@ -170,7 +170,7 @@ public class ManagerPaneController {
 
   public void bDeleteSaleClick(ActionEvent event) {
 
-    if(tvSales.getSelectionModel().getSelectedItem().equals(null)) {
+    if(tvSales.getSelectionModel().getSelectedItem() == null) {
       return;
     }
 
