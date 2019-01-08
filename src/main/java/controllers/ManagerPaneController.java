@@ -168,7 +168,12 @@ public class ManagerPaneController {
     manager.downloadAll();
   }
 
-  public void bDeleteSaleClick(ActionEvent event) { //TODO można dodać ze jak nie ma selected item to nic nie robi
+  public void bDeleteSaleClick(ActionEvent event) {
+
+    if(tvSales.getSelectionModel().getSelectedItem().equals(null)) {
+      return;
+    }
+
     ManagerSale selectedItem = (ManagerSale) tvSales.getSelectionModel().getSelectedItem();
     tvSales.getItems().remove(selectedItem);
     manager.deleteSale(selectedItem.getId());
