@@ -47,7 +47,7 @@
                 <Font size="25.0" />
             </font>
         </Label>
-        <Label fx:id="lSucces" layoutX="212.0" layoutY="511.0" text="New worker has been successfully added" textFill="#75f507" visible="false">
+        <Label fx:id="lSuccess" layoutX="212.0" layoutY="511.0" text="New worker has been successfully added" textFill="#75f507" visible="false">
             <font>
                 <Font size="25.0" />
             </font>

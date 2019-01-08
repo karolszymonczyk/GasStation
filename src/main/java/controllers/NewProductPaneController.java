@@ -11,6 +11,7 @@ import utils.ErrorUtils;
 import workers.Storekeeper;
 
 import java.sql.SQLException;
+import java.sql.Savepoint;
 
 public class NewProductPaneController implements ErrorUtils {
 
@@ -28,6 +29,8 @@ public class NewProductPaneController implements ErrorUtils {
   private MainController controller;
   private LoginPaneController loginController;
   public String deliverer;
+
+  Savepoint delete;
 
   @FXML
   public void initialize() {
@@ -47,7 +50,7 @@ public class NewProductPaneController implements ErrorUtils {
   }
 
   public void bBackClick(ActionEvent event) {
-    loginController.setStorekeeperPane(deliverer);
+    loginController.setStorekeeperPane(deliverer,delete);
   }
 
   public void bCreateClick(ActionEvent event) {
@@ -110,5 +113,9 @@ public class NewProductPaneController implements ErrorUtils {
 
   void setStorekeeper(Storekeeper storekeeper) {
     this.storekeeper = storekeeper;
+  }
+
+  public void setDelete(Savepoint delete) {
+    this.delete = delete;
   }
 }

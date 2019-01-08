@@ -14,6 +14,7 @@ import workers.Storekeeper;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 
 public class LoginPaneController {
 
@@ -22,7 +23,7 @@ public class LoginPaneController {
 
 
   private Seller seller;
-  private Storekeeper storeKeeper;
+  private Storekeeper storekeeper;
   private Manager manager;
 
   private String login, password;
@@ -58,8 +59,8 @@ public class LoginPaneController {
           seller = new Seller(loginCheck.getConnection());
           setSellerPane("");
         } else if ("storekeeper".equals(loginCheck.job)) {
-          storeKeeper = new Storekeeper(loginCheck.getConnection());
-          setStorekeeperPane("");
+          storekeeper = new Storekeeper(loginCheck.getConnection());
+          setStorekeeperPane("",null);
         }
       }
     } catch (SQLException e) {
@@ -80,6 +81,7 @@ public class LoginPaneController {
     managerController.setController(controller);
     managerController.setLoginController(this);
     managerController.addToSaleList();
+
     controller.setPane(managerPane);
   }
 
@@ -105,7 +107,7 @@ public class LoginPaneController {
     controller.setPane(sellerPane);
   }
 
-  void setStorekeeperPane(String deliverer) {
+  void setStorekeeperPane(String deliverer, Savepoint delete) {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/StorekeeperPane.fxml"));
     AnchorPane storekeeperPane = null;
     try {
@@ -114,11 +116,17 @@ public class LoginPaneController {
       e.printStackTrace();
     }
     StorekeeperPaneController storekeeperController = loader.getController();
-    storekeeperController.setStoreKeeper(storeKeeper);
+    storekeeperController.setStoreKeeper(storekeeper);
     storekeeperController.setController(controller);
     storekeeperController.setLoginController(this);
     storekeeperController.setDeliverer(deliverer);
-    storekeeperController.addToList(storeKeeper.getDeliveredProducts());
+    storekeeperController.addToList(storekeeper.getDeliveredProducts());
+    storekeeperController.setDelete(delete);
+    if(storekeeper.getDeliveredProducts().size() == 0){
+      storekeeperController.disableButtons(true);
+    } else
+      storekeeperController.disableButtons(false);
+
     controller.setPane(storekeeperPane);
   }
 }

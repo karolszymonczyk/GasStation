@@ -57,7 +57,7 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <Label fx:id="lSucces" layoutX="234.0" layoutY="490.0" text="Card has been successfully created" textFill="#75f507" visible="false">
+      <Label fx:id="lSuccess" layoutX="234.0" layoutY="490.0" text="Card has been successfully created" textFill="#75f507" visible="false">
          <font>
             <Font size="25.0" />
          </font>

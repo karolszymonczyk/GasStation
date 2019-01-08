@@ -36,7 +36,7 @@ public class StorekeeperPaneController implements ErrorUtils {
   public Button bAddNewProduct;
   public Button bDelete;
   public Button bFinishDelivery;
-  private Storekeeper storekeeper;
+  Storekeeper storekeeper;
   boolean transactionStarted = false;
 
   Savepoint delete;
@@ -87,6 +87,8 @@ public class StorekeeperPaneController implements ErrorUtils {
     deliverer = tfDeliverer.getText();
     String code = tfCode.getText();
     String amount = tfAmount.getText();
+    System.out.println("TWORZE SAVEPOINT");
+
 
     if(code.equals("") || amount.equals("")) {
       lError.setVisible(true);
@@ -103,17 +105,15 @@ public class StorekeeperPaneController implements ErrorUtils {
     amountInt = Integer.parseInt(amount);
     codeInt = Integer.parseInt(code);
 
-    try {
-      delete = storekeeper.getConnection().setSavepoint("delete");
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
 
-    if(!storekeeper.isTranactionStarted()){
-      storekeeper.setTranactionStarted(true);
+
+    if(!storekeeper.isTransactionStarted()){
+      storekeeper.setTransactionStarted(true);
+
 
       try {
         storekeeper.getConnection().setAutoCommit(false);
+
         System.out.println("Zacząłem tranze");
         storekeeper.createDelivery();
       } catch (SQLException e) {
@@ -124,6 +124,11 @@ public class StorekeeperPaneController implements ErrorUtils {
     String name = storekeeper.getProductName(codeInt);
 
     ProductForDeliver product = new ProductForDeliver(name, code, amountInt);
+    try {
+        delete = storekeeper.getConnection().setSavepoint("delete");
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     storekeeper.addDeliveryProduct(product);
 
     storekeeper.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount));
@@ -145,6 +150,7 @@ public class StorekeeperPaneController implements ErrorUtils {
 
   public void bNewProductClick(ActionEvent event) {
     setNewProductPane();
+
     try {
       delete = storekeeper.getConnection().setSavepoint("delete");
     } catch (SQLException e) {
@@ -165,6 +171,7 @@ public class StorekeeperPaneController implements ErrorUtils {
     newProductController.setController(controller);
     newProductController.setLoginController(loginController);
     newProductController.setDeliverer(tfDeliverer.getText());
+    newProductController.setDelete(delete);
     controller.setPane(newProductPane);
   }
 
@@ -174,15 +181,21 @@ public class StorekeeperPaneController implements ErrorUtils {
     return result.get() == ButtonType.OK;
   }
 
+  private void noDeliverer() {
+    Optional<ButtonType> info = DialogUtils.informationDialog("Empty field", "Deliverer field is empty. Please insert value");
+  }
+
   public void bDeleteClick(ActionEvent event) {
     lError.setVisible(false);
     lSuccess.setVisible(false);
+
     try {
       storekeeper.getConnection().rollback(delete);
     } catch (SQLException e) {
       e.printStackTrace();
     }
     Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
+    storekeeper.getDeliveredProducts().remove(selectedItem);
     tvProducts.getItems().remove(selectedItem);
     if(tvProducts.getItems().isEmpty()){
       disableButtons(true);
@@ -190,6 +203,11 @@ public class StorekeeperPaneController implements ErrorUtils {
   }
 
   public void bFinishClick(ActionEvent event) {
+
+    if(tfDeliverer.getText().equals("")) {
+      noDeliverer();
+      return;
+    }
 
     disableButtons(true);
 
@@ -201,9 +219,7 @@ public class StorekeeperPaneController implements ErrorUtils {
 
       storekeeper.setDeliverer(tfDeliverer.getText());
       storekeeper.endDelivery();
-      System.out.println("USTAWIAM DELIVERERA = " + tfDeliverer.getText());
       storekeeper.getConnection().commit();
-      System.out.println("SKOńczyłem tranze");
       storekeeper.getConnection().setAutoCommit(true);
 
     } catch (SQLException e) {
@@ -231,5 +247,9 @@ public class StorekeeperPaneController implements ErrorUtils {
     tfDeliverer.setText("");
     tfCode.setText("");
     tfAmount.setText("");
+  }
+
+  public void setDelete(Savepoint delete) {
+    this.delete = delete;
   }
 }

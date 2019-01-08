@@ -8,6 +8,7 @@ import utils.ErrorUtils;
 import workers.Manager;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 
@@ -61,12 +62,10 @@ public class AddWorkerPaneController implements ErrorUtils {
     Date startD = null;
     Date endD = null;
 
-    if(name.equals("") || surname.equals("")) {//TODO dodać też jak pusta data ale nwm czy bedzie działało xD
+    if(name.equals("") || surname.equals("")) {
       lError.setVisible(true);
       return;
     }
-
-    //TODO sprawdzić datę
 
     try{
       startD = Date.valueOf(start);
@@ -74,8 +73,12 @@ public class AddWorkerPaneController implements ErrorUtils {
     } catch (Exception e ){
       e.printStackTrace();
     }
-
-    manager.createUser(name,surname,job, startD,endD);
+  try {
+    manager.createUser(name, surname, job, startD, endD);
+  } catch (SQLException e){
+    lError.setVisible(true);
+    return;
+  }
 
     lSuccess.setVisible(true);
     setDisbledPane();

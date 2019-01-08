@@ -177,6 +177,11 @@ public class ManagerPaneController {
     addSaleController.setLoginController(loginController);
     addSaleController.setManager(manager);
     addSaleController.addToProductList();
+    if(manager.getActiveBill().size()==0){
+      addSaleController.disableButtons(true);
+    } else{
+      addSaleController.disableButtons(false);
+    }
     controller.setPane(addSalePane);
   }
 

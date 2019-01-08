@@ -6,11 +6,14 @@ import utils.ErrorUtils;
 import workers.Manager;
 
 import java.sql.SQLException;
+import java.sql.Savepoint;
 
 public class AddNewProductPaneController extends NewProductPaneController implements ErrorUtils{
 
+  AddDeliveryPaneController addDeliveryController;
   ViewDeliversPaneController viewDeliversController;
   Manager manager;
+  Savepoint deleted;
 
   public void setViewDeliversController(ViewDeliversPaneController viewDeliversController) {
     this.viewDeliversController = viewDeliversController;
@@ -18,7 +21,9 @@ public class AddNewProductPaneController extends NewProductPaneController implem
 
   @Override
   public void bBackClick(ActionEvent event) {
-    viewDeliversController.setAddDeliveryPane(deliverer);
+
+    addDeliveryController.loadActiveDelivery(manager.getDeliveredProducts());
+    viewDeliversController.setAddDeliveryPane(deliverer,deleted);
   }
 
   @Override
@@ -47,9 +52,19 @@ public class AddNewProductPaneController extends NewProductPaneController implem
       return;
     }
 
+    if (!manager.isTransactionStarted()) {
+      manager.setTransactionStarted(true);
+
+      try {
+        manager.getConnection().setAutoCommit(false);
+        manager.createDelivery();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+
     int amountInt = Integer.parseInt(amount);
     int codeInt = Integer.parseInt(code);
-    System.out.println("MANAGER = " + manager);
 
     manager.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount));
 
@@ -62,5 +77,13 @@ public class AddNewProductPaneController extends NewProductPaneController implem
 
   public void setManager(Manager manager) {
     this.manager = manager;
+  }
+
+  public void setAddDeliveryController(AddDeliveryPaneController addDeliveryController) {
+    this.addDeliveryController = addDeliveryController;
+  }
+
+  public void setDeleted(Savepoint deleted) {
+    this.deleted = deleted;
   }
 }

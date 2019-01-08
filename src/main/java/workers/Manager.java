@@ -262,10 +262,10 @@ public class Manager extends Worker {
     }
   }
 
-  public void createUser(String name, String surname, String job, Date start, Date end) {
+  public void createUser(String name, String surname, String job, Date start, Date end) throws SQLException {
 
 
-    try {
+
       cSt = connection.prepareCall("{CALL createWorker(?,?,?,?,?)}");
       cSt.setString(1, name);
       cSt.setString(2, surname);
@@ -285,10 +285,8 @@ public class Manager extends Worker {
       cSt = connection.prepareCall("CALL createUser(?)");
       cSt.setInt(1, id);
       cSt.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
     }
-  }
+
 
   public void addDeliveryProduct(ProductForDeliver product) {
     deliveredProducts.add(product);

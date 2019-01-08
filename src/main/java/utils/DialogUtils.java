@@ -17,4 +17,15 @@ public class DialogUtils {
     Optional<ButtonType> result = informationAlert.showAndWait();
     return result;
   }
+
+  public static Optional<ButtonType> informationDialog(String title, String message){
+
+    Alert informationAlert = new Alert(Alert.AlertType.INFORMATION);
+    informationAlert.setTitle(title);
+    informationAlert.setHeaderText(message);
+    informationAlert.setX(730);
+    informationAlert.setY(420);
+    Optional<ButtonType> result = informationAlert.showAndWait();
+    return result;
+  }
 }

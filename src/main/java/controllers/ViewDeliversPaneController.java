@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import workers.Manager;
 
 import java.io.IOException;
+import java.sql.Savepoint;
 import java.util.ArrayList;
 
 public class ViewDeliversPaneController {
@@ -104,10 +105,10 @@ public class ViewDeliversPaneController {
   }
 
   public void bAddClick(ActionEvent event){
-   setAddDeliveryPane("");
+   setAddDeliveryPane("",null);
   }
 
-  void setAddDeliveryPane(String deliverer) {
+  void setAddDeliveryPane(String deliverer, Savepoint deleted) {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AddDeliveryPane.fxml"));
     AnchorPane addDeliveryPane = null;
     try {
@@ -122,6 +123,13 @@ public class ViewDeliversPaneController {
     addDeliveryController.setViewDeliversPaneController(this);
     addDeliveryController.setDeliverer(deliverer);
     addDeliveryController.setManager(manager);
+    addDeliveryController.loadActiveDelivery(manager.getDeliveredProducts());
+    addDeliveryController.setDeleted(deleted);
+    if(manager.getDeliveredProducts().size() == 0){
+      addDeliveryController.disableButtons(true);
+    } else {
+      addDeliveryController.disableButtons(false);
+    }
     controller.setPane(addDeliveryPane);
 
   }

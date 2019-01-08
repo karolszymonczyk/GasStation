@@ -162,15 +162,13 @@ public class AddSalePaneController implements ErrorUtils{
 
     if (tfCustomer.getText().equals("")) {
       manager.closeBillWithoutCustomer();
-    }
-
-    if(!ErrorUtils.checkInt(tfCustomer.getText())) {
+    } else if(!ErrorUtils.checkInt(tfCustomer.getText())) {
       lWarning.setText("Wrong NIP format!");
       return;
+    } else {
+      NIP = Integer.parseInt(tfCustomer.getText());
+      manager.closeBill(NIP);
     }
-
-    NIP = Integer.parseInt(tfCustomer.getText());
-    manager.closeBill(NIP);
 
     try {
 

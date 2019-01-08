@@ -3,12 +3,17 @@ package controllers;
 import elements.ProductForDeliver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
+import utils.DialogUtils;
 import utils.ErrorUtils;
 import workers.Manager;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Savepoint;
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class AddDeliveryPaneController extends StorekeeperPaneController implements ErrorUtils {
 
@@ -17,18 +22,22 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
   ManagerPaneController managerController;
   ViewDeliversPaneController viewDeliversController;
 
+  private Savepoint deleted;
+
+
   @Override
   public void bLogoutClick(ActionEvent event) {
 
         try {
           manager.getConnection().rollback();
           manager.getConnection().setAutoCommit(true);
+          manager.setTransactionStarted(false);
         } catch (SQLException e) {
           System.out.println("No active transaction - no rollback.");
         }
         manager.cancelDelivery();
         controller.setLoginPane();
-
+    manager.getDeliveredProducts().clear();
     managerController.setViewDeliversPane();
     manager.downloadDeliveries();
   }
@@ -41,9 +50,18 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
     this.viewDeliversController = viewDeliversController;
   }
 
+  private void noDeliverer() {
+    Optional<ButtonType> info = DialogUtils.informationDialog("Empty field", "Deliverer field is empty. Please insert value");
+  }
+
   @Override
   public void bNewProductClick(ActionEvent event) {
     setAddNewProductPane();
+    try {
+      deleted = manager.getConnection().setSavepoint("delete");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   private void setAddNewProductPane() {
@@ -60,6 +78,8 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
     addNewProductController.setDeliverer(tfDeliverer.getText());
     addNewProductController.setViewDeliversController(viewDeliversController);
     addNewProductController.setManager(manager);
+    addNewProductController.setAddDeliveryController(this);
+    addNewProductController.setDeleted(deleted);
     controller.setPane(addNewProductPane);
   }
 
@@ -83,16 +103,10 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
       lError.setVisible(true);
     }
 
-    if(!ErrorUtils.checkInt(code) || !ErrorUtils.checkInt(amount) || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
+    if(!ErrorUtils.checkInt(code) || !ErrorUtils.checkInt(amount) || !manager.searchForProductFromCode(Integer.parseInt(code))) {
 
       lError.setVisible(true);
       return;
-    }
-
-    try {
-      delete = manager.getConnection().setSavepoint("delete");
-    } catch (SQLException e) {
-      e.printStackTrace();
     }
 
     int amountInt;
@@ -105,7 +119,6 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
 
       try {
         manager.getConnection().setAutoCommit(false);
-        System.out.println("Zacząłem tranze");
         manager.createDelivery();
       } catch (SQLException e) {
         e.printStackTrace();
@@ -115,6 +128,14 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
     String name = manager.getProductName(codeInt);
 
     ProductForDeliver product = new ProductForDeliver(name, code, amountInt);
+
+    try {
+      deleted = manager.getConnection().setSavepoint("delete");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+
     manager.addDeliveryProduct(product);
 
     manager.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount));
@@ -130,6 +151,11 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
   @Override
   public void bFinishClick(ActionEvent event) {
 
+    if(tfDeliverer.getText().equals("")) {
+      noDeliverer();
+      return;
+    }
+
     disableButtons(true);
 
     lError.setVisible(false);
@@ -140,9 +166,7 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
 
       manager.setDeliverer(tfDeliverer.getText());
       manager.endDelivery();
-      System.out.println("USTAWIAM DELIVERERA = " + tfDeliverer.getText());
       manager.getConnection().commit();
-      System.out.println("SKOńczyłem tranze");
       manager.getConnection().setAutoCommit(true);
 
     } catch (SQLException e) {
@@ -150,6 +174,7 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
     }
     manager.getDeliveredProducts().clear();
     tvProducts.getItems().clear();
+    tfDeliverer.setText("");
   }
 
   @Override
@@ -157,15 +182,30 @@ public class AddDeliveryPaneController extends StorekeeperPaneController impleme
     lError.setVisible(false);
     lSuccess.setVisible(false);
     try {
-      manager.getConnection().rollback(delete);
+      System.out.println("przed nullem delete =  " + deleted);
+      manager.getConnection().rollback(deleted);
     } catch (SQLException e) {
       e.printStackTrace();
     }
     Object selectedItem = tvProducts.getSelectionModel().getSelectedItem();
+    manager.getDeliveredProducts().remove(selectedItem);
     tvProducts.getItems().remove(selectedItem);
     if(tvProducts.getItems().isEmpty()){
       disableButtons(true);
     }
+  }
+
+  public void loadActiveDelivery(ArrayList<ProductForDeliver> deliveredProducts) {
+
+    tvProducts.getItems().clear();
+
+    for(ProductForDeliver productForDeliver : manager.getDeliveredProducts()){
+      tvProducts.getItems().add(productForDeliver);
+    }
+  }
+
+  public void setDeleted(Savepoint deleted) {
+    this.deleted = deleted;
   }
 }
 

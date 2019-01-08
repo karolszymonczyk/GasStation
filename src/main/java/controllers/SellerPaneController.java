@@ -189,15 +189,14 @@ public class SellerPaneController implements ErrorUtils {
 
     if (tfCustomer.getText().equals("")) {
       seller.closeBillWithoutCustomer();
-    }
-
-    if(!ErrorUtils.checkInt(tfCustomer.getText())) {
+    } else if(!ErrorUtils.checkInt(tfCustomer.getText())) {
       lWarning.setText("Wrong NIP format!");
       return;
+    } else {
+      NIP = Integer.parseInt(tfCustomer.getText());
+      seller.closeBill(NIP);
     }
 
-    NIP = Integer.parseInt(tfCustomer.getText());
-    seller.closeBill(NIP);
 
     try {
 
@@ -226,6 +225,7 @@ public class SellerPaneController implements ErrorUtils {
     } catch (SQLException e) {
       e.printStackTrace();
     }
+    seller.getActiveBill().remove(selectedItem);
     tvBill.getItems().remove(selectedItem);
     setTotal();
 

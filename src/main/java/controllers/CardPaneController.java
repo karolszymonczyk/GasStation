@@ -53,7 +53,7 @@ public class CardPaneController implements ErrorUtils {
     String sNIP = taNIP.getText();
 
     if(name.equals("") || surname.equals("") || sNIP.equals("")) {
-      lError.setText("Empty field!");
+      lError.setVisible(true);
       return;
     }
 
