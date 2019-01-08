@@ -4,12 +4,13 @@ import elements.ProductForDeliver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import utils.ErrorUtils;
 import workers.Manager;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class AddDeliveryPaneController extends StorekeeperPaneController {
+public class AddDeliveryPaneController extends StorekeeperPaneController implements ErrorUtils {
 
   Manager manager;
 
@@ -64,6 +65,16 @@ public class AddDeliveryPaneController extends StorekeeperPaneController {
     deliverer = tfDeliverer.getText();
     String code = tfCode.getText();
     String amount = tfAmount.getText();
+
+    if(code.equals("") || amount.equals("")) {
+      lError.setVisible(true);
+    }
+
+    if(!ErrorUtils.checkInt(code) || !ErrorUtils.checkInt(amount) || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
+
+      lError.setVisible(true);
+      return;
+    }
 
 //    try {
 //      delete = storekeeper.getConnection().setSavepoint("delete");

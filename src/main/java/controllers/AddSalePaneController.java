@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
-public class AddSalePaneController {
+public class AddSalePaneController implements ErrorUtils{
 
   @FXML
   public TableView tvProducts;
@@ -70,7 +70,9 @@ public class AddSalePaneController {
   }
 
   public void bAddClick(ActionEvent event) {
+
     lWarning.setText("");
+
     String sCode = taProduct.getText();
     String quantity = taQuantity.getText();
 
@@ -88,13 +90,22 @@ public class AddSalePaneController {
       }
     }
 
-    try {
-      intQuantity = Integer.parseInt(quantity);
-      iCode = Integer.parseInt(sCode);
-    } catch (NumberFormatException e) {
+
+    if(sCode.equals("") || quantity.equals("")) {
+      lWarning.setText("Empty field!");
+      return;
+    }
+
+    if(!ErrorUtils.checkInt(sCode)) {
+      lWarning.setText("Wrong input!");
+      return;
+    } else if (!ErrorUtils.checkInt(quantity)) {
       lWarning.setText("Wrong input!");
       return;
     }
+
+    intQuantity = Integer.parseInt(quantity);
+    iCode = Integer.parseInt(sCode);
 
     if(!manager.searchForProductFromCode(iCode)){
       lWarning.setText("No such product!");

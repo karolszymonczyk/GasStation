@@ -4,13 +4,14 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import utils.ErrorUtils;
 import workers.Manager;
 
 import java.sql.Date;
 import java.time.LocalDate;
 
 //
-public class AddWorkerPaneController {
+public class AddWorkerPaneController implements ErrorUtils {
   public TextField tfName;
   public TextField tfSurname;
   public ChoiceBox<String> cbJob;
@@ -59,6 +60,13 @@ public class AddWorkerPaneController {
 
     Date startD = null;
     Date endD = null;
+
+    if(name.equals("") || surname.equals("")) {//TODO dodać też jak pusta data ale nwm czy bedzie działało xD
+      lError.setVisible(true);
+      return;
+    }
+
+    //TODO sprawdzić datę
 
     try{
       startD = Date.valueOf(start);

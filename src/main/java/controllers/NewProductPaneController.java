@@ -22,7 +22,6 @@ public class NewProductPaneController implements ErrorUtils {
   public Label lSucces;
   public TextField tfPrice;
   public TextField tfTax;
-  public TextField taDeliverer;
 
   private Storekeeper storekeeper;
 
@@ -60,10 +59,9 @@ public class NewProductPaneController implements ErrorUtils {
     String price = tfPrice.getText();
     String tax = tfTax.getText();
     String amount = taAmount.getText();
-    String deliverer = taDeliverer.getText();
 
     if(name.equals("") || code.equals("") || price.equals("") ||
-            tax.equals("") || amount.equals("") || deliverer.equals("")) {
+            tax.equals("") || amount.equals("")) {
       lError.setVisible(true);
       return;
     }
@@ -107,7 +105,6 @@ public class NewProductPaneController implements ErrorUtils {
     tfPrice.setDisable(true);
     tfTax.setDisable(true);
     taAmount.setDisable(true);
-    taDeliverer.setDisable(true);
     bCreate.setDisable(true);
   }
 
