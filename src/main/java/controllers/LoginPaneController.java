@@ -14,8 +14,6 @@ import workers.Storekeeper;
 
 import java.io.IOException;
 import java.sql.SQLException;
-//
-//TODO zaminić password na PasswordLabel
 
 public class LoginPaneController {
 

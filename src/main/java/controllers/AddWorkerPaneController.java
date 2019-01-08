@@ -9,7 +9,7 @@ import workers.Manager;
 import java.sql.Date;
 import java.time.LocalDate;
 
-//
+
 public class AddWorkerPaneController {
   public TextField tfName;
   public TextField tfSurname;
@@ -18,12 +18,11 @@ public class AddWorkerPaneController {
   public DatePicker dpEnd;
   public Button bCreate;
   public Label lError;
-  public Label lSucces;
+  public Label lSuccess;
 
   Manager manager;
 
   private MainController controller;
-  //  private LoginPaneController loginController;
   private ManagerPaneController managerController;
 
   @FXML
@@ -69,7 +68,7 @@ public class AddWorkerPaneController {
 
     manager.createUser(name,surname,job, startD,endD);
 
-    lSucces.setVisible(true);
+    lSuccess.setVisible(true);
     setDisbledPane();
   }
 

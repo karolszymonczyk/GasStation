@@ -14,8 +14,9 @@ public class CardPaneController {
   public TextField tfSurname;
   public TextField taNIP;
   public Label lError;
-  public Label lSuccess;
   public Button bCreate;
+  public Label lSuccess;
+
   private MainController controller;
   private LoginPaneController loginController;
   private Seller seller;

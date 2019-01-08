@@ -10,7 +10,6 @@ public class AddNewProductPaneController extends NewProductPaneController {
 
   ViewDeliversPaneController viewDeliversController;
   Manager manager;
-//
   public void setViewDeliversController(ViewDeliversPaneController viewDeliversController) {
     this.viewDeliversController = viewDeliversController;
   }
@@ -31,22 +30,6 @@ public class AddNewProductPaneController extends NewProductPaneController {
     String amount = taAmount.getText();
     String deliverer = taDeliverer.getText();
 
-//    if(!checkFormat(price) || !checkFormat(amount)) {
-//      lError.setVisible(true);
-//      return;
-//    }
-
-
-//    if(!storekeeper.isTranactionStarted()){
-//      storekeeper.setTranactionStarted(true);
-//
-//      try {
-//        storekeeper.getConnection().setAutoCommit(false);
-//        storekeeper.createDelivery();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//    }
 
     int amountInt = Integer.parseInt(amount);
     int codeInt = Integer.parseInt(code);

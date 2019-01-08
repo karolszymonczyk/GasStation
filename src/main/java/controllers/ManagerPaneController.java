@@ -66,9 +66,7 @@ public class ManagerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    if (true) {
-      controller.setLoginPane();
-    }
+    controller.setLoginPane();
   }
 
   public void bShowClick(ActionEvent event) {

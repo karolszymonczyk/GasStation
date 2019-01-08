@@ -18,7 +18,7 @@ public class NewProductPaneController {
   public TextField taAmount;
   public Button bCreate;
   public Label lError;
-  public Label lSucces;
+  public Label lSuccess;
   public TextField tfPrice;
   public TextField tfTax;
   TextField taDeliverer;
@@ -85,11 +85,11 @@ public class NewProductPaneController {
     ProductForDeliver productForDeliver = new ProductForDeliver(storekeeper.getProductName(codeInt), code, amountInt);
     storekeeper.addDeliveryProduct(productForDeliver);
 
-    lSucces.setVisible(true);
-    setDisbledPane();
+    lSuccess.setVisible(true);
+    setDisabledPane();
   }
 
-  void setDisbledPane() {
+  void setDisabledPane() {
     tfName.setDisable(true);
     tfCode.setDisable(true);
     tfPrice.setDisable(true);
@@ -108,7 +108,7 @@ public class NewProductPaneController {
     return true;
   }
 
-  public void setStorekeeper(Storekeeper storekeeper) {
+  void setStorekeeper(Storekeeper storekeeper) {
     this.storekeeper = storekeeper;
   }
 }

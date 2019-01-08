@@ -47,8 +47,9 @@ public class ViewDeliversPaneController {
 
 
   void addDeliveriesToList() {
-    for(Deliver deliver : manager.getDeliveries())
-    tvDelivers.getItems().add(deliver);
+    for(Deliver deliver : manager.getDeliveries()) {
+      tvDelivers.getItems().add(deliver);
+    }
   }
 
   public void setController(MainController controller) {

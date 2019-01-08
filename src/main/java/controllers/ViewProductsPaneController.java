@@ -39,7 +39,7 @@ public class ViewProductsPaneController {
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
   }
 
-  public void addProductList() {
+  void addProductList() {
 
     for(ProductView productView : manager.getProducts())
     tvProducts.getItems().add(productView);
@@ -53,7 +53,7 @@ public class ViewProductsPaneController {
     this.loginController = LoginController;
   }
 
-  public void setManagerController(ManagerPaneController managerController) {
+  void setManagerController(ManagerPaneController managerController) {
     this.managerController = managerController;
   }
 

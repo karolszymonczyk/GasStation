@@ -1,5 +1,4 @@
 package elements;
-//
 public class ProductView {
 
   String code;

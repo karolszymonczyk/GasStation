@@ -22,11 +22,11 @@ public class AddDeliveryPaneController extends StorekeeperPaneController {
     manager.downloadDeliveries();
   }
 
-  public void setManagerController(ManagerPaneController managerController) {
+  void setManagerController(ManagerPaneController managerController) {
     this.managerController = managerController;
   }
 
-  public void setViewDeliversPaneController(ViewDeliversPaneController viewDeliversController) {
+  void setViewDeliversPaneController(ViewDeliversPaneController viewDeliversController) {
     this.viewDeliversController = viewDeliversController;
   }
 
@@ -67,34 +67,10 @@ public class AddDeliveryPaneController extends StorekeeperPaneController {
     String code = tfCode.getText();
     String amount = tfAmount.getText();
 
-//    try {
-//      delete = storekeeper.getConnection().setSavepoint("delete");
-//    } catch (SQLException e) {
-//      e.printStackTrace();
-//    }
-
-//    if(checkFormat(code)==-1 || checkFormat(amount)==-1 || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
-//
-//      lError.setVisible(true);
-//      return;
-//    }
-
     int amountInt;
     int codeInt;
-    //amountInt = checkFormat(amount);
     amountInt = Integer.parseInt(amount);
     codeInt = Integer.parseInt(code);
-
-//    if(!storekeeper.isTranactionStarted()){
-//      storekeeper.setTranactionStarted(true);
-//
-//      try {
-//        storekeeper.getConnection().setAutoCommit(false);
-//        storekeeper.createDelivery();
-//      } catch (SQLException e) {
-//        e.printStackTrace();
-//      }
-//    }
 
     String name = manager.getProductName(codeInt);
 
