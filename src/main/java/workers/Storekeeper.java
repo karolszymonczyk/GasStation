@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Storekeeper extends Worker{
 
-  boolean tranactionStarted = false;
+  boolean transactionStarted = false;
 
   ArrayList<ProductForDeliver> deliveredProducts;
 
@@ -48,11 +48,11 @@ public class Storekeeper extends Worker{
 //  }
 
   public boolean isTranactionStarted() {
-    return tranactionStarted;
+    return transactionStarted;
   }
 
   public void setTranactionStarted(boolean tranactionStarted) {
-    this.tranactionStarted = tranactionStarted;
+    this.transactionStarted = tranactionStarted;
   }
 
   public void createDelivery() {
