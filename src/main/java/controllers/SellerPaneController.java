@@ -11,10 +11,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import utils.DialogUtils;
+import utils.ErrorUtils;
 
 import java.io.IOException;
 import java.sql.Savepoint;
 import java.util.Optional;
+
+import utils.ErrorUtils;
 import workers.Seller;
 
 import java.io.IOException;
@@ -28,7 +31,7 @@ import java.util.ArrayList;
 
 //TODO zrobic dodawanie karty i uwzględnienie zniżki
 //
-public class SellerPaneController {
+public class SellerPaneController implements ErrorUtils {
 
   @FXML
   public TableView tvProducts;
@@ -103,9 +106,8 @@ public class SellerPaneController {
 
   public void bAddClick(ActionEvent event) {
 
-    disableButtons(false);
-
     lWarning.setText("");
+
     String sCode = taProduct.getText();
     String quantity = taQuantity.getText();
     int intQuantity;
@@ -123,18 +125,22 @@ public class SellerPaneController {
       }
     }
 
+
     if(sCode.equals("") || quantity.equals("")) {
       lWarning.setText("Wrong input!");
       return;
     }
 
-    try {
-      intQuantity = Integer.parseInt(quantity);
-      iCode = Integer.parseInt(sCode);
-    } catch (NumberFormatException e) {
+    if(!ErrorUtils.checkInt(sCode)) {
+      lWarning.setText("Wrong input!");
+      return;
+    } else if (!ErrorUtils.checkInt(quantity)) {
       lWarning.setText("Wrong input!");
       return;
     }
+
+    intQuantity = Integer.parseInt(quantity);
+    iCode = Integer.parseInt(sCode);
 
     if(!seller.searchForProductFromCode(iCode)){
       lWarning.setText("No such product!");
@@ -155,6 +161,8 @@ public class SellerPaneController {
       lWarning.setText("Not enough products!");
       return;
     }
+
+    disableButtons(false);
 
     taProduct.setText("");
     taQuantity.setText("");
@@ -263,7 +271,7 @@ public class SellerPaneController {
     }
     return false;
   }
-  
+
 //  public void setAvailabilityPane() {
 //    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/AvailabilityPane.fxml"));
 //    AnchorPane availabilityPane = null;
