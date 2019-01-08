@@ -58,6 +58,8 @@ public class AddDeliveryPaneController extends StorekeeperPaneController {
   @Override
   public void bAddClick(ActionEvent event) {
 
+    disableButtons(false);
+
     lError.setVisible(false);
     lSuccess.setVisible(false);
 

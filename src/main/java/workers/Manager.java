@@ -2,55 +2,50 @@ package workers;
 
 import elements.*;
 
-import java.math.RoundingMode;
-import java.sql.*;
-import java.text.DecimalFormat;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class Manager extends Worker {
 
-  ArrayList<ManagerSale> bills;
-  ArrayList<ManagerBill> billElements;
-  ManagerSale managerSale;
-  ManagerBill managerBill;
-  boolean transactionStarted = false;
 
-  boolean tranactionStarted = false;
+  private ManagerSale managerSale;
+  private ManagerBill managerBill;
+  private ProductForDeliver productForDeliver;
+  private Deliver delivery;
+
   private ArrayList<ProductView> products;
   private ArrayList<Product> productsToSale;
-  ArrayList<elements.Worker> workers;
-  ArrayList<Deliver> deliveries;
-  ArrayList<ProductForDeliver> deliveryElements;
-  ProductForDeliver productForDeliver;
-  private Deliver delivery;
+  private ArrayList<elements.Worker> workers;
+  private ArrayList<Deliver> deliveries;
+  private ArrayList<ProductForDeliver> deliveryElements;
+  private ArrayList<ManagerSale> bills;
+  private ArrayList<ManagerBill> billElements;
   private ArrayList<ProductForDeliver> deliveredProducts;
 
-//  DecimalFormat df = new DecimalFormat("##.##");
-
+  private boolean transactionStarted;
 
   public Manager(Connection connection) {
     this.connection = connection;
     deliveredProducts = new ArrayList<>();
-//    df.setRoundingMode(RoundingMode.DOWN);
     downloadAll();
   }
 
-  public void downloadBills(){
+  public void downloadBills() {
     bills = new ArrayList<>();
 
     try {
       st = connection.createStatement();
       rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +
-                                "b.value," +
-                                "(SELECT name FROM customer WHERE id = b.customer) as customer," +
-                                "(SELECT price FROM product WHERE code = s.product_id) as price, " +
-                                "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
-                                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id;");
+              "b.value," +
+              "(SELECT name FROM customer WHERE id = b.customer) as customer," +
+              "(SELECT price FROM product WHERE code = s.product_id) as price, " +
+              "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
+              "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id;");
       int id1;
-      int id2=-1;
+      int id2 = -1;
       while (rs.next()) {
-
 
         id1 = rs.getInt("id");
         String time = rs.getTimestamp("time").toString();
@@ -62,37 +57,32 @@ public class Manager extends Worker {
         price = round(price);
         value = round(value);
 
-        managerBill = new ManagerBill(product,amount,price);
+        managerBill = new ManagerBill(product, amount, price);
 
-
-        if(id1==id2){
-          bills.remove(bills.size()-1);
-        }
-
-        else{
+        if (id1 == id2) {
+          bills.remove(bills.size() - 1);
+        } else {
           billElements = new ArrayList<>();
         }
 
         billElements.add(managerBill);
-        managerSale = new ManagerSale(id1,time,seller,value, billElements);
+        managerSale = new ManagerSale(id1, time, seller, value, billElements);
         bills.add(managerSale);
-        id2=id1;
-
+        id2 = id1;
       }
-
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  public void downloadDeliveries(){
+  public void downloadDeliveries() {
     deliveries = new ArrayList<>();
 
     try {
       st = connection.createStatement();
       rs = st.executeQuery("SELECT d.id,d.time,de.product_id,de.amount,(SELECT name FROM product where code = de.product_id) as name,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = d.storekeeper) as storekeeper, de.deliverer FROM delivery d JOIN delivery_deliveryelement dde ON dde.delivery = d.id JOIN delivery_element de ON dde.delivery_element = de.id;");
       int id1;
-      int id2=-1;
+      int id2 = -1;
       while (rs.next()) {
 
         id1 = rs.getInt("id");
@@ -101,26 +91,20 @@ public class Manager extends Worker {
         String deliverer = rs.getString("deliverer");
         String name = rs.getString("name");
         int amount = rs.getInt("amount");
-        Integer code = rs.getInt("product_id");
+        int code = rs.getInt("product_id");
 
-        productForDeliver = new ProductForDeliver(name, code.toString(), amount);
+        productForDeliver = new ProductForDeliver(name, Integer.toString(code), amount);
 
-
-        if(id1==id2){
-          deliveries.remove(deliveries.size()-1);
-        }
-
-        else{
+        if (id1 == id2) {
+          deliveries.remove(deliveries.size() - 1);
+        } else {
           deliveryElements = new ArrayList<>();
         }
-
         deliveryElements.add(productForDeliver);
-        delivery = new Deliver(id1,time,deliverer,storekeeper,deliveryElements);
+        delivery = new Deliver(id1, time, deliverer, storekeeper, deliveryElements);
         deliveries.add(delivery);
-        id2=id1;
-
+        id2 = id1;
       }
-
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -130,15 +114,15 @@ public class Manager extends Worker {
     return bills;
   }
 
-  public boolean isTranactionStarted() {
-    return tranactionStarted;
+  public boolean istransactionStarted() {
+    return transactionStarted;
   }
 
-  public void setTranactionStarted(boolean tranactionStarted) {
-    this.tranactionStarted = tranactionStarted;
+  public void settransactionStarted(boolean transactionStarted) {
+    this.transactionStarted = transactionStarted;
   }
 
-  public void downloadProducts(){
+  public void downloadProducts() {
     products = new ArrayList<>();
     productsToSale = new ArrayList<>();
 
@@ -146,7 +130,6 @@ public class Manager extends Worker {
       st = connection.createStatement();
       rs = st.executeQuery("SELECT * FROM product");
       while (rs.next()) {
-
 
         Integer code = rs.getInt("code");
         String name = rs.getString("name");
@@ -156,19 +139,18 @@ public class Manager extends Worker {
         price = round(price);
         tax = round(tax);
 
-        ProductView productView = new ProductView(code.toString(),name,price,tax,amount);
-        Product product = new Product(name,code.toString());
+        ProductView productView = new ProductView(code.toString(), name, price, tax, amount);
+        Product product = new Product(name, code.toString());
         productsToSale.add(product);
         products.add(productView);
       }
-
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
 
-  public void downloadWorkers(){
+  public void downloadWorkers() {
     workers = new ArrayList<>();
 
     try {
@@ -186,11 +168,9 @@ public class Manager extends Worker {
         String job = rs.getString("job");
         String status = rs.getString("status");
 
-        elements.Worker worker = new elements.Worker(id,name,surname,login,password,contractS,contractE,job,status) {
-        };
+        elements.Worker worker = new elements.Worker(id, name, surname, login, password, contractS, contractE, job, status);
         workers.add(worker);
       }
-
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -207,14 +187,14 @@ public class Manager extends Worker {
   public void addProduct(String name, float price, float tax, int code, int amount) {
     try {
       st = connection.createStatement();
-      String sql = "INSERT INTO product (name, price, tax, code, amount) VALUES ('"+name+"',"+price+","+tax+","+code+","+amount+")";
+      String sql = "INSERT INTO product (name, price, tax, code, amount) VALUES ('" + name + "'," + price + "," + tax + "," + code + "," + amount + ")";
       st.executeUpdate(sql);
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  public void deleteProduct(int code){
+  public void deleteProduct(int code) {
     try {
       st = connection.createStatement();
       String sql = "DELETE FROM product WHERE code = " + code;
@@ -224,7 +204,7 @@ public class Manager extends Worker {
     }
   }
 
-  public void deleteSale(int id){
+  public void deleteSale(int id) {
     try {
       st = connection.createStatement();
       String sql = "DELETE FROM bill WHERE id = " + id;
@@ -234,7 +214,7 @@ public class Manager extends Worker {
     }
   }
 
-  public void deleteDelivery(int id){
+  public void deleteDelivery(int id) {
     try {
       st = connection.createStatement();
       String sql = "DELETE FROM delivery WHERE id = " + id;
@@ -244,7 +224,7 @@ public class Manager extends Worker {
     }
   }
 
-  public void downloadAll(){
+  public void downloadAll() {
     downloadWorkers();
     downloadProducts();
     downloadBills();
@@ -267,7 +247,7 @@ public class Manager extends Worker {
     return deliveries;
   }
 
-  public void deleteUser(int id){
+  public void deleteUser(int id) {
     try {
 
       cSt = connection.prepareCall("{CALL deleteUser(?)}");
@@ -285,17 +265,17 @@ public class Manager extends Worker {
   public void createUser(String name, String surname, String job, Date start, Date end) {
 
 
-    try{
+    try {
       cSt = connection.prepareCall("{CALL createWorker(?,?,?,?,?)}");
-      cSt.setString(1,name);
-      cSt.setString(2,surname);
-      cSt.setString(3,job);
-      cSt.setDate(4,start);
-      cSt.setDate(5,end);
+      cSt.setString(1, name);
+      cSt.setString(2, surname);
+      cSt.setString(3, job);
+      cSt.setDate(4, start);
+      cSt.setDate(5, end);
       cSt.execute();
 
       st = connection.createStatement();
-      rs = st.executeQuery("SELECT id FROM worker WHERE name = '"+name+"' && surname = '" + surname + "'");
+      rs = st.executeQuery("SELECT id FROM worker WHERE name = '" + name + "' && surname = '" + surname + "'");
       int id = 0;
       while (rs.next()) {
 
@@ -303,13 +283,14 @@ public class Manager extends Worker {
 
       }
       cSt = connection.prepareCall("CALL createUser(?)");
-      cSt.setInt(1,id);
+      cSt.setInt(1, id);
       cSt.execute();
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
-  public void addDeliveryProduct(ProductForDeliver product){
+
+  public void addDeliveryProduct(ProductForDeliver product) {
     deliveredProducts.add(product);
   }
 

@@ -21,7 +21,7 @@ public class NewProductPaneController {
   public Label lSucces;
   public TextField tfPrice;
   public TextField tfTax;
-  public TextField taDeliverer;
+  TextField taDeliverer;
 
   private Storekeeper storekeeper;
 
@@ -48,8 +48,6 @@ public class NewProductPaneController {
 
   public void bBackClick(ActionEvent event) {
     loginController.setStorekeeperPane(deliverer);
-
-
   }
 
   public void bCreateClick(ActionEvent event) {
@@ -62,13 +60,13 @@ public class NewProductPaneController {
     String amount = taAmount.getText();
     String deliverer = taDeliverer.getText();
 
-    if(!checkFormat(price) || !checkFormat(amount)) {
+    if (!checkFormat(price) || !checkFormat(amount)) {
       lError.setVisible(true);
       return;
     }
 
 
-    if(!storekeeper.isTranactionStarted()){
+    if (!storekeeper.isTranactionStarted()) {
       storekeeper.setTranactionStarted(true);
 
       try {
@@ -82,9 +80,9 @@ public class NewProductPaneController {
     int amountInt = Integer.parseInt(amount);
     int codeInt = Integer.parseInt(code);
 
-    storekeeper.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount),deliverer);
+    storekeeper.addNewProduct(Integer.parseInt(code), name, Float.parseFloat(price), Float.parseFloat(tax), Integer.parseInt(amount), deliverer);
 
-    ProductForDeliver productForDeliver = new ProductForDeliver(storekeeper.getProductName(codeInt),code,amountInt);
+    ProductForDeliver productForDeliver = new ProductForDeliver(storekeeper.getProductName(codeInt), code, amountInt);
     storekeeper.addDeliveryProduct(productForDeliver);
 
     lSucces.setVisible(true);
@@ -102,9 +100,8 @@ public class NewProductPaneController {
   }
 
   private boolean checkFormat(String check) {
-    int i;
     try {
-      i = Integer.parseInt(check);
+      Integer.parseInt(check);
     } catch (NumberFormatException e) {
       return false;
     }

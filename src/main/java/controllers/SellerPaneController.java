@@ -9,25 +9,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-
 import utils.DialogUtils;
-
-import java.io.IOException;
-import java.sql.Savepoint;
-import java.util.Optional;
 import workers.Seller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.util.ArrayList;
-
-//TODO dodać delete żeby można było usunąć z rachunku
-//TODO dodać przycisk finalizujący transakcje który dodaje do tabeli sale
-
-//TODO gdzies jeszcze trzeba sprawdzać po kliknieciu add czy jest dostępne taka ilosc produktu
+import java.util.Optional;
 
 //TODO zrobic dodawanie karty i uwzględnienie zniżki
-//
+
 public class SellerPaneController {
 
   @FXML
@@ -58,9 +50,6 @@ public class SellerPaneController {
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
-//    if(tvBill.getItems().isEmpty()){
-//      disableButtons(true);
-//    }
     tvName.setCellValueFactory(new PropertyValueFactory<>("Name"));
     tvCode.setCellValueFactory(new PropertyValueFactory<>("Code"));
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("Product"));
@@ -71,7 +60,7 @@ public class SellerPaneController {
 
   void addToProductList(ArrayList<Product> products) {
 
-    for(Product product : products) {
+    for (Product product : products) {
       addProduct(product);
     }
   }
@@ -90,15 +79,15 @@ public class SellerPaneController {
 
   public void bLogoutClick(ActionEvent event) {
 
-    if(logoutConfirmation()) {
+    if (logoutConfirmation()) {
       try {
-      seller.getConnection().rollback();
-      seller.getConnection().setAutoCommit(true);
-    } catch (SQLException e) {
-      System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
-    }
-    seller.deleteBill();
-    controller.setLoginPane();
+        seller.getConnection().rollback();
+        seller.getConnection().setAutoCommit(true);
+      } catch (SQLException e) {
+        System.out.println("No active transaction - no rollback.");
+      }
+      seller.deleteBill();
+      controller.setLoginPane();
     }
   }
 
@@ -113,7 +102,7 @@ public class SellerPaneController {
     int iCode;
 
 
-    if(!seller.isTransactionStarted()){
+    if (!seller.isTransactionStarted()) {
       seller.setTransactionStarted(true);
 
       try {
@@ -124,7 +113,7 @@ public class SellerPaneController {
       }
     }
 
-    if(sCode.equals("") || quantity.equals("")) {
+    if (sCode.equals("") || quantity.equals("")) {
       lWarning.setText("Wrong input!");
       return;
     }
@@ -137,22 +126,22 @@ public class SellerPaneController {
       return;
     }
 
-    if(!seller.searchForProductFromCode(iCode)){
+    if (!seller.searchForProductFromCode(iCode)) {
       lWarning.setText("No such product!");
       return;
-    }else if(seller.checkAmount(iCode) >= intQuantity && seller.isTransactionStarted()){
+    } else if (seller.checkAmount(iCode) >= intQuantity && seller.isTransactionStarted()) {
       try {
-       delete =  seller.getConnection().setSavepoint("delete");
+        delete = seller.getConnection().setSavepoint("delete");
       } catch (SQLException e) {
         e.printStackTrace();
       }
       double price = seller.getPrice(iCode);
-      seller.createSale(iCode,intQuantity);
-      seller.addToBill(price*intQuantity);
-      BillElement billElement = new BillElement(seller.getProductName(iCode),intQuantity,price);
+      seller.createSale(iCode, intQuantity);
+      seller.addToBill(price * intQuantity);
+      BillElement billElement = new BillElement(seller.getProductName(iCode), intQuantity, price);
       updateActiveBill(billElement);
       setTotal();
-    }  else {
+    } else {
       lWarning.setText("Not enough products!");
       return;
     }
@@ -161,10 +150,10 @@ public class SellerPaneController {
     taQuantity.setText("");
   }
 
-  private void updateActiveBill(BillElement billElement){
+  private void updateActiveBill(BillElement billElement) {
     seller.addToActiveBill(billElement);
     tvBill.getItems().clear();
-    for(BillElement be : seller.getActiveBill()) {
+    for (BillElement be : seller.getActiveBill()) {
       tvBill.getItems().add(be);
     }
   }
@@ -173,11 +162,11 @@ public class SellerPaneController {
     double total = 0;
     BillElement billElement;
 
-    for(int i = 0; i < tvBill.getItems().size(); i ++) {
-      billElement = (BillElement)tvBill.getItems().get(i);
+    for (int i = 0; i < tvBill.getItems().size(); i++) {
+      billElement = (BillElement) tvBill.getItems().get(i);
       total += billElement.getSum();
     }
-    double totalRound = Math.round(total*100.0)/100.0;
+    double totalRound = Math.round(total * 100.0) / 100.0;
 
     lTotal.setText(Double.toString(totalRound) + " zł");
   }
@@ -186,7 +175,7 @@ public class SellerPaneController {
 
     Integer NIP;
 
-    if(tfCustomer.getText().equals("")) {
+    if (tfCustomer.getText().equals("")) {
       seller.closeBillWithoutCustomer();
     } else {
       NIP = Integer.parseInt(tfCustomer.getText());
@@ -222,7 +211,7 @@ public class SellerPaneController {
     tvBill.getItems().remove(selectedItem);
     setTotal();
 
-    if(tvBill.getItems().isEmpty()){
+    if (tvBill.getItems().isEmpty()) {
       disableButtons(true);
     }
   }
@@ -239,7 +228,7 @@ public class SellerPaneController {
     setCardPane();
   }
 
-  public void setCardPane() {
+  private void setCardPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/CardPane.fxml"));
     AnchorPane cardPane = null;
     try {
@@ -256,38 +245,34 @@ public class SellerPaneController {
     controller.setPane(cardPane);
   }
 
-  public boolean logoutConfirmation() {
+  private boolean logoutConfirmation() {
     Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
-    if (result.get() == ButtonType.OK) {
-      return true;
-    }
-    return false;
+    return result.get() == ButtonType.OK;
   }
 
 
-  public void setSeller(Seller seller) {
+  void setSeller(Seller seller) {
     this.seller = seller;
   }
 
 
-  public void setCustomer(String customer) {
+  void setCustomer(String customer) {
     tfCustomer.setText(customer);
   }
 
-  public void disableButtons(boolean bool){
+  void disableButtons(boolean bool) {
     bSell.setDisable(bool);
     bDelete.setDisable(bool);
   }
 
-  public void clearTextFields(){
+  private void clearTextFields() {
     tfCustomer.setText("");
     taQuantity.setText("");
     taProduct.setText("");
   }
 
-  public void updateBillList(ArrayList<BillElement> billElements){
-    for(BillElement billElement : billElements){
-      System.out.println("DODAJE DODAJE");
+  void updateBillList(ArrayList<BillElement> billElements) {
+    for (BillElement billElement : billElements) {
       tvBill.getItems().add(billElement);
     }
   }

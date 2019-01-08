@@ -136,7 +136,6 @@ public abstract class Worker {
     try {
       cSt = connection.prepareCall("{CALL deleteBill()}");
       cSt.executeQuery();
-      System.out.println("Usunalem rachunek");
     } catch (SQLException e) {
       e.printStackTrace();
     }

@@ -1,6 +1,5 @@
 package controllers;
 
-import elements.BillElement;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +14,7 @@ public class CardPaneController {
   public TextField tfSurname;
   public TextField taNIP;
   public Label lError;
-  public Label lSucces;
+  public Label lSuccess;
   public Button bCreate;
   private MainController controller;
   private LoginPaneController loginController;
@@ -38,9 +37,6 @@ public class CardPaneController {
 
   public void bBackClick(ActionEvent event) {
 
-    for(BillElement billElement : seller.getActiveBill()){
-      System.out.println("bill elemenet = " + billElement);
-    }
     loginController.setSellerPane(customer);
     sellerController.updateBillList(seller.getActiveBill());
   }
@@ -53,20 +49,20 @@ public class CardPaneController {
     String surname = tfSurname.getText();
     String sNIP = taNIP.getText();
 
-    if(!checkFormat(sNIP)) {
-     lError.setVisible(true);
-     return;
+    if (!checkFormat(sNIP)) {
+      lError.setVisible(true);
+      return;
     }
 
     int iNIP = Integer.parseInt(sNIP);
 
-    seller.addNewCustomer(name,surname,iNIP);
+    seller.addNewCustomer(name, surname, iNIP);
 
-    lSucces.setVisible(true);
-    setDisbledPane();
+    lSuccess.setVisible(true);
+    setDisabledPane();
   }
 
-  private void setDisbledPane() {
+  private void setDisabledPane() {
     tfName.setDisable(true);
     tfSurname.setDisable(true);
     taNIP.setDisable(true);
@@ -74,9 +70,8 @@ public class CardPaneController {
   }
 
   private boolean checkFormat(String check) {
-    int i;
     try {
-      i = Integer.parseInt(check);
+      Integer.parseInt(check);
     } catch (NumberFormatException e) {
       return false;
     }

@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
-//
+
 public class MainController {
 
   @FXML
@@ -15,7 +15,7 @@ public class MainController {
   public void initialize() {
     setLoginPane();
   }
-//
+
   public void setLoginPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/LoginPane.fxml"));
     Pane logPane = null;

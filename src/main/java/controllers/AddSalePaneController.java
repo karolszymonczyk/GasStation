@@ -182,7 +182,7 @@ public class AddSalePaneController {
         manager.getConnection().rollback();
         manager.getConnection().setAutoCommit(true);
       } catch (SQLException e) {
-        System.out.println("rollback się nie wykonał ponieważ nie było aktywnej tranzakcji.");
+        System.out.println("No active transaction - no rollback.");
       }
       manager.deleteBill();
       manager.downloadBills();

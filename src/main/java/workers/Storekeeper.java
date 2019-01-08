@@ -38,7 +38,6 @@ public class Storekeeper extends Worker{
     try {
       cSt = connection.prepareCall("{CALL deleteDelivery()}");
       cSt.executeQuery();
-      System.out.println("Usunalem dostawe");
     } catch (SQLException e) {
       e.printStackTrace();
     }
