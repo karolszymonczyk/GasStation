@@ -4,12 +4,13 @@ import elements.ProductForDeliver;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import utils.ErrorUtils;
 import workers.Manager;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class AddDeliveryPaneController extends StorekeeperPaneController {
+public class AddDeliveryPaneController extends StorekeeperPaneController implements ErrorUtils {
 
   Manager manager;
 
@@ -68,30 +69,7 @@ public class AddDeliveryPaneController extends StorekeeperPaneController {
 
   @Override
   public void bAddClick(ActionEvent event) {
-
-//    disableButtons(false);
-//
-//    lError.setVisible(false);
-//    lSuccess.setVisible(false);
-//
-//    String code = tfCode.getText();
-//    String amount = tfAmount.getText();
-//
-//    int amountInt;
-//    int codeInt;
-//    amountInt = Integer.parseInt(amount);
-//    codeInt = Integer.parseInt(code);
-//
-//    String name = manager.getProductName(codeInt);
-//
-//    ProductForDeliver product = new ProductForDeliver(name, code, amountInt);
-//    manager.addDeliveryProduct(product);
-//
-//    manager.existingProductDeliver(Integer.parseInt(code),Integer.parseInt(amount));
-//
-//    lSuccess.setVisible(true);
-//
-//    addToList(manager.getDeliveredProducts());
+    
     lError.setVisible(false);
     lSuccess.setVisible(false);
 
@@ -101,17 +79,21 @@ public class AddDeliveryPaneController extends StorekeeperPaneController {
     String code = tfCode.getText();
     String amount = tfAmount.getText();
 
+    if(code.equals("") || amount.equals("")) {
+      lError.setVisible(true);
+    }
+
+    if(!ErrorUtils.checkInt(code) || !ErrorUtils.checkInt(amount) || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
+
+      lError.setVisible(true);
+      return;
+    }
+
     try {
       delete = manager.getConnection().setSavepoint("delete");
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
-//    if(checkFormat(code)==-1 || checkFormat(amount)==-1 || !storekeeper.searchForProductFromCode(Integer.parseInt(code))) {
-//
-//      lError.setVisible(true);
-//      return;
-//    }
 
     int amountInt;
     int codeInt;

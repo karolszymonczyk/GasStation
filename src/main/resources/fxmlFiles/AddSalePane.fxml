@@ -54,8 +54,8 @@
                 <Font name="System Bold" size="19.0" />
             </font>
         </Label>
-        <Button layoutX="697.0" layoutY="581.0" mnemonicParsing="false" onAction="#bSellClick" prefHeight="25.0" prefWidth="133.0" text="Sell" />
-        <Button layoutX="697.0" layoutY="459.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="133.0" text="Delete" />
+        <Button fx:id="bSell" layoutX="697.0" layoutY="581.0" mnemonicParsing="false" onAction="#bSellClick" prefHeight="25.0" prefWidth="133.0" text="Sell" />
+        <Button fx:id="bDelete" layoutX="697.0" layoutY="459.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="133.0" text="Delete" />
         <TextField fx:id="tfCustomer" layoutX="318.0" layoutY="581.0" prefHeight="25.0" prefWidth="339.0" promptText="Customer NIP" />
       <Button layoutX="697.0" layoutY="130.0" minWidth="100.0" mnemonicParsing="false" onAction="#bAvailabilityClick" prefHeight="25.0" prefWidth="133.0" text="Check  availability" textAlignment="CENTER" wrapText="true" />
     </children>

@@ -5,6 +5,11 @@ import elements.Product;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import utils.ErrorUtils;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -15,7 +20,7 @@ import workers.Manager;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
-public class AddSalePaneController {
+public class AddSalePaneController implements ErrorUtils{
 
   @FXML
   public TableView tvProducts;
@@ -32,6 +37,9 @@ public class AddSalePaneController {
   public TableView tvBill;
   public TextField tfCustomer;
 
+  public Button bSell;
+  public Button bDelete;
+
   private MainController controller;
 
   private LoginPaneController loginController;
@@ -42,6 +50,7 @@ public class AddSalePaneController {
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
+    disableButtons(true);
     tvName.setCellValueFactory(new PropertyValueFactory<>("Name"));
     tvCode.setCellValueFactory(new PropertyValueFactory<>("Code"));
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("Product"));
@@ -65,7 +74,9 @@ public class AddSalePaneController {
   }
 
   public void bAddClick(ActionEvent event) {
+
     lWarning.setText("");
+
     String sCode = taProduct.getText();
     String quantity = taQuantity.getText();
 
@@ -83,15 +94,25 @@ public class AddSalePaneController {
       }
     }
 
-    try {
-      intQuantity = Integer.parseInt(quantity);
-      iCode = Integer.parseInt(sCode);
-    } catch (NumberFormatException e) {
+
+    if(sCode.equals("") || quantity.equals("")) {
+      lWarning.setText("Empty field!");
+      return;
+    }
+
+    if(!ErrorUtils.checkInt(sCode)) {
+      lWarning.setText("Wrong input!");
+      return;
+    } else if (!ErrorUtils.checkInt(quantity)) {
       lWarning.setText("Wrong input!");
       return;
     }
 
-    if (!manager.searchForProductFromCode(iCode)) {
+    intQuantity = Integer.parseInt(quantity);
+    iCode = Integer.parseInt(sCode);
+
+    if(!manager.searchForProductFromCode(iCode)){
+
       lWarning.setText("No such product!");
       return;
     } else if (manager.checkAmount(iCode) >= intQuantity && manager.isTransactionStarted()) {
@@ -110,7 +131,9 @@ public class AddSalePaneController {
       lWarning.setText("Not enough products!");
       return;
     }
-    setTotal();
+
+    disableButtons(false);
+
 
     taProduct.setText("");
     taQuantity.setText("");
@@ -132,15 +155,22 @@ public class AddSalePaneController {
 
   public void bSellClick(ActionEvent event) {
 
+    disableButtons(true);
+
     manager.setTransactionStarted(false);
     Integer NIP;
 
     if (tfCustomer.getText().equals("")) {
       manager.closeBillWithoutCustomer();
-    } else {
-      NIP = Integer.parseInt(tfCustomer.getText());
-      manager.closeBill(NIP);
     }
+
+    if(!ErrorUtils.checkInt(tfCustomer.getText())) {
+      lWarning.setText("Wrong NIP format!");
+      return;
+    }
+
+    NIP = Integer.parseInt(tfCustomer.getText());
+    manager.closeBill(NIP);
 
     try {
 
@@ -153,7 +183,8 @@ public class AddSalePaneController {
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
-    tfCustomer.setText("");
+    lWarning.setText("");
+    clearTextFields();
   }
 
   public void bDeleteClick(ActionEvent event) {
@@ -166,6 +197,10 @@ public class AddSalePaneController {
     }
     tvBill.getItems().remove(selectedItem);
     setTotal();
+
+    if(tvBill.getItems().isEmpty()){
+      disableButtons(true);
+    }
   }
 
   public void bBackClick(ActionEvent event) {
@@ -193,5 +228,16 @@ public class AddSalePaneController {
     int iCode = Integer.parseInt(sCode);
     int amount = manager.checkAmount(iCode);
     lWarning.setText("Available amount is : " + amount);
+  }
+
+  public void disableButtons(boolean bool){
+    bSell.setDisable(bool);
+    bDelete.setDisable(bool);
+  }
+
+  public void clearTextFields(){
+    tfCustomer.setText("");
+    taQuantity.setText("");
+    taProduct.setText("");
   }
 }

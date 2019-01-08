@@ -150,6 +150,10 @@ public class ManagerPaneController {
   }
 
   public void bDeleteSaleClick(ActionEvent event) {
+
+    if(tvSales.getSelectionModel().getSelectedItem() == null) {
+      return;
+    }
     ManagerSale selectedItem = (ManagerSale) tvSales.getSelectionModel().getSelectedItem();
     tvSales.getItems().remove(selectedItem);
     manager.deleteSale(selectedItem.getId());

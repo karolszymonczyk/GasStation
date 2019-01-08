@@ -10,6 +10,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import utils.DialogUtils;
+import utils.ErrorUtils;
+
+import java.io.IOException;
+import java.sql.Savepoint;
+import java.util.Optional;
+
+import utils.ErrorUtils;
 import workers.Seller;
 
 import java.io.IOException;
@@ -19,8 +26,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 //TODO zrobic dodawanie karty i uwzględnienie zniżki
-
-public class SellerPaneController {
+public class SellerPaneController implements ErrorUtils {
 
   @FXML
   public TableView tvProducts;
@@ -93,9 +99,8 @@ public class SellerPaneController {
 
   public void bAddClick(ActionEvent event) {
 
-    disableButtons(false);
-
     lWarning.setText("");
+
     String sCode = taProduct.getText();
     String quantity = taQuantity.getText();
     int intQuantity;
@@ -113,20 +118,25 @@ public class SellerPaneController {
       }
     }
 
-    if (sCode.equals("") || quantity.equals("")) {
+
+
+    if(sCode.equals("") || quantity.equals("")) {
+      lWarning.setText("Empty field!");
+      return;
+    }
+
+    if(!ErrorUtils.checkInt(sCode)) {
+      lWarning.setText("Wrong input!");
+      return;
+    } else if (!ErrorUtils.checkInt(quantity)) {
       lWarning.setText("Wrong input!");
       return;
     }
 
-    try {
-      intQuantity = Integer.parseInt(quantity);
-      iCode = Integer.parseInt(sCode);
-    } catch (NumberFormatException e) {
-      lWarning.setText("Wrong input!");
-      return;
-    }
+    intQuantity = Integer.parseInt(quantity);
+    iCode = Integer.parseInt(sCode);
 
-    if (!seller.searchForProductFromCode(iCode)) {
+    if(!seller.searchForProductFromCode(iCode)){
       lWarning.setText("No such product!");
       return;
     } else if (seller.checkAmount(iCode) >= intQuantity && seller.isTransactionStarted()) {
@@ -145,6 +155,8 @@ public class SellerPaneController {
       lWarning.setText("Not enough products!");
       return;
     }
+
+    disableButtons(false);
 
     taProduct.setText("");
     taQuantity.setText("");
@@ -177,10 +189,15 @@ public class SellerPaneController {
 
     if (tfCustomer.getText().equals("")) {
       seller.closeBillWithoutCustomer();
-    } else {
-      NIP = Integer.parseInt(tfCustomer.getText());
-      seller.closeBill(NIP);
     }
+
+    if(!ErrorUtils.checkInt(tfCustomer.getText())) {
+      lWarning.setText("Wrong NIP format!");
+      return;
+    }
+
+    NIP = Integer.parseInt(tfCustomer.getText());
+    seller.closeBill(NIP);
 
     try {
 
@@ -198,6 +215,7 @@ public class SellerPaneController {
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
+    lWarning.setText("");
     clearTextFields();
   }
 
@@ -250,8 +268,7 @@ public class SellerPaneController {
     return result.get() == ButtonType.OK;
   }
 
-
-  void setSeller(Seller seller) {
+  public void setSeller(Seller seller) {
     this.seller = seller;
   }
 

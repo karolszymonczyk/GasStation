@@ -18,16 +18,14 @@
          </image>
       </ImageView>
         <Button layoutX="785.0" layoutY="10.0" mnemonicParsing="false" onAction="#bBackClick" prefWidth="54.0" text="Back" />
-        <HBox layoutX="282.0" layoutY="123.0" prefHeight="302.0" prefWidth="237.0">
+            <Label layoutX="325.0" layoutY="129.0" prefHeight="17.0" prefWidth="36.0" text="Name" />
+            <Label layoutX="313.0" layoutY="180.0" text="Surname" />
+            <Label layoutX="343.0" layoutY="233.0" text="Job" />
+            <Label layoutX="290.0" layoutY="283.0" text="Contract start" />
+            <Label layoutX="291.0" layoutY="334.0" text="Contract end" />
+        <HBox layoutX="363.0" layoutY="123.0" prefHeight="302.0" prefWidth="156.0">
             <children>
-                <VBox alignment="TOP_RIGHT" prefHeight="302.0" prefWidth="110.0" spacing="40.0">
-                    <children>
-                        <Label prefHeight="17.0" prefWidth="36.0" text="Name" />
-                        <Label text="Surname" />
-                        <Label text="Job" />
-                        <Label text="Contract start" />
-                        <Label text="Contract end" />
-                    </children>
+                <VBox alignment="TOP_RIGHT" prefHeight="302.0" prefWidth="0.0" spacing="40.0">
                     <padding>
                         <Insets right="7.0" />
                     </padding>
@@ -38,7 +36,7 @@
                         <TextField fx:id="tfSurname" promptText="surname" />
                   <ChoiceBox fx:id="cbJob" prefWidth="150.0" />
                   <DatePicker fx:id="dpStart" promptText="contract start" />
-                  <DatePicker fx:id="dpEnd" promptText="constract end" />
+                  <DatePicker fx:id="dpEnd" promptText="contract end" />
                     </children>
                 </VBox>
             </children>

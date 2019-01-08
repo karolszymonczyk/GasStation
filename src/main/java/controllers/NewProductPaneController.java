@@ -7,11 +7,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import utils.ErrorUtils;
 import workers.Storekeeper;
 
 import java.sql.SQLException;
 
-public class NewProductPaneController {
+public class NewProductPaneController implements ErrorUtils {
 
   public TextField tfName;
   public TextField tfCode;
@@ -21,7 +22,6 @@ public class NewProductPaneController {
   public Label lSuccess;
   public TextField tfPrice;
   public TextField tfTax;
-  TextField taDeliverer;
 
   private Storekeeper storekeeper;
 
@@ -51,6 +51,7 @@ public class NewProductPaneController {
   }
 
   public void bCreateClick(ActionEvent event) {
+
     lError.setVisible(false);
 
     String name = tfName.getText();
@@ -58,13 +59,22 @@ public class NewProductPaneController {
     String price = tfPrice.getText();
     String tax = tfTax.getText();
     String amount = taAmount.getText();
-//    String deliverer = taDeliverer.getText();
-
-    if (!checkFormat(price) || !checkFormat(amount)) {
+    
+    if(name.equals("") || code.equals("") || price.equals("") ||
+            tax.equals("") || amount.equals("")) {
       lError.setVisible(true);
       return;
     }
 
+    if(!ErrorUtils.checkInt(code) || !ErrorUtils.checkInt(amount)) {
+      lError.setVisible(true);
+      return;
+    }
+
+    if(!ErrorUtils.checkFloat(price) || !ErrorUtils.checkFloat(tax)) {
+      lError.setVisible(true);
+      return;
+    }
 
     if (!storekeeper.isTransactionStarted()) {
       storekeeper.setTransactionStarted(true);
@@ -96,15 +106,6 @@ public class NewProductPaneController {
     tfTax.setDisable(true);
     taAmount.setDisable(true);
     bCreate.setDisable(true);
-  }
-
-  private boolean checkFormat(String check) {
-    try {
-      Integer.parseInt(check);
-    } catch (NumberFormatException e) {
-      return false;
-    }
-    return true;
   }
 
   void setStorekeeper(Storekeeper storekeeper) {
