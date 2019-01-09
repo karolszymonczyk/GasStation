@@ -66,6 +66,13 @@ public class AddWorkerPaneController implements ErrorUtils {
       return;
     }
 
+//    if(start.equals("") || end.equals("")) {
+//      lError.setVisible(true);
+//      return;
+//    }
+//
+//
+
     //TODO sprawdzić datę
 
     try{

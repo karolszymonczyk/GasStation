@@ -1,5 +1,7 @@
 package utils;
 
+import java.text.DateFormat;
+
 public interface ErrorUtils {
   
   static boolean checkInt(String input) {
@@ -21,4 +23,5 @@ public interface ErrorUtils {
     }
     return true;
   }
+
 }
