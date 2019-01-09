@@ -207,6 +207,22 @@ public abstract class Worker {
     }
   }
 
+  public double downloadDiscount(int NIP){
+
+    double discount = -1;
+
+    try {
+      cSt = connection.prepareCall("{? = CALL getDiscount(?)}");
+      cSt.setInt(2, NIP);
+      cSt.registerOutParameter(1, Types.FLOAT);
+      cSt.execute();
+      discount = cSt.getFloat(1);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return discount;
+  }
 
   public double round(Double number){
     return Math.round(number*1e2)/1e2;
@@ -221,5 +237,5 @@ public abstract class Worker {
   }
 
 
-}
+ }
 

@@ -13,6 +13,7 @@ import utils.DialogUtils;
 import utils.ErrorUtils;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.sql.Savepoint;
 import java.util.Optional;
 
@@ -178,14 +179,16 @@ public class SellerPaneController implements ErrorUtils {
       billElement = (BillElement) tvBill.getItems().get(i);
       total += billElement.getSum();
     }
+
     double totalRound = Math.round(total * 100.0) / 100.0;
+
 
     lTotal.setText(Double.toString(totalRound) + " zł");
   }
 
   public void bSellClick(ActionEvent event) {
 
-    Integer NIP;
+    int NIP =0;
 
     if (tfCustomer.getText().equals("")) {
       seller.closeBillWithoutCustomer();
@@ -195,9 +198,8 @@ public class SellerPaneController implements ErrorUtils {
     } else {
       NIP = Integer.parseInt(tfCustomer.getText());
       seller.closeBill(NIP);
+
     }
-
-
     try {
 
       seller.getConnection().commit();
@@ -210,8 +212,12 @@ public class SellerPaneController implements ErrorUtils {
 
     seller.setTransactionStarted(false);
 
-    seller.getActiveBill().clear();
+    String total = lTotal.getText();
+    total = total.substring(0,total.length()-3);
 
+    displayBill(Double.parseDouble(total),NIP);
+
+    seller.getActiveBill().clear();
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
     lWarning.setText("");
@@ -266,6 +272,17 @@ public class SellerPaneController implements ErrorUtils {
   private boolean logoutConfirmation() {
     Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
     return result.get() == ButtonType.OK;
+  }
+
+  private void displayBill(double total, int NIP) {
+
+    double discount = seller.downloadDiscount(NIP);
+
+    double totalAD = Math.round((1-discount) * total *100);
+    totalAD = totalAD/100;
+
+    Optional<ButtonType> info = DialogUtils.informationDialog("To pay", "Total: "+ total + "\nDiscount: " + Math.round(discount*100) +
+                                                                "% \n\nTotal after discount: " + totalAD);
   }
 
   public void setSeller(Seller seller) {

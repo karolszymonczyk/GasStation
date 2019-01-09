@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import utils.DialogUtils;
 import utils.ErrorUtils;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -19,6 +20,7 @@ import workers.Manager;
 
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.util.Optional;
 
 public class AddSalePaneController implements ErrorUtils{
 
@@ -153,12 +155,23 @@ public class AddSalePaneController implements ErrorUtils{
     lTotal.setText(Double.toString(totalRound) + " zł");
   }
 
+  private void displayBill(double total, int NIP) {
+
+    double discount = manager.downloadDiscount(NIP);
+
+    double totalAD = Math.round((1-discount) * total *100);
+    totalAD = totalAD/100;
+
+    Optional<ButtonType> info = DialogUtils.informationDialog("To pay", "Total: "+ total + "\nDiscount: " + Math.round(discount*100) +
+            "% \n\nTotal after discount: " + totalAD);
+  }
+
   public void bSellClick(ActionEvent event) {
 
     disableButtons(true);
 
     manager.setTransactionStarted(false);
-    Integer NIP;
+    int NIP = 0;
 
     if (tfCustomer.getText().equals("")) {
       manager.closeBillWithoutCustomer();
@@ -168,6 +181,7 @@ public class AddSalePaneController implements ErrorUtils{
     } else {
       NIP = Integer.parseInt(tfCustomer.getText());
       manager.closeBill(NIP);
+
     }
 
     try {
@@ -178,6 +192,11 @@ public class AddSalePaneController implements ErrorUtils{
     } catch (SQLException e) {
       e.printStackTrace();
     }
+
+    String total = lTotal.getText();
+    total = total.substring(0,total.length()-3);
+
+    displayBill(Double.parseDouble(total),NIP);
 
     tvBill.getItems().clear();
     lTotal.setText("0,00 zł");
