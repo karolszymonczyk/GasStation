@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewCustomersPaneController">
+    <children>
+        <ImageView fitHeight="650.0" fitWidth="856.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/theme.jpg" />
+            </image>
+        </ImageView>
+        <Button layoutX="785.0" layoutY="10.0" mnemonicParsing="false" onAction="#bBackClick" prefWidth="54.0" text="Back" />
+        <TableView fx:id="tvCustomers" layoutX="40.0" layoutY="40.0" prefHeight="580.0" prefWidth="640.0">
+            <columns>
+                <TableColumn fx:id="tvcId" prefWidth="25.0" text="id" />
+                <TableColumn fx:id="tvcName" prefWidth="115.0" text="name" />
+                <TableColumn fx:id="tvcSurname" prefWidth="135.0" text="surname" />
+                <TableColumn fx:id="tvcNIP" minWidth="0.0" prefWidth="170.0" text="NIP" />
+                <TableColumn fx:id="tvcCreated" prefWidth="193.0" text="created" />
+            </columns>
+        </TableView>
+        <Button layoutX="697.0" layoutY="595.0" mnemonicParsing="false" onAction="#bAddClick" prefWidth="125.0" text="Add customer" />
+        <Button layoutX="697.0" layoutY="540.0" mnemonicParsing="false" onAction="#bDeleteClick" prefWidth="125.0" text="Delete customer" />
+        <Button layoutX="707.0" layoutY="335.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
+    </children>
+</AnchorPane>

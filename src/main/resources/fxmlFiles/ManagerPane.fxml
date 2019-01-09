@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManagerPaneController">
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ManagerPaneController">
    <children>
       <ImageView fitHeight="650.0" fitWidth="989.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -34,11 +36,13 @@
             <Button mnemonicParsing="false" onAction="#bWorkersClick" prefHeight="25.0" prefWidth="137.0" text="View workers" />
             <Button mnemonicParsing="false" onAction="#bDeliversClick" prefHeight="25.0" prefWidth="138.0" text="View delivers" />
             <Button mnemonicParsing="false" onAction="#bProductsClick" prefHeight="25.0" prefWidth="133.0" text="View products" />
+            <Button mnemonicParsing="false" onAction="#bViewCustomersClick" prefHeight="25.0" prefWidth="129.0" text="View customers" />
          </children>
       </VBox>
       <Button layoutX="699.0" layoutY="498.0" mnemonicParsing="false" onAction="#bAddSaleClick" prefHeight="25.0" prefWidth="125.0" text="Add sale" />
       <Button layoutX="697.0" layoutY="556.0" mnemonicParsing="false" onAction="#bDeleteSaleClick" prefHeight="25.0" prefWidth="125.0" text="Delete sale" />
       <Button layoutX="699.0" layoutY="441.0" mnemonicParsing="false" onAction="#bShowClick" prefHeight="25.0" prefWidth="125.0" text="Show sale" />
       <Button layoutX="697.0" layoutY="325.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
+      <Button layoutX="699.0" layoutY="375.0" mnemonicParsing="false" onAction="#bBackupClick" prefHeight="25.0" prefWidth="125.0" text="Backup" />
    </children>
 </AnchorPane>

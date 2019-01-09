@@ -25,8 +25,8 @@ public class AddWorkerPaneController implements ErrorUtils {
 
   Manager manager;
 
-  private MainController controller;
-  private ManagerPaneController managerController;
+  MainController controller;
+  ManagerPaneController managerController;
 
   @FXML
   public void initialize() {

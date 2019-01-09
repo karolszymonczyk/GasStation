@@ -1,5 +1,7 @@
 package controllers;
 
+import elements.BillElement;
+import elements.Customer;
 import elements.ManagerBill;
 import elements.ManagerSale;
 import javafx.application.Application;
@@ -11,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import workers.Manager;
+import workers.Seller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -154,7 +157,7 @@ public class ManagerPaneController {
 
   public void bDeleteSaleClick(ActionEvent event) {
 
-    if(tvSales.getSelectionModel().getSelectedItem() == null) {
+    if (tvSales.getSelectionModel().getSelectedItem() == null) {
       return;
     }
     ManagerSale selectedItem = (ManagerSale) tvSales.getSelectionModel().getSelectedItem();
@@ -180,20 +183,49 @@ public class ManagerPaneController {
     addSaleController.setLoginController(loginController);
     addSaleController.setManager(manager);
     addSaleController.addToProductList();
-    if(manager.getActiveBill().size()==0){
+    if (manager.getActiveBill().size() == 0) {
       addSaleController.disableButtons(true);
-    } else{
+    } else {
       addSaleController.disableButtons(false);
     }
     controller.setPane(addSalePane);
   }
 
   public void setManager(Manager manager) {
-    this.manager=manager;
+    this.manager = manager;
   }
 
   public Manager getManager() {
     return manager;
   }
+
+  public void bViewCustomersClick(ActionEvent event) {
+    setViewCustomersPane();
+  }
+
+  public void setViewCustomersPane() {
+
+    manager.downloadCustomers();
+
+    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewCustomersPane.fxml"));
+    AnchorPane viewCustomersPane = null;
+    try {
+      viewCustomersPane = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    ViewCustomersPaneController viewCustomersController = loader.getController();
+    viewCustomersController.setController(controller);
+    viewCustomersController.setLoginController(loginController);
+    viewCustomersController.setManager(manager);
+    viewCustomersController.setManagerController(this);
+    viewCustomersController.addCustomersList();
+    controller.setPane(viewCustomersPane);
+  }
+
+  public void bBackupClick(ActionEvent event) { //TODO dodać backup
+  }
+
+
 }
 

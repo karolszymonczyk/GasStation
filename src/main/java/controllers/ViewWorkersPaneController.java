@@ -49,8 +49,9 @@ public class ViewWorkersPaneController {
 
     public void addWorkerList () {
 
-      for (elements.Worker worker : manager.getWorkers())
+      for (elements.Worker worker : manager.getWorkers()) {
         tvWorkers.getItems().add(worker);
+      }
     }
 
     public void setController (MainController controller){

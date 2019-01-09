@@ -23,6 +23,7 @@ public class Manager extends Worker {
   private ArrayList<ManagerSale> bills;
   private ArrayList<ManagerBill> billElements;
   private ArrayList<ProductForDeliver> deliveredProducts;
+  private ArrayList<Customer> customers;
 
   private boolean transactionStarted;
 
@@ -69,6 +70,29 @@ public class Manager extends Worker {
         managerSale = new ManagerSale(id1, time, seller, value, billElements);
         bills.add(managerSale);
         id2 = id1;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void downloadCustomers(){
+    customers = new ArrayList<>();
+
+    try {
+      st = connection.createStatement();
+      rs = st.executeQuery("SELECT * FROM customer");
+      while (rs.next()) {
+
+        Integer id = rs.getInt("id");
+        Integer NIP = rs.getInt("NIP");
+        String name = rs.getString("name");
+        String surname = rs.getString("surname");
+        String date = rs.getDate("created").toString();
+
+        Customer customer = new Customer (id,name,surname,NIP,date);
+        customers.add(customer);
+
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -229,6 +253,7 @@ public class Manager extends Worker {
     downloadProducts();
     downloadBills();
     downloadDeliveries();
+    downloadCustomers();
   }
 
   public ArrayList<Product> getProductsToSale() {
@@ -262,6 +287,17 @@ public class Manager extends Worker {
     }
   }
 
+  public void  deleteCustomer(int id) {
+    try {
+
+      cSt = connection.prepareCall("{CALL deleteCustomer(?)}");
+      cSt.setInt(1, id);
+      cSt.execute();
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
   public void createUser(String name, String surname, String job, Date start, Date end) throws SQLException {
 
 
@@ -294,5 +330,9 @@ public class Manager extends Worker {
 
   public ArrayList<ProductForDeliver> getDeliveredProducts() {
     return deliveredProducts;
+  }
+
+  public ArrayList<Customer> getCustomers() {
+    return customers;
   }
 }

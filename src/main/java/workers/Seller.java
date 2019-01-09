@@ -59,18 +59,7 @@ public class Seller extends Worker{
     return amount;
   }
 
-  public void addNewCustomer(String name, String surname, int NIP){
-    try {
-      cSt = connection.prepareCall("{CALL createNewCustomer(?, ?, ?)}");
-      cSt.setString(1,name);
-      cSt.setString(2,surname);
-      cSt.setInt(3,NIP);
 
-      cSt.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
 
   public boolean isTransactionStarted() {
     return transactionStarted;
