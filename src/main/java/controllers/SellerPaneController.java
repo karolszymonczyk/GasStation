@@ -3,6 +3,8 @@ package controllers;
 import elements.BillElement;
 import elements.Product;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,6 +65,13 @@ public class SellerPaneController implements ErrorUtils {
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("Price"));
     tvcQuantity.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
     tvcSum.setCellValueFactory(new PropertyValueFactory<>("Sum"));
+    tvProducts.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+      @Override
+      public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+        Product product = (Product)newValue;
+        taProduct.setText(product.getCode());
+      }
+    });
   }
 
   void addToProductList(ArrayList<Product> products) {
