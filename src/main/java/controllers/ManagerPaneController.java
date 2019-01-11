@@ -1,5 +1,7 @@
 package controllers;
 
+//import dbConnection.Backup;
+import dbConnection.Backup;
 import elements.BillElement;
 import elements.Customer;
 import elements.ManagerBill;
@@ -34,6 +36,9 @@ public class ManagerPaneController {
   private LoginPaneController loginController;
   private Manager manager;
   private ArrayList<ManagerSale> bills;
+
+  String username;
+  String password;
 
   @FXML
   public void initialize() {
@@ -223,9 +228,20 @@ public class ManagerPaneController {
     controller.setPane(viewCustomersPane);
   }
 
-  public void bBackupClick(ActionEvent event) { //TODO dodać backup
+  public void bBackupClick(ActionEvent event) { //TODO dodać Backup ZMIENIC NULLA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    Backup backup = new Backup();
+    backup.executeBackUp();
+
   }
 
 
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 }
 

@@ -138,14 +138,6 @@ public class Manager extends Worker {
     return bills;
   }
 
-  public boolean istransactionStarted() {
-    return transactionStarted;
-  }
-
-  public void settransactionStarted(boolean transactionStarted) {
-    this.transactionStarted = transactionStarted;
-  }
-
   public void downloadProducts() {
     products = new ArrayList<>();
     productsToSale = new ArrayList<>();
@@ -211,7 +203,7 @@ public class Manager extends Worker {
   public void addProduct(String name, float price, float tax, int code, int amount) {
     try {
       st = connection.createStatement();
-      String sql = "INSERT INTO product (name, price, tax, code, amount) VALUES ('" + name + "'," + price + "," + tax + "," + code + "," + amount + ")";
+      String sql = "INSERT INTO product (name, price, tax, code, amount) VALUES ('" + name.toLowerCase() + "'," + price + "," + tax + "," + code + "," + amount + ")";
       st.executeUpdate(sql);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -303,9 +295,9 @@ public class Manager extends Worker {
 
 
       cSt = connection.prepareCall("{CALL createWorker(?,?,?,?,?)}");
-      cSt.setString(1, name);
-      cSt.setString(2, surname);
-      cSt.setString(3, job);
+      cSt.setString(1, name.toLowerCase());
+      cSt.setString(2, surname.toLowerCase());
+      cSt.setString(3, job.toLowerCase());
       cSt.setDate(4, start);
       cSt.setDate(5, end);
       cSt.execute();

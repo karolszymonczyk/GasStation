@@ -81,6 +81,8 @@ public class LoginPaneController {
     managerController.setController(controller);
     managerController.setLoginController(this);
     managerController.addToSaleList();
+    managerController.setUsername(login);
+    managerController.setPassword(password);
 
     controller.setPane(managerPane);
   }
@@ -128,5 +130,13 @@ public class LoginPaneController {
       storekeeperController.disableButtons(false);
 
     controller.setPane(storekeeperPane);
+  }
+
+  public String getLogin() {
+    return login;
+  }
+
+  public String getPassword() {
+    return password;
   }
 }

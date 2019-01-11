@@ -7,12 +7,55 @@
     <groupId>pl.trylma</groupId>
     <artifactId>GasStation</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.13</version>
         </dependency>
+        <!--&lt;!&ndash;<dependency>&ndash;&gt;-->
+            <!--&lt;!&ndash;<groupId>org.slf4j</groupId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<artifactId>slf4j-api</artifactId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<version>1.7.5</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;</dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;<dependency>&ndash;&gt;-->
+            <!--&lt;!&ndash;<groupId>org.slf4j</groupId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<artifactId>slf4j-log4j12</artifactId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<version>1.7.5</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;</dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;<dependency>&ndash;&gt;-->
+            <!--&lt;!&ndash;<groupId>com.smattme</groupId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<artifactId>mysql-backup4j</artifactId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<version>1.0.1</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;</dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;<dependency>&ndash;&gt;-->
+            <!--&lt;!&ndash;<groupId>org.slf4j</groupId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<artifactId>slf4j-api</artifactId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<version>1.7.25</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;</dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;<dependency>&ndash;&gt;-->
+            <!--&lt;!&ndash;<groupId>org.slf4j</groupId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<artifactId>slf4j-jdk14</artifactId>&ndash;&gt;-->
+            <!--&lt;!&ndash;<version>1.7.25</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;</dependency>&ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>com.smattme</groupId>-->
+            <!--<artifactId>mysql-backup4j</artifactId>-->
+            <!--<version>1.0.1</version>-->
+        <!--</dependency>-->
+
 
     </dependencies>
 

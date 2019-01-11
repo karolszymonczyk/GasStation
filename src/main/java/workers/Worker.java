@@ -158,7 +158,7 @@ public abstract class Worker {
     try {
       cSt = connection.prepareCall("{CALL newProductDelivery(?,?,?,?,?)}");
       cSt.setInt(1,code);
-      cSt.setString(2,name);
+      cSt.setString(2,name.toString());
       cSt.setFloat(3,price);
       cSt.setInt(4,amount);
       cSt.setFloat(5,tax);
@@ -191,7 +191,7 @@ public abstract class Worker {
   public void setDeliverer(String deliverer){
     try {
       cSt = connection.prepareCall("{CALL setDeliverer(?)}");
-      cSt.setString(1,deliverer);
+      cSt.setString(1,deliverer.toLowerCase());
       cSt.executeQuery();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -240,8 +240,8 @@ public abstract class Worker {
   public void addNewCustomer(String name, String surname, int NIP){
     try {
       cSt = connection.prepareCall("{CALL createNewCustomer(?, ?, ?)}");
-      cSt.setString(1,name);
-      cSt.setString(2,surname);
+      cSt.setString(1,name.toLowerCase());
+      cSt.setString(2,surname.toLowerCase());
       cSt.setInt(3,NIP);
 
       cSt.execute();
