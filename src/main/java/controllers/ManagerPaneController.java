@@ -7,9 +7,12 @@ import elements.Customer;
 import elements.ManagerBill;
 import elements.ManagerSale;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -31,6 +34,7 @@ public class ManagerPaneController {
   public TableColumn tvcProduct;
   public TableColumn tvcAmount;
   public TableColumn tvcPrice;
+  public ChoiceBox cbPeriod;
 
   private MainController controller;
   private LoginPaneController loginController;
@@ -50,6 +54,28 @@ public class ManagerPaneController {
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("product"));
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+    cbPeriod.setValue("this month");
+    cbPeriod.getItems().addAll("this month", "two months", "this year", "all");
+    //TODO tutaj se poustawiaj a domyślnie daj z tego miesiąca żeby się wczytywały
+    cbPeriod.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+      @Override
+      public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+        switch (newValue.toString()) {
+          case "this month":
+            System.out.println("WCZYTUJE Z TEGO MSC");
+            break;
+          case "two months":
+            System.out.println("WCZYTUJE Z 2 MSC");
+            break;
+          case "this year":
+            System.out.println("WCZYTUJE Z TEGO ROKU");
+            break;
+          case "all":
+            System.out.println("WCZYTUJE WSZYSTKO");
+            break;
+        }
+      }
+    });
   }
 
   void addToSaleList() {
