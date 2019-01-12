@@ -20,7 +20,7 @@ public class ViewWorkersPaneController {
   public TableColumn tvcName;
   public TableColumn tvcSurname;
   public TableColumn tvcLogin;
-  public TableColumn tvcPassword;
+//  public TableColumn tvcPassword;
   public TableColumn tvcStartContract;
   public TableColumn tvcEndContract;
   public TableColumn tvcJob;
@@ -39,7 +39,7 @@ public class ViewWorkersPaneController {
     tvcName.setCellValueFactory(new PropertyValueFactory<>("name"));
     tvcSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
     tvcLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
-    tvcPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+//    tvcPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
     tvcStartContract.setCellValueFactory(new PropertyValueFactory<>("startContract"));
     tvcEndContract.setCellValueFactory(new PropertyValueFactory<>("endContract"));
     tvcJob.setCellValueFactory(new PropertyValueFactory<>("job"));
@@ -103,5 +103,25 @@ public class ViewWorkersPaneController {
 
   public void bRefreshClick(ActionEvent event) {
     manager.downloadAll();
+  }
+
+  public void changePswdClick(ActionEvent event) {
+    setChangePswdPane();
+  }
+
+  private void setChangePswdPane() {
+    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ChangePswdPane.fxml"));
+    AnchorPane changePswdPane = null;
+    try {
+      changePswdPane = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    ChangePswdController changePswdController = loader.getController();
+    changePswdController.setController(controller);
+    changePswdController.setManagerController(managerController);
+    changePswdController.setWorker("");
+//    viewLogsController.setManager(manager);
+    controller.setPane(changePswdPane);
   }
 }

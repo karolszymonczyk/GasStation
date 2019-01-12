@@ -209,13 +209,13 @@ public class Manager extends Worker {
         String name = rs.getString("name");
         String surname = rs.getString("surname");
         String login = rs.getString("login");
-        String password = rs.getString("password");
+//        String password = rs.getString("password");
         String contractS = rs.getDate("contract_start").toString();
         String contractE = rs.getDate("contract_end").toString();
         String job = rs.getString("job");
         String status = rs.getString("status");
 
-        elements.Worker worker = new elements.Worker(id, name, surname, login, password, contractS, contractE, job, status);
+        elements.Worker worker = new elements.Worker(id, name, surname, login, contractS, contractE, job, status);
         workers.add(worker);
       }
     } catch (SQLException e) {

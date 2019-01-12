@@ -12,16 +12,19 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import utils.DialogUtils;
 import workers.Manager;
 import workers.Seller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ManagerPaneController {
 
@@ -105,7 +108,14 @@ public class ManagerPaneController {
   }
 
   public void bLogoutClick(ActionEvent event) {
-    controller.setLoginPane();
+    if(logoutConfirmation()) {
+      controller.setLoginPane();
+    }
+  }
+
+  private boolean logoutConfirmation() {
+    Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
+    return result.get() == ButtonType.OK;
   }
 
   public void bShowClick(ActionEvent event) {
@@ -259,13 +269,55 @@ public class ManagerPaneController {
     controller.setPane(viewCustomersPane);
   }
 
+
+  public void bViewLogsClick(ActionEvent event) {
+    setViewLogsPane();
+  }
+
+  private void setViewLogsPane() {
+    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewLogsPane.fxml"));
+    AnchorPane viewLogsPane = null;
+    try {
+      viewLogsPane = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    ViewLogsPaneController viewLogsController = loader.getController();
+    viewLogsController.setController(controller);
+    viewLogsController.setLoginController(loginController);
+//    viewLogsController.setManager(manager);
+//    viewLogsController.addLogsList();
+    controller.setPane(viewLogsPane);
+  }
+
+  public void bChangePswdClick(ActionEvent event) {
+    setChangePswdPane();
+  }
+
+  private void setChangePswdPane() {
+    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ChangePswdPane.fxml"));
+    AnchorPane changePswdPane = null;
+    try {
+      changePswdPane = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    ChangePswdController changePswdController = loader.getController();
+    changePswdController.setController(controller);
+    changePswdController.setLoginController(loginController);
+    changePswdController.setWorker("manager");
+//    viewLogsController.setManager(manager);
+    controller.setPane(changePswdPane);
+  }
+
   public void bBackupClick(ActionEvent event) { //TODO dodać Backup ZMIENIC NULLA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     Backup backup = new Backup();
     backup.executeBackUp();
-
   }
 
-
+  public void bRetoreClick(ActionEvent event) {
+    //TODO dodać restore!!!
+  }
 
   public void setUsername(String username) {
     this.username = username;

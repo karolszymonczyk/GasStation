@@ -63,5 +63,6 @@
       <Button fx:id="bDelete" layoutX="697.0" layoutY="518.0" mnemonicParsing="false" onAction="#bDeleteClick" prefHeight="25.0" prefWidth="125.0" text="Delete" />
       <Button fx:id="bFinishDelivery" layoutX="697.0" layoutY="581.0" mnemonicParsing="false" onAction="#bFinishClick" prefHeight="25.0" prefWidth="125.0" text="Finish delivery" />
       <TextField fx:id="tfDeliverer" layoutX="320.0" layoutY="581.0" prefHeight="25.0" prefWidth="338.0" promptText="deliverer" />
+      <Button layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#bChangePswdClick" text="Change password" />
     </children>
 </AnchorPane>

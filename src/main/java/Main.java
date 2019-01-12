@@ -25,6 +25,7 @@ public class Main extends Application {
 
     primaryStage.setTitle("GasStation");
     primaryStage.setScene(new Scene(mainPane, 850, 650));
+    primaryStage.setResizable(false);
 
     primaryStage.setX(500);
     primaryStage.setY(200);
