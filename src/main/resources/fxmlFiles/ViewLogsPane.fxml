@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<AnchorPane prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ViewLogsPaneController">
+    <children>
+        <ImageView fitHeight="650.0" fitWidth="856.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/theme.jpg" />
+            </image>
+        </ImageView>
+        <Button layoutX="785.0" layoutY="10.0" mnemonicParsing="false" onAction="#bBackClick" prefWidth="54.0" text="Back" />
+        <TableView fx:id="tvLogs" layoutX="40.0" layoutY="40.0" prefHeight="580.0" prefWidth="640.0">
+            <columns>
+                <TableColumn fx:id="tvcId" prefWidth="39.0" text="id" />
+                <TableColumn fx:id="tvcName" minWidth="0.0" prefWidth="127.0" text="name" />
+                <TableColumn fx:id="tvcSurname" minWidth="0.0" prefWidth="154.0" text="surname" />
+                <TableColumn fx:id="tvcOperation" prefWidth="137.0" text="operation" />
+                <TableColumn fx:id="tvcTime" prefWidth="181.0" text="time" />
+            </columns>
+        </TableView>
+        <Button layoutX="707.0" layoutY="335.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
+    </children>
+</AnchorPane>

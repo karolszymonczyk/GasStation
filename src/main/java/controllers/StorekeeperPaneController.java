@@ -175,6 +175,25 @@ public class StorekeeperPaneController implements ErrorUtils {
     controller.setPane(newProductPane);
   }
 
+  public void bChangePswdClick(ActionEvent event) {
+    setChangePswdPane();
+  }
+
+  private void setChangePswdPane() {
+    FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ChangePswdPane.fxml"));
+    AnchorPane changePswdPane = null;
+    try {
+      changePswdPane = loader.load();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    ChangePswdController changePswdController = loader.getController();
+    changePswdController.setController(controller);
+    changePswdController.setLoginController(loginController);
+    changePswdController.setWorker("storekeeper");
+//    viewLogsController.setManager(manager);
+    controller.setPane(changePswdPane);
+  }
 
   private boolean logoutConfirmation() {
     Optional<ButtonType> result = DialogUtils.confirmationDialog("Logout", "Are you sure?");
