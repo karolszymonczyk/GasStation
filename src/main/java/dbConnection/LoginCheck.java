@@ -21,7 +21,7 @@ public class LoginCheck {
       connection  = createConnection.getConnection();
       st = connection.createStatement();
 
-      rs = st.executeQuery("SELECT * FROM users JOIN worker ON users.worker_id = worker.id WHERE login= \'" + inputUser + "\'&& password =\'" +inputPassword + "\'");
+      rs = st.executeQuery("SELECT * FROM users JOIN worker ON users.worker_id = worker.id WHERE login= \'" + inputUser + "\'");
       while(rs.next()){
         job = rs.getString("job");
         return true;

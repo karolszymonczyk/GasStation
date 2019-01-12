@@ -87,7 +87,6 @@ public class StorekeeperPaneController implements ErrorUtils {
     deliverer = tfDeliverer.getText();
     String code = tfCode.getText();
     String amount = tfAmount.getText();
-    System.out.println("TWORZE SAVEPOINT");
 
 
     if(code.equals("") || amount.equals("")) {

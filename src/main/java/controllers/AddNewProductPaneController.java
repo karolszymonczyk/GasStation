@@ -52,6 +52,14 @@ public class AddNewProductPaneController extends NewProductPaneController implem
       return;
     }
 
+    int amountInt = Integer.parseInt(amount);
+    int codeInt = Integer.parseInt(code);
+
+    if(manager.searchForProductFromCode(codeInt) || manager.searchForProductFromName(name.toLowerCase())){
+      lError.setVisible(true);
+      return;
+    }
+
     if (!manager.isTransactionStarted()) {
       manager.setTransactionStarted(true);
 
@@ -63,8 +71,7 @@ public class AddNewProductPaneController extends NewProductPaneController implem
       }
     }
 
-    int amountInt = Integer.parseInt(amount);
-    int codeInt = Integer.parseInt(code);
+
 
     manager.addNewProduct(Integer.parseInt(code),name,Float.parseFloat(price),Float.parseFloat(tax),Integer.parseInt(amount));
 

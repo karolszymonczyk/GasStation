@@ -33,17 +33,48 @@ public class Manager extends Worker {
     downloadAll();
   }
 
-  public void downloadBills() {
+  public void downloadBills(int option) {
     bills = new ArrayList<>();
 
     try {
-      st = connection.createStatement();
-      rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +
-              "b.value," +
-              "(SELECT name FROM customer WHERE id = b.customer) as customer," +
-              "(SELECT price FROM product WHERE code = s.product_id) as price, " +
-              "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
-              "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id;");
+
+        st = connection.createStatement();
+
+      if(option == 1){
+        rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +
+                "b.value," +
+                "(SELECT name FROM customer WHERE id = b.customer) as customer," +
+                "(SELECT price FROM product WHERE code = s.product_id) as price, " +
+                "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
+                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id WHERE b.time BETWEEN current_date - INTERVAL 1 MONTH AND current_date;");
+
+      } else if(option == 2){
+        rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +
+                "b.value," +
+                "(SELECT name FROM customer WHERE id = b.customer) as customer," +
+                "(SELECT price FROM product WHERE code = s.product_id) as price, " +
+                "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
+                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id WHERE b.time BETWEEN current_date - INTERVAL 2 MONTH AND current_date;");
+
+      } else if(option == 3){
+        rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +
+                "b.value," +
+                "(SELECT name FROM customer WHERE id = b.customer) as customer," +
+                "(SELECT price FROM product WHERE code = s.product_id) as price, " +
+                "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
+                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id WHERE YEAR(b.time) = YEAR(current_date);");
+
+      } else if(option == 4){
+
+
+          rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +
+                  "b.value," +
+                  "(SELECT name FROM customer WHERE id = b.customer) as customer," +
+                  "(SELECT price FROM product WHERE code = s.product_id) as price, " +
+                  "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
+                  "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id");
+          }
+
       int id1;
       int id2 = -1;
       while (rs.next()) {
@@ -243,7 +274,7 @@ public class Manager extends Worker {
   public void downloadAll() {
     downloadWorkers();
     downloadProducts();
-    downloadBills();
+    downloadBills(1);
     downloadDeliveries();
     downloadCustomers();
   }
@@ -295,8 +326,8 @@ public class Manager extends Worker {
 
 
       cSt = connection.prepareCall("{CALL createWorker(?,?,?,?,?)}");
-      cSt.setString(1, name.toLowerCase());
-      cSt.setString(2, surname.toLowerCase());
+      cSt.setString(1, name);
+      cSt.setString(2, surname);
       cSt.setString(3, job.toLowerCase());
       cSt.setDate(4, start);
       cSt.setDate(5, end);

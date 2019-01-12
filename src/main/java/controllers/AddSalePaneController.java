@@ -230,7 +230,7 @@ public class AddSalePaneController implements ErrorUtils{
       System.out.println("No active transaction - no rollback.");
     }
     manager.deleteBill();
-    manager.downloadBills();
+    manager.downloadBills(1);
     loginController.setManagerPane();
   }
 

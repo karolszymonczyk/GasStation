@@ -12,13 +12,17 @@ public class Backup {
 
 
     String executeCmd = "";
-    executeCmd = "mysqldump - u "+username +"-p"+password +"+stacjapaliw@localhost -r >  backup.sql";
+
+    executeCmd = "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump -u root -proot stacjaPaliw > C:\\Users\\Szymon\\Documents\\dumps\\stacja1";
 
     Process runtimeProcess = null;
     int processComplete = 0;
     try {
+      System.out.println("1111111111111");
       runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+      System.out.println("22222222222222");
       processComplete = runtimeProcess.waitFor();
+      System.out.println("3333333333333");
     } catch (IOException e) {
       e.printStackTrace();
     }catch (InterruptedException e) {

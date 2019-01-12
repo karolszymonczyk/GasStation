@@ -74,6 +74,14 @@ public class NewProductPaneController implements ErrorUtils {
       return;
     }
 
+    int amountInt = Integer.parseInt(amount);
+    int codeInt = Integer.parseInt(code);
+
+    if(storekeeper.searchForProductFromCode(codeInt) || storekeeper.searchForProductFromName(name.toLowerCase())){
+      lError.setVisible(true);
+      return;
+    }
+
     if(!ErrorUtils.checkFloat(price) || !ErrorUtils.checkFloat(tax)) {
       lError.setVisible(true);
       return;
@@ -89,9 +97,6 @@ public class NewProductPaneController implements ErrorUtils {
         e.printStackTrace();
       }
     }
-
-    int amountInt = Integer.parseInt(amount);
-    int codeInt = Integer.parseInt(code);
 
     storekeeper.addNewProduct(Integer.parseInt(code), name, Float.parseFloat(price), Float.parseFloat(tax), Integer.parseInt(amount));
 

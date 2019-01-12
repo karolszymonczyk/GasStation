@@ -26,6 +26,19 @@ public abstract class Worker {
     }
   }
 
+  public boolean searchForProductFromName(String name) {
+    try {
+      cSt = connection.prepareCall("{? = CALL searchProductFromName(?)}");
+      cSt.setString(2, name);
+      cSt.registerOutParameter(1, Types.BOOLEAN);
+      cSt.execute();
+      return cSt.getBoolean(1);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public Connection getConnection() {
     return connection;
   }
@@ -240,14 +253,22 @@ public abstract class Worker {
   public void addNewCustomer(String name, String surname, int NIP){
     try {
       cSt = connection.prepareCall("{CALL createNewCustomer(?, ?, ?)}");
-      cSt.setString(1,name.toLowerCase());
-      cSt.setString(2,surname.toLowerCase());
+      cSt.setString(1,name);
+      cSt.setString(2,surname);
       cSt.setInt(3,NIP);
 
       cSt.execute();
     } catch (SQLException e) {
       e.printStackTrace();
     }
+  }
+
+  public void changePassword(String password){
+
+  }
+
+  public void changePasswordAsManager(int ID, String password){
+
   }
 
  }

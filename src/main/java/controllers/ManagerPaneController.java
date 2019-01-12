@@ -62,16 +62,21 @@ public class ManagerPaneController {
       public void changed(ObservableValue observable, Object oldValue, Object newValue) {
         switch (newValue.toString()) {
           case "this month":
-            System.out.println("WCZYTUJE Z TEGO MSC");
+            manager.downloadBills(1);
+            addToSaleList();
+            System.out.println("added");
             break;
           case "two months":
-            System.out.println("WCZYTUJE Z 2 MSC");
+            manager.downloadBills(2);
+            addToSaleList();
             break;
           case "this year":
-            System.out.println("WCZYTUJE Z TEGO ROKU");
+            manager.downloadBills(3);
+            addToSaleList();
             break;
           case "all":
-            System.out.println("WCZYTUJE WSZYSTKO");
+            manager.downloadBills(4);
+            addToSaleList();
             break;
         }
       }

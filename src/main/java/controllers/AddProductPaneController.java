@@ -66,6 +66,11 @@ public class AddProductPaneController implements ErrorUtils{
       return;
     }
 
+    if(manager.searchForProductFromCode(Integer.parseInt(code)) || manager.searchForProductFromName(name.toLowerCase())){
+      lError.setVisible(true);
+      return;
+    }
+
     if(!ErrorUtils.checkFloat(price) || !ErrorUtils.checkFloat(tax)) {
       lError.setVisible(true);
       return;
