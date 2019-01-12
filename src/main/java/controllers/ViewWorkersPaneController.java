@@ -112,6 +112,9 @@ public class ViewWorkersPaneController {
   private void setChangePswdPane() {
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ChangePswdPane.fxml"));
     AnchorPane changePswdPane = null;
+
+    elements.Worker selectedItem = (elements.Worker) tvWorkers.getSelectionModel().getSelectedItem();
+
     try {
       changePswdPane = loader.load();
     } catch (IOException e) {
@@ -120,8 +123,9 @@ public class ViewWorkersPaneController {
     ChangePswdController changePswdController = loader.getController();
     changePswdController.setController(controller);
     changePswdController.setManagerController(managerController);
-    changePswdController.setWorker("");
-//    viewLogsController.setManager(manager);
+    changePswdController.setWorkerType("");
+    changePswdController.setWorker(manager);
+    changePswdController.setWorkerID(selectedItem.getId());
     controller.setPane(changePswdPane);
   }
 }

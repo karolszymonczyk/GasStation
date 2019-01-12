@@ -265,10 +265,42 @@ public abstract class Worker {
 
   public void changePassword(String password){
 
+    int id=-1;
+
+    try {
+      st = connection.createStatement();
+      rs = st.executeQuery("SELECT worker_id FROM users WHERE login = (LEFT(user(),length(user())-10))");
+      while(rs.next()) {
+        id = rs.getInt("worker_id");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    try {
+      cSt = connection.prepareCall("{CALL changePassword(?,?)}");
+      cSt.setInt(1,id);
+      cSt.setString(2,password);
+
+      cSt.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+
+
   }
 
   public void changePasswordAsManager(int ID, String password){
+    try {
+      cSt = connection.prepareCall("{CALL changePassword(?,?)}");
+      cSt.setInt(1,ID);
+      cSt.setString(2,password);
 
+      cSt.execute();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
  }

@@ -305,18 +305,38 @@ public class ManagerPaneController {
     ChangePswdController changePswdController = loader.getController();
     changePswdController.setController(controller);
     changePswdController.setLoginController(loginController);
-    changePswdController.setWorker("manager");
-//    viewLogsController.setManager(manager);
+    changePswdController.setWorkerType("manager");
+    changePswdController.setWorker(manager);
     controller.setPane(changePswdPane);
   }
 
-  public void bBackupClick(ActionEvent event) { //TODO dodać Backup ZMIENIC NULLA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  public void bBackupClick(ActionEvent event) {
     Backup backup = new Backup();
-    backup.executeBackUp();
+
+    String path = "C:\\Users\\Szymon\\Documents\\dumps\\stacjaPaliw.sql";
+    String user = "root";
+    String pass = "root";
+
+    if(!backup.executeBackup(path,user,pass)){
+      //TODO wyświetlić label nie udało się
+    } else {
+      //TODO udało się
+    }
   }
 
-  public void bRetoreClick(ActionEvent event) {
-    //TODO dodać restore!!!
+  public void bRestoreClick(ActionEvent event) {
+    Backup backup = new Backup();
+
+    String path = "C:\\Users\\Szymon\\Documents\\dumps\\stacjaPaliw.sql";
+    String user = "root";
+    String pass = "root";
+
+
+    if(!backup.restoreBackup(path,user,pass)){
+      //TODO nie udało się
+    } else {
+      //TODO udało się
+    }
   }
 
   public void setUsername(String username) {

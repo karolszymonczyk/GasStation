@@ -46,7 +46,7 @@ public class Manager extends Worker {
                 "(SELECT name FROM customer WHERE id = b.customer) as customer," +
                 "(SELECT price FROM product WHERE code = s.product_id) as price, " +
                 "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
-                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id WHERE b.time BETWEEN current_date - INTERVAL 1 MONTH AND current_date;");
+                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id WHERE MONTH(b.time) = MONTH(current_date) AND YEAR(b.time) = YEAR(current_date);");
 
       } else if(option == 2){
         rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +
@@ -54,7 +54,7 @@ public class Manager extends Worker {
                 "(SELECT name FROM customer WHERE id = b.customer) as customer," +
                 "(SELECT price FROM product WHERE code = s.product_id) as price, " +
                 "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
-                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id WHERE b.time BETWEEN current_date - INTERVAL 2 MONTH AND current_date;");
+                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id WHERE (MONTH(b.time) = MONTH(current_date) OR MONTH(b.time) = MONTH(current_date - INTERVAL 1 MONTH)) AND YEAR(b.time) = YEAR(current_date);");
 
       } else if(option == 3){
         rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +

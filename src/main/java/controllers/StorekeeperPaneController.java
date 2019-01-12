@@ -189,8 +189,8 @@ public class StorekeeperPaneController implements ErrorUtils {
     ChangePswdController changePswdController = loader.getController();
     changePswdController.setController(controller);
     changePswdController.setLoginController(loginController);
-    changePswdController.setWorker("storekeeper");
-//    viewLogsController.setManager(manager);
+    changePswdController.setWorkerType("storekeeper");
+    changePswdController.setWorker(storekeeper);
     controller.setPane(changePswdPane);
   }
 

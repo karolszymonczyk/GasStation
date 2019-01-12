@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import workers.Worker;
 
 
 public class ChangePswdController {
@@ -19,7 +20,11 @@ public class ChangePswdController {
   LoginPaneController loginController;
   ManagerPaneController managerController;
 
-  String worker;
+  int workerID;
+
+  workers.Worker worker;
+
+  String workerType;
 
   @FXML
   public void initialize() {
@@ -38,12 +43,12 @@ public class ChangePswdController {
     this.managerController = managerController;
   }
 
-  public void setWorker(String worker) {
-    this.worker = worker;
+  public void setWorkerType(String workerType) {
+    this.workerType = workerType;
   }
 
   public void bBackClick(ActionEvent event) {
-    switch (worker) {
+    switch (workerType) {
       case "manager":
         loginController.setManagerPane();
         break;
@@ -77,9 +82,23 @@ public class ChangePswdController {
       return;
     }
 
+    if(workerType.equals("")){
+      worker.changePasswordAsManager(workerID, pfNewPswd1.getText());
+    } else {
+      worker.changePassword(pfNewPswd1.getText());
+    }
+
     lSuccess.setVisible(true);
     pfNewPswd1.setDisable(true);
     pfNewPswd2.setDisable(true);
     bChange.setDisable(true);
+  }
+
+  public void setWorker(Worker worker) {
+    this.worker = worker;
+  }
+
+  public void setWorkerID(int workerID) {
+    this.workerID = workerID;
   }
 }

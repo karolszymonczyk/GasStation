@@ -50,7 +50,7 @@
       <Button layoutX="697.0" layoutY="325.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
       <Button layoutX="697.0" layoutY="359.0" mnemonicParsing="false" onAction="#bBackupClick" prefHeight="25.0" prefWidth="125.0" text="Backup" />
       <ChoiceBox fx:id="cbPeriod" layoutX="699.0" layoutY="60.0" prefHeight="25.0" prefWidth="125.0" />
-      <Button layoutX="699.0" layoutY="395.0" mnemonicParsing="false" onAction="#bRetoreClick" prefHeight="25.0" prefWidth="125.0" text="Restore" />
+      <Button layoutX="699.0" layoutY="395.0" mnemonicParsing="false" onAction="#bRestoreClick" prefHeight="25.0" prefWidth="125.0" text="Restore" />
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#bChangePswdClick" text="Change password" />
    </children>
 </AnchorPane>

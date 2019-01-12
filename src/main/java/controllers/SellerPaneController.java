@@ -293,8 +293,8 @@ public class SellerPaneController implements ErrorUtils {
     ChangePswdController changePswdController = loader.getController();
     changePswdController.setController(controller);
     changePswdController.setLoginController(loginController);
-    changePswdController.setWorker("seller");
-//    viewLogsController.setManager(manager);
+    changePswdController.setWorkerType("seller");
+    changePswdController.setWorker(seller);
     controller.setPane(changePswdPane);
   }
 
