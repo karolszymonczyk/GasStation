@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -35,7 +36,7 @@
             <TableColumn fx:id="tvcPrice" prefWidth="63.0" text="price" />
         </columns>
       </TableView>
-      <VBox layoutX="699.0" layoutY="109.0" prefHeight="207.0" prefWidth="125.0" spacing="19.0">
+      <VBox layoutX="699.0" layoutY="109.0" prefHeight="207.0" prefWidth="125.0" spacing="15.0">
          <children>
             <Button mnemonicParsing="false" onAction="#bWorkersClick" prefHeight="25.0" prefWidth="137.0" text="View workers" />
             <Button mnemonicParsing="false" onAction="#bDeliversClick" prefHeight="25.0" prefWidth="138.0" text="View delivers" />
@@ -47,10 +48,29 @@
       <Button layoutX="699.0" layoutY="498.0" mnemonicParsing="false" onAction="#bAddSaleClick" prefHeight="25.0" prefWidth="125.0" text="Add sale" />
       <Button layoutX="697.0" layoutY="556.0" mnemonicParsing="false" onAction="#bDeleteSaleClick" prefHeight="25.0" prefWidth="125.0" text="Delete sale" />
       <Button layoutX="699.0" layoutY="441.0" mnemonicParsing="false" onAction="#bShowClick" prefHeight="25.0" prefWidth="125.0" text="Show sale" />
-      <Button layoutX="697.0" layoutY="325.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
-      <Button layoutX="697.0" layoutY="359.0" mnemonicParsing="false" onAction="#bBackupClick" prefHeight="25.0" prefWidth="125.0" text="Backup" />
       <ChoiceBox fx:id="cbPeriod" layoutX="699.0" layoutY="60.0" prefHeight="25.0" prefWidth="125.0" />
-      <Button layoutX="699.0" layoutY="395.0" mnemonicParsing="false" onAction="#bRestoreClick" prefHeight="25.0" prefWidth="125.0" text="Restore" />
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#bChangePswdClick" text="Change password" />
+      <VBox layoutX="697.0" layoutY="309.0" prefHeight="99.0" prefWidth="125.0" spacing="15.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
+            <Button mnemonicParsing="false" onAction="#bBackupClick" prefHeight="25.0" prefWidth="125.0" text="Backup" />
+            <Button mnemonicParsing="false" onAction="#bRestoreClick" prefHeight="25.0" prefWidth="125.0" text="Restore" />
+         </children>
+      </VBox>
+      <Label fx:id="lSuccessB" layoutX="304.0" layoutY="12.0" text="Backup has been successfully made" textFill="#14f52f" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lError" layoutX="350.0" layoutY="12.0" text="Something went wrong..." textFill="#f81111" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="lSuccessR" layoutX="303.0" layoutY="12.0" text="Restore has been successfully made" textFill="#07f523" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -128,8 +128,6 @@ public class SellerPaneController implements ErrorUtils {
       }
     }
 
-
-
     if(sCode.equals("") || quantity.equals("")) {
       lWarning.setText("Empty field!");
       return;

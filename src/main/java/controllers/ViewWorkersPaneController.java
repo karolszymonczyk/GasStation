@@ -20,11 +20,9 @@ public class ViewWorkersPaneController {
   public TableColumn tvcName;
   public TableColumn tvcSurname;
   public TableColumn tvcLogin;
-//  public TableColumn tvcPassword;
   public TableColumn tvcStartContract;
   public TableColumn tvcEndContract;
   public TableColumn tvcJob;
-  public TableColumn tvcStatus;
 
   private MainController controller;
   private LoginPaneController loginController;
@@ -39,11 +37,9 @@ public class ViewWorkersPaneController {
     tvcName.setCellValueFactory(new PropertyValueFactory<>("name"));
     tvcSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
     tvcLogin.setCellValueFactory(new PropertyValueFactory<>("login"));
-//    tvcPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
     tvcStartContract.setCellValueFactory(new PropertyValueFactory<>("startContract"));
     tvcEndContract.setCellValueFactory(new PropertyValueFactory<>("endContract"));
     tvcJob.setCellValueFactory(new PropertyValueFactory<>("job"));
-    tvcStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
   }
 
 
@@ -106,6 +102,13 @@ public class ViewWorkersPaneController {
   }
 
   public void changePswdClick(ActionEvent event) {
+
+    Object selectedItem = tvWorkers.getSelectionModel().getSelectedItem();
+
+    if(selectedItem == null) {
+      return;
+    }
+
     setChangePswdPane();
   }
 

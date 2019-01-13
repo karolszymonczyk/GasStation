@@ -17,19 +17,18 @@
         <Button layoutX="785.0" layoutY="10.0" mnemonicParsing="false" onAction="#bBackClick" prefWidth="54.0" text="Back" />
         <TableView fx:id="tvWorkers" layoutX="40.0" layoutY="40.0" prefHeight="580.0" prefWidth="640.0">
             <columns>
-                <TableColumn fx:id="tvcId" prefWidth="35.0" text="id" />
-                <TableColumn fx:id="tvcName" prefWidth="58.0" text="name" />
-                <TableColumn fx:id="tvcSurname" prefWidth="78.0" text="surname" />
-                <TableColumn fx:id="tvcLogin" prefWidth="104.0" text="login" />
-            <TableColumn fx:id="tvcStartContract" prefWidth="104.0" text="start of contract" />
-            <TableColumn fx:id="tvcEndContract" prefWidth="96.0" text="end of contract" />
-            <TableColumn fx:id="tvcJob" minWidth="4.0" prefWidth="85.0" text="job" />
-            <TableColumn fx:id="tvcStatus" prefWidth="77.0" text="status" />
+                <TableColumn fx:id="tvcId" prefWidth="51.0" text="id" />
+                <TableColumn fx:id="tvcName" prefWidth="67.0" text="name" />
+                <TableColumn fx:id="tvcSurname" prefWidth="85.0" text="surname" />
+                <TableColumn fx:id="tvcLogin" prefWidth="120.0" text="login" />
+            <TableColumn fx:id="tvcStartContract" prefWidth="117.0" text="start of contract" />
+            <TableColumn fx:id="tvcEndContract" prefWidth="115.0" text="end of contract" />
+            <TableColumn fx:id="tvcJob" minWidth="4.0" prefWidth="82.0" text="job" />
             </columns>
         </TableView>
         <Button layoutX="697.0" layoutY="595.0" mnemonicParsing="false" onAction="#bAddClick" prefWidth="125.0" text="Add worker" />
         <Button layoutX="697.0" layoutY="540.0" mnemonicParsing="false" onAction="#bDeleteClick" prefWidth="125.0" text="Delete worker" />
       <Button layoutX="707.0" layoutY="335.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
-      <Button layoutX="707.0" layoutY="442.0" mnemonicParsing="false" onAction="#changePswdClick" prefHeight="25.0" prefWidth="125.0" text="Change password" />
+      <Button layoutX="697.0" layoutY="484.0" mnemonicParsing="false" onAction="#changePswdClick" prefHeight="25.0" prefWidth="125.0" text="Change password" />
     </children>
 </AnchorPane>

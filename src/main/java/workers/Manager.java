@@ -213,9 +213,8 @@ public class Manager extends Worker {
         String contractS = rs.getDate("contract_start").toString();
         String contractE = rs.getDate("contract_end").toString();
         String job = rs.getString("job");
-        String status = rs.getString("status");
 
-        elements.Worker worker = new elements.Worker(id, name, surname, login, contractS, contractE, job, status);
+        elements.Worker worker = new elements.Worker(id, name, surname, login, contractS, contractE, job);
         workers.add(worker);
       }
     } catch (SQLException e) {

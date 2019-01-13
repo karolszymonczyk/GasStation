@@ -12,10 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -42,6 +39,9 @@ public class ManagerPaneController {
   public TableColumn tvcAmount;
   public TableColumn tvcPrice;
   public ChoiceBox cbPeriod;
+  public Label lError;
+  public Label lSuccessB;
+  public Label lSuccessR;
 
   private MainController controller;
   private LoginPaneController loginController;
@@ -123,6 +123,9 @@ public class ManagerPaneController {
   }
 
   public void bShowClick(ActionEvent event) {
+
+    clearLabels();
+
     tvBill.getItems().clear();
 
     ManagerSale selectedItem = (ManagerSale) tvSales.getSelectionModel().getSelectedItem();
@@ -202,10 +205,15 @@ public class ManagerPaneController {
   }
 
   public void bRefreshClick(ActionEvent event) {
+
+    clearLabels();
+
     manager.downloadAll();
   }
 
   public void bDeleteSaleClick(ActionEvent event) {
+
+    clearLabels();
 
     if (tvSales.getSelectionModel().getSelectedItem() == null) {
       return;
@@ -314,22 +322,26 @@ public class ManagerPaneController {
 
 
   public void bBackupClick(ActionEvent event) {
+
+    clearLabels();
+
     Backup backup = new Backup();
-
-
 
     String path = "C:\\Users\\Szymon\\Documents\\dumps\\" + LocalDate.now() + ".sql";
     String user = "root";
     String pass = "root";
 
     if(!backup.executeBackup(path,user,pass)){
-      //TODO wyświetlić label nie udało się
+      lError.setVisible(true);
     } else {
-      //TODO udało się
+      lSuccessB.setVisible(true);
     }
   }
 
   public void bRestoreClick(ActionEvent event) {
+
+    clearLabels();
+
     Backup backup = new Backup();
 
     String user = "root";
@@ -337,10 +349,16 @@ public class ManagerPaneController {
 
 
     if(!backup.restoreBackup(user,pass)){
-      //TODO nie udało się
+      lError.setVisible(true);
     } else {
-      //TODO udało się
+      lSuccessR.setVisible(true);
     }
+  }
+
+  public void clearLabels() {
+    lError.setVisible(false);
+    lSuccessB.setVisible(false);
+    lSuccessR.setVisible(false);
   }
 
   public void setUsername(String username) {
