@@ -1,5 +1,6 @@
 package controllers;
 
+import dbConnection.DownloadThread;
 import dbConnection.LoginCheck;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import workers.Storekeeper;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.util.ArrayList;
 
 public class LoginPaneController {
 
@@ -27,6 +29,8 @@ public class LoginPaneController {
   private Manager manager;
 
   private String login, password;
+
+  ArrayList<DownloadThread> threads = new ArrayList<DownloadThread>();
 
   @FXML
   private TextField tLogin, tPassword;
@@ -55,6 +59,8 @@ public class LoginPaneController {
           manager = new Manager(loginCheck.getConnection());
           setManagerPane();
 
+
+
         } else if ("seller".equals(loginCheck.job)) {
           seller = new Seller(loginCheck.getConnection());
           setSellerPane("");
@@ -68,7 +74,9 @@ public class LoginPaneController {
     }
   }
 
-  void setManagerPane() {
+  public void setManagerPane() {
+
+
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ManagerPane.fxml"));
     AnchorPane managerPane = null;
     try {
@@ -83,6 +91,9 @@ public class LoginPaneController {
     managerController.addToSaleList();
     managerController.setUsername(login);
     managerController.setPassword(password);
+
+
+
 
     controller.setPane(managerPane);
   }

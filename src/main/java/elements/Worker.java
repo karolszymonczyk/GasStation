@@ -48,4 +48,8 @@ public class Worker {
   public String getJob() {
     return job;
   }
+
+  public Worker getWorker(){
+    return this;
+  }
 }

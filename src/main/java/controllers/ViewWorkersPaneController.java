@@ -90,7 +90,7 @@ public class ViewWorkersPaneController {
       elements.Worker selectedItem = (elements.Worker) tvWorkers.getSelectionModel().getSelectedItem();
       tvWorkers.getItems().remove(selectedItem);
       manager.deleteUser(selectedItem.getId());
-      manager.downloadWorkers();
+      manager.getWorkers().remove(selectedItem);
     }
 
     public void setManager (Manager manager){

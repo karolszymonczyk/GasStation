@@ -86,7 +86,7 @@ public class ViewProductsPaneController {
     ProductView selectedItem = (ProductView) tvProducts.getSelectionModel().getSelectedItem();
     manager.deleteProduct(Integer.parseInt(selectedItem.getCode()));
     tvProducts.getItems().remove(selectedItem);
-    manager.downloadProducts();
+    manager.getProducts().remove(selectedItem);
   }
 
   public void setManager(Manager manager) {

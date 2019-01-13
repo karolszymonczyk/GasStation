@@ -61,17 +61,16 @@ public class ManagerPaneController {
     tvcProduct.setCellValueFactory(new PropertyValueFactory<>("product"));
     tvcAmount.setCellValueFactory(new PropertyValueFactory<>("amount"));
     tvcPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-    cbPeriod.setValue("this month");
-    cbPeriod.getItems().addAll("this month", "two months", "this year", "all");
-    //TODO tutaj se poustawiaj a domyślnie daj z tego miesiąca żeby się wczytywały
+    cbPeriod.setValue("this day");
+    cbPeriod.getItems().addAll("this day", "this month", "two months", "this year", "all");
     cbPeriod.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
       @Override
       public void changed(ObservableValue observable, Object oldValue, Object newValue) {
         switch (newValue.toString()) {
           case "this month":
             manager.downloadBills(1);
+            System.out.println("1");
             addToSaleList();
-            System.out.println("added");
             break;
           case "two months":
             manager.downloadBills(2);
@@ -85,6 +84,11 @@ public class ManagerPaneController {
             manager.downloadBills(4);
             addToSaleList();
             break;
+          case "this day":
+            manager.downloadBills(5);
+            System.out.println("5");
+            addToSaleList();
+            break;
         }
       }
     });
@@ -93,6 +97,8 @@ public class ManagerPaneController {
   void addToSaleList() {
 
     bills = manager.getBills();
+
+    tvSales.getItems().clear();
 
     for (ManagerSale managerSale : bills) {
       addSale(managerSale);
@@ -143,6 +149,11 @@ public class ManagerPaneController {
   }
 
   void setViewWorkersPane() {
+
+    if(manager.getWorkers() == null) {
+      manager.downloadWorkers();
+    }
+
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewWorkersPane.fxml"));
     AnchorPane viewWorkersPane = null;
     try {
@@ -188,6 +199,9 @@ public class ManagerPaneController {
   }
 
   void setViewProductsPane() {
+
+    manager.downloadProducts();
+
     FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/fxmlFiles/ViewProductsPane.fxml"));
     AnchorPane viewProductsPane = null;
     try {
@@ -297,6 +311,7 @@ public class ManagerPaneController {
     ViewLogsPaneController viewLogsController = loader.getController();
     viewLogsController.setController(controller);
     viewLogsController.setLoginController(loginController);
+    viewLogsController.setManager(manager);
     controller.setPane(viewLogsPane);
   }
 

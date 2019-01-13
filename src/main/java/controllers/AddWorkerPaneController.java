@@ -46,7 +46,7 @@ public class AddWorkerPaneController implements ErrorUtils {
   }
 
   public void bBackClick(ActionEvent event) {
-    manager.downloadWorkers();
+      manager.downloadWorkers();
     managerController.setViewWorkersPane();
   }
 

@@ -89,7 +89,7 @@ public class ViewDeliversPaneController {
     tvDelivers.getItems().remove(selectedItem);
     tvProducts.getItems().clear();
     manager.deleteDelivery(selectedItem.getId());
-    manager.downloadDeliveries();
+    manager.getDeliveries().remove(selectedItem);
   }
 
   public void bShowClick(ActionEvent event) {

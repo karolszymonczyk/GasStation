@@ -29,6 +29,6 @@
         <Button layoutX="697.0" layoutY="595.0" mnemonicParsing="false" onAction="#bAddClick" prefWidth="125.0" text="Add worker" />
         <Button layoutX="697.0" layoutY="540.0" mnemonicParsing="false" onAction="#bDeleteClick" prefWidth="125.0" text="Delete worker" />
       <Button layoutX="707.0" layoutY="335.0" mnemonicParsing="false" onAction="#bRefreshClick" prefWidth="125.0" text="Refresh" />
-      <Button layoutX="697.0" layoutY="484.0" mnemonicParsing="false" onAction="#changePswdClick" prefHeight="25.0" prefWidth="125.0" text="Change password" />
+      <Button layoutX="697.0" layoutY="484.0" mnemonicParsing="false" onAction="#changePswdClick" prefHeight="25.0" prefWidth="125.0" text="Set password" />
     </children>
 </AnchorPane>

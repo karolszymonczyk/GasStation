@@ -67,6 +67,7 @@ public class ViewCustomersPaneController {
     tvCustomers.getItems().remove(selectedItem);
 
     manager.deleteCustomer(selectedItem.getId());
+    manager.getCustomers().remove(selectedItem);
   }
 
   public void bRefreshClick(ActionEvent event) {

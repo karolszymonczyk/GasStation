@@ -2,9 +2,12 @@ package workers;
 
 import elements.*;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class Manager extends Worker {
@@ -30,11 +33,13 @@ public class Manager extends Worker {
   public Manager(Connection connection) {
     this.connection = connection;
     deliveredProducts = new ArrayList<>();
-    downloadAll();
+    downloadBills(5);
   }
 
   public void downloadBills(int option) {
     bills = new ArrayList<>();
+    bills.clear();
+    System.out.println("start " + Instant.now());
 
     try {
 
@@ -73,7 +78,18 @@ public class Manager extends Worker {
                   "(SELECT price FROM product WHERE code = s.product_id) as price, " +
                   "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
                   "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id");
-          }
+      } else if(option == 5){
+        rs = st.executeQuery("SELECT b.id,b.time,(SELECT CONCAT(name,' ',surname) FROM worker WHERE id = b.worker_id) as worker," +
+                "b.value," +
+                "(SELECT name FROM customer WHERE id = b.customer) as customer," +
+                "(SELECT price FROM product WHERE code = s.product_id) as price, " +
+                "(SELECT name from product p WHERE p.code = s.product_id) as product,s.amount " +
+                "FROM bill b JOIN bill_sale ON b.id = bill_sale.bill_id JOIN sale s ON bill_sale.sale_id = s.id WHERE DAY(b.time) = DAY(current_date) AND MONTH(b.time) = MONTH(current_date) AND YEAR(b.time) = YEAR(current_date);");
+
+      }
+
+
+      System.out.println("end " + Instant.now());
 
       int id1;
       int id2 = -1;

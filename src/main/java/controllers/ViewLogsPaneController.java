@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import workers.Manager;
 
 public class ViewLogsPaneController {
 
@@ -18,6 +19,8 @@ public class ViewLogsPaneController {
   public TableColumn tvcTime;
   MainController controller;
   LoginPaneController loginController;
+
+  Manager manager;
 
   @FXML
   public void initialize() {
@@ -45,8 +48,15 @@ public class ViewLogsPaneController {
   }
 
   public void addToLogsList(){
+
+
+
     //TODO tutaj korzystaj tak jak wszędzie indziej XD tylko masz klase Log
 //    Log log = new Log(id, name, surname, operation, time);
 //    tvLogs.getItems().add(log);
+  }
+
+  public void setManager(Manager manager) {
+    this.manager = manager;
   }
 }
