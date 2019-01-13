@@ -18,11 +18,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import utils.DialogUtils;
 import workers.Manager;
 import workers.Seller;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -285,8 +289,6 @@ public class ManagerPaneController {
     ViewLogsPaneController viewLogsController = loader.getController();
     viewLogsController.setController(controller);
     viewLogsController.setLoginController(loginController);
-//    viewLogsController.setManager(manager);
-//    viewLogsController.addLogsList();
     controller.setPane(viewLogsPane);
   }
 
@@ -310,10 +312,13 @@ public class ManagerPaneController {
     controller.setPane(changePswdPane);
   }
 
+
   public void bBackupClick(ActionEvent event) {
     Backup backup = new Backup();
 
-    String path = "C:\\Users\\Szymon\\Documents\\dumps\\stacjaPaliw.sql";
+
+
+    String path = "C:\\Users\\Szymon\\Documents\\dumps\\" + LocalDate.now() + ".sql";
     String user = "root";
     String pass = "root";
 
@@ -327,12 +332,11 @@ public class ManagerPaneController {
   public void bRestoreClick(ActionEvent event) {
     Backup backup = new Backup();
 
-    String path = "C:\\Users\\Szymon\\Documents\\dumps\\stacjaPaliw.sql";
     String user = "root";
     String pass = "root";
 
 
-    if(!backup.restoreBackup(path,user,pass)){
+    if(!backup.restoreBackup(user,pass)){
       //TODO nie udało się
     } else {
       //TODO udało się
