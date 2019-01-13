@@ -1,6 +1,6 @@
 package controllers;
 
-import dbConnection.DownloadThread;
+//import dbConnection.DownloadThread;
 import dbConnection.LoginCheck;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -30,7 +30,7 @@ public class LoginPaneController {
 
   private String login, password;
 
-  ArrayList<DownloadThread> threads = new ArrayList<DownloadThread>();
+//  ArrayList<DownloadThread> threads = new ArrayList<DownloadThread>();
 
   @FXML
   private TextField tLogin, tPassword;

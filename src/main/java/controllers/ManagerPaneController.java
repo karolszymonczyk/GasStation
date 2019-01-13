@@ -22,6 +22,8 @@ import workers.Seller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -340,11 +342,18 @@ public class ManagerPaneController {
 
     clearLabels();
 
+    String path = "";
+
+    try {
+      path = Paths.get(this.getClass().getResource("/backup").toURI()).toString() + "\\" + LocalDate.now() + ".sql";
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
+    }
+
     Backup backup = new Backup();
 
-    String path = "C:\\Users\\Szymon\\Documents\\dumps\\" + LocalDate.now() + ".sql";
     String user = "root";
-    String pass = "root";
+    String pass = "19Wrzesien";
 
     if(!backup.executeBackup(path,user,pass)){
       lError.setVisible(true);
