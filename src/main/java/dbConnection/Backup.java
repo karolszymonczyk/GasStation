@@ -5,16 +5,17 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URISyntaxException;
 
 public class Backup {
 
-  private static final String dbName = "StacjaPaliw";
+  private static final String dbName = "stacjaPaliw";
 
   public boolean executeBackup(String path, String username, String password) {
     try {
       String executeCmd = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe\" -u" + username + " -p" + password + " " + dbName + " -r " + "\"" + path + "\"";
 
-      System.out.println(executeCmd);
+      //System.out.println(executeCmd);
 
       Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
       int processComplete = runtimeProcess.waitFor();
@@ -30,12 +31,15 @@ public class Backup {
 
   public boolean restoreBackup(String username, String password) {
 
-    JFileChooser chooser = null;
-    try {
-      chooser = new JFileChooser(this.getClass().getResource("/backup").toURI().toString());
-    } catch (URISyntaxException e) {
-      e.printStackTrace();
-    }
+//    JFileChooser chooser = null;
+//    try {
+//      chooser = new JFileChooser(this.getClass().getResource("/backup").toURI().toString());
+//    } catch (URISyntaxException e) {
+//      e.printStackTrace();
+//    }
+
+
+    JFileChooser chooser = new JFileChooser("C:\\Users\\Szymon\\Documents\\dumps\\");
 
     if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
       File selectedFile = chooser.getSelectedFile();
@@ -45,10 +49,18 @@ public class Backup {
 //        String[] executeCmd = new String[]{"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin mysql", dbName, "-u" + username, "-p" + password, "-e", " source " + selectedFile.getPath()};
 
 //        String command = "\"" + "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql\" " + "mysql -uroot -p19Wrzesie StacjaPaliw < " + "\"" + selectedFile.getPath() + "\"";
-        String command = "mysql --user=root --password=19Wrzesien -e source " + "\"" + selectedFile.getPath() + "\"";
+//        String command = "mysql --user=root --password=19Wrzesien -e source " + "\"" + selectedFile.getPath() + "\"";
 //        String command = "\"C:\\Program Files\\MySQL\\MySQL Shell 8.0\\bin\\mysqlsh.exe\" -uroot -p19Wrzesien StacjaPaliw < " + "\"" + selectedFile.getPath() + "\"";
 
-        System.out.println(command);
+        String[] command = new String[]{"\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql\"", "--user="+username, "--password="+password, "stacjaPaliw", "< \"" + selectedFile.getPath() + "\""};
+
+//        "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql" --user=root --password=root  stacjaPaliw < "C:\Users\Szymon\Documents\dumps\2019-01-14.sql"
+
+
+
+        for(String s : command){
+        System.out.println(s);}
+
 
         Process runtimeProcess = Runtime.getRuntime().exec(command);
         int processComplete = runtimeProcess.waitFor();

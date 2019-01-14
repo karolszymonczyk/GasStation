@@ -50,8 +50,8 @@ public class ManagerPaneController {
   private Manager manager;
   private ArrayList<ManagerSale> bills;
 
-  String username;
-  String password;
+  private String username;
+  private String password;
 
   @FXML
   public void initialize() {
@@ -352,10 +352,7 @@ public class ManagerPaneController {
 
     Backup backup = new Backup();
 
-    String user = "root";
-    String pass = "19Wrzesien";
-
-    if(!backup.executeBackup(path,user,pass)){
+    if(!backup.executeBackup(path,username,password)){
       lError.setVisible(true);
     } else {
       lSuccessB.setVisible(true);
@@ -372,7 +369,7 @@ public class ManagerPaneController {
     String pass = "root";
 
 
-    if(!backup.restoreBackup(user,pass)){
+    if(!backup.restoreBackup(username,password)){
       lError.setVisible(true);
     } else {
       lSuccessR.setVisible(true);

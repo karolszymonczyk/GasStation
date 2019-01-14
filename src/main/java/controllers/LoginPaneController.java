@@ -28,6 +28,8 @@ public class LoginPaneController {
   private Storekeeper storekeeper;
   private Manager manager;
 
+  LoginCheck loginCheck;
+
   private String login, password;
 
 //  ArrayList<DownloadThread> threads = new ArrayList<DownloadThread>();
@@ -52,7 +54,7 @@ public class LoginPaneController {
 
     login = tLogin.getText();
     password = tPassword.getText();
-    LoginCheck loginCheck = new LoginCheck(login, password);
+    loginCheck = new LoginCheck(login, password);
     try {
       if (loginCheck.correctUserAndPass()) {
         if ("manager".equals(loginCheck.job)) {
@@ -89,11 +91,8 @@ public class LoginPaneController {
     managerController.setController(controller);
     managerController.setLoginController(this);
     managerController.addToSaleList();
-    managerController.setUsername(login);
-    managerController.setPassword(password);
-
-
-
+    managerController.setUsername(loginCheck.getInputUser());
+    managerController.setPassword(loginCheck.getInputPassword());
 
     controller.setPane(managerPane);
   }

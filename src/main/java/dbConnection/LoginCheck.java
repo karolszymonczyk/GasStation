@@ -32,5 +32,13 @@ public class LoginCheck {
   public Connection getConnection() {
     return connection;
   }
+
+  public String getInputPassword() {
+    return inputPassword;
+  }
+
+  public String getInputUser() {
+    return inputUser;
+  }
 }
 
