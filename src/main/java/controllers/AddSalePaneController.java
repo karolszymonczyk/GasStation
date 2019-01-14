@@ -63,6 +63,9 @@ public class AddSalePaneController implements ErrorUtils{
 
 
   public void addToProductList() {
+
+    manager.downloadProducts();
+
     for (Product product : manager.getProductsToSale())
       tvProducts.getItems().add(product);
   }
@@ -230,7 +233,7 @@ public class AddSalePaneController implements ErrorUtils{
       System.out.println("No active transaction - no rollback.");
     }
     manager.deleteBill();
-    manager.downloadBills(1);
+    manager.downloadBills(5);
     loginController.setManagerPane();
   }
 

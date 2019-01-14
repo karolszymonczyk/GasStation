@@ -26,6 +26,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -53,6 +55,8 @@ public class ManagerPaneController {
   private String username;
   private String password;
 
+  int billChoice = 5;
+
   @FXML
   public void initialize() {
     Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
@@ -71,23 +75,27 @@ public class ManagerPaneController {
         switch (newValue.toString()) {
           case "this month":
             manager.downloadBills(1);
-            System.out.println("1");
+            billChoice =1;
             addToSaleList();
             break;
           case "two months":
             manager.downloadBills(2);
+            billChoice=2;
             addToSaleList();
             break;
           case "this year":
             manager.downloadBills(3);
+            billChoice=3;
             addToSaleList();
             break;
           case "all":
             manager.downloadBills(4);
+            billChoice=4;
             addToSaleList();
             break;
           case "this day":
             manager.downloadBills(5);
+            billChoice=5;
             System.out.println("5");
             addToSaleList();
             break;
@@ -223,8 +231,9 @@ public class ManagerPaneController {
   public void bRefreshClick(ActionEvent event) {
 
     clearLabels();
-
-    manager.downloadAll();
+    manager.downloadBills(billChoice);
+    tvBill.getItems().clear();
+    addToSaleList();
   }
 
   public void bDeleteSaleClick(ActionEvent event) {
@@ -314,6 +323,7 @@ public class ManagerPaneController {
     viewLogsController.setController(controller);
     viewLogsController.setLoginController(loginController);
     viewLogsController.setManager(manager);
+    viewLogsController.addToLogsList();
     controller.setPane(viewLogsPane);
   }
 
@@ -344,8 +354,12 @@ public class ManagerPaneController {
 
     String path = "";
 
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
+    LocalDateTime now = LocalDateTime.now();
+    System.out.println(dtf.format(now));
+
     try {
-      path = Paths.get(this.getClass().getResource("/backup").toURI()).toString() + "\\" + LocalDate.now() + ".sql";
+      path = Paths.get(this.getClass().getResource("/backup").toURI()).toString() + "\\" + dtf.format(now) + ".sql";
     } catch (URISyntaxException e) {
       e.printStackTrace();
     }

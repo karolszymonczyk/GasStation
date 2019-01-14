@@ -94,6 +94,10 @@ public class ViewProductsPaneController {
   }
 
   public void bRefreshClick(ActionEvent event) {
-    manager.downloadAll();
+    manager.downloadProducts();
+
+    tvProducts.getItems().clear();
+
+    addProductList();
   }
 }

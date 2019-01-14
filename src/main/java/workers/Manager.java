@@ -3,10 +3,7 @@ package workers;
 import elements.*;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -27,6 +24,7 @@ public class Manager extends Worker {
   private ArrayList<ManagerBill> billElements;
   private ArrayList<ProductForDeliver> deliveredProducts;
   private ArrayList<Customer> customers;
+  private ArrayList<Log> logs;
 
   private boolean transactionStarted;
 
@@ -361,6 +359,27 @@ public class Manager extends Worker {
       cSt.execute();
     }
 
+  public void downloadLogs() {
+    logs = new ArrayList<>();
+
+    try {
+      st = connection.createStatement();
+      rs = st.executeQuery("SELECT w.name, w.surname,l.operation,l.time FROM logs l JOIN worker w ON l.worker_id=w.id");
+      while (rs.next()) {
+
+        String name = rs.getString("name");
+        String surname = rs.getString("surname");
+        String operation = rs.getString("operation");
+        String time = rs.getTimestamp("time").toString();
+
+        Log log = new Log(1,name,surname,operation,time);
+        logs.add(log);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
 
   public void addDeliveryProduct(ProductForDeliver product) {
     deliveredProducts.add(product);
@@ -372,5 +391,9 @@ public class Manager extends Worker {
 
   public ArrayList<Customer> getCustomers() {
     return customers;
+  }
+
+  public ArrayList<Log> getLogs() {
+    return logs;
   }
 }

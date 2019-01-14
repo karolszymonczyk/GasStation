@@ -15,8 +15,6 @@ public class Backup {
     try {
       String executeCmd = "\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe\" -u" + username + " -p" + password + " " + dbName + " -r " + "\"" + path + "\"";
 
-      //System.out.println(executeCmd);
-
       Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
       int processComplete = runtimeProcess.waitFor();
 
@@ -53,10 +51,6 @@ public class Backup {
 //        String command = "\"C:\\Program Files\\MySQL\\MySQL Shell 8.0\\bin\\mysqlsh.exe\" -uroot -p19Wrzesien StacjaPaliw < " + "\"" + selectedFile.getPath() + "\"";
 
         String[] command = new String[]{"\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql\"", "--user="+username, "--password="+password, "stacjaPaliw", "< \"" + selectedFile.getPath() + "\""};
-
-//        "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql" --user=root --password=root  stacjaPaliw < "C:\Users\Szymon\Documents\dumps\2019-01-14.sql"
-
-
 
         for(String s : command){
         System.out.println(s);}

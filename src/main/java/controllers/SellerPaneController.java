@@ -28,7 +28,6 @@ import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.Optional;
 
-//TODO zrobic dodawanie karty i uwzględnienie zniżki
 public class SellerPaneController implements ErrorUtils {
 
   @FXML

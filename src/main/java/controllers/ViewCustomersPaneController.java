@@ -100,7 +100,7 @@ public class ViewCustomersPaneController {
     this.manager = manager;
   }
 
-  void updateCustomerList(ArrayList<Customer> customers) {
+  private void updateCustomerList(ArrayList<Customer> customers) {
 
     tvCustomers.getItems().clear();
     for (Customer customer : customers) {

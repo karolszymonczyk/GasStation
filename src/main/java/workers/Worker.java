@@ -171,7 +171,7 @@ public abstract class Worker {
     try {
       cSt = connection.prepareCall("{CALL newProductDelivery(?,?,?,?,?)}");
       cSt.setInt(1,code);
-      cSt.setString(2,name.toString());
+      cSt.setString(2,name);
       cSt.setFloat(3,price);
       cSt.setInt(4,amount);
       cSt.setFloat(5,tax);

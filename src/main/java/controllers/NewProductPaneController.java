@@ -98,6 +98,8 @@ public class NewProductPaneController implements ErrorUtils {
       }
     }
 
+
+
     storekeeper.addNewProduct(Integer.parseInt(code), name, Float.parseFloat(price), Float.parseFloat(tax), Integer.parseInt(amount));
 
     ProductForDeliver productForDeliver = new ProductForDeliver(storekeeper.getProductName(codeInt), code, amountInt);

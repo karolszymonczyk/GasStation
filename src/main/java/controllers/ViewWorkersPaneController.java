@@ -98,7 +98,11 @@ public class ViewWorkersPaneController {
     }
 
   public void bRefreshClick(ActionEvent event) {
-    manager.downloadAll();
+
+    tvWorkers.getItems().clear();
+
+    manager.downloadWorkers();
+    addWorkerList();
   }
 
   public void changePswdClick(ActionEvent event) {

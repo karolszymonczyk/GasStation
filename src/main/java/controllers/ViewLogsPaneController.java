@@ -45,15 +45,17 @@ public class ViewLogsPaneController {
   }
 
   public void bRefreshClick(ActionEvent event) {
+    tvLogs.getItems().clear();
+    addToLogsList();
   }
 
   public void addToLogsList(){
 
+    manager.downloadLogs();
 
-
-    //TODO tutaj korzystaj tak jak wszędzie indziej XD tylko masz klase Log
-//    Log log = new Log(id, name, surname, operation, time);
-//    tvLogs.getItems().add(log);
+      for(Log log : manager.getLogs()) {
+        tvLogs.getItems().add(log);
+      }
   }
 
   public void setManager(Manager manager) {

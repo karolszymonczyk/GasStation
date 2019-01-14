@@ -8,9 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//TODO rada na przyszłość XD jak nie działa to zmienić wersje w modules na 9 XD
 
-//TODO DOPISAC TRIGGER DO BALANCE CONTROLL NA KARCIE
 
 public class Main extends Application {
 
@@ -24,7 +22,7 @@ public class Main extends Application {
 
     Parent mainPane = FXMLLoader.load(this.getClass().getResource("/fxmlFiles/MainPane.fxml"));
 
-    primaryStage.setTitle("GasStation");
+    primaryStage.setTitle("Store");
     primaryStage.setScene(new Scene(mainPane, 850, 650));
     primaryStage.setResizable(false);
 

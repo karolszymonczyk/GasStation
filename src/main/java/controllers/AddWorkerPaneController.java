@@ -63,7 +63,7 @@ public class AddWorkerPaneController implements ErrorUtils {
     Date endD = null;
 
     if(name.equals("") || surname.equals("")) {
-      System.out.println("ERRORRRRR");
+      System.out.println("TUTAJ");
       lError.setVisible(true);
       return;
     }
@@ -78,6 +78,7 @@ public class AddWorkerPaneController implements ErrorUtils {
     manager.createUser(name, surname, job, startD, endD);
   } catch (SQLException e){
     e.printStackTrace();
+    System.out.println("XDXD");
     lError.setVisible(true);
     return;
   }
